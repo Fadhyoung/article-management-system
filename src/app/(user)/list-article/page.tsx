@@ -1,8 +1,13 @@
+"use client";
+
 import Typography from "@/components/Typography";
 import { Search, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useListArticle } from "@/app/(user)/list-article/hooks";
+import CustomSelect from "@/components/Select";
+import { Category } from "@/types/Category";
+import { Controller } from "react-hook-form";
 
 interface BlogPost {
   id: string;
@@ -15,8 +20,11 @@ interface BlogPost {
 }
 
 export default function HomeComponent() {
+  const { t, control, categories, categoryOptions } = useListArticle();
 
-  const { t } = useListArticle();
+  const handleChangeCategory = (category: Category | undefined) => {
+    console.log("User selected category:", category);
+  };
 
   const blogPosts: BlogPost[] = [
     {
@@ -121,7 +129,6 @@ export default function HomeComponent() {
         }}
       >
         <div className="px-4 py-12 flex flex-col gap-10 justify-center items-center bg-primary/85">
-
           {/* NAVBAR */}
           <div className="w-full px-40 my-10 flex justify-between items-center">
             <Image
@@ -140,31 +147,39 @@ export default function HomeComponent() {
           </div>
 
           <div className="w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
-            <Typography type="subtitle" >{t('blogGenzet')}</Typography>
-            <Typography type="display" >{t('title')}</Typography>
-            <Typography type="cardtitle" weight="300">{t('subTitle')}</Typography>
+            <Typography type="subtitle">{t("blogGenzet")}</Typography>
+            <Typography type="display">{t("title")}</Typography>
+            <Typography type="cardtitle" weight="300">
+              {t("subTitle")}
+            </Typography>
           </div>
 
           <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
             <div className="flex-1">
-              <div className="bg-white rounded-md flex items-center px-3 py-2">
-                <span className="text-gray-500 text-sm mr-2">
-                  Select category
-                </span>
-                <svg
-                  className="w-4 h-4 text-gray-500 ml-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+              <div className="space-y-2">
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <CustomSelect
+                      name="category"
+                      options={categoryOptions}
+                      value={field.value || ''}
+                      onChange={(selectedValue) => {
+                        const selectedCategory = categories?.data.find(
+                          (category) => category.name === selectedValue
+                        );
+
+                        field.onChange(selectedCategory ?? null);
+
+                        // Call your custom handler
+                        handleChangeCategory?.(selectedCategory);
+                      }}
+                      isError={!!fieldState.error}
+                      errorText={fieldState.error?.message}
+                    />
+                  )}
+                />
               </div>
             </div>
             <div className="flex-1">

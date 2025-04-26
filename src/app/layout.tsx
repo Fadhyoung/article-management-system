@@ -4,6 +4,7 @@ import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
 import { NotificationProvider } from "@/providers/NotificationProvider";
 import { NotificationManager } from "@/components/NotificationManager";
+import { CategoryProvider } from "@/providers/CategoryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,8 +33,10 @@ export default function RootLayout({
       >
         <NextIntlClientProvider>
           <NotificationProvider>
-            {children}
-            <NotificationManager />
+            <CategoryProvider>            
+              {children}
+              <NotificationManager />
+            </CategoryProvider>
           </NotificationProvider>{" "}
         </NextIntlClientProvider>
       </body>
