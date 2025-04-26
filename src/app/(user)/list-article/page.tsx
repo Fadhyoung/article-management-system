@@ -147,7 +147,25 @@ export default function HomeComponent() {
 
           <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto">
             <div className="flex-1">
-              
+              <div className="bg-white rounded-md flex items-center px-3 py-2">
+                <span className="text-gray-500 text-sm mr-2">
+                  Select category
+                </span>
+                <svg
+                  className="w-4 h-4 text-gray-500 ml-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </div>
             </div>
             <div className="flex-1">
               <div className="bg-white rounded-md flex items-center px-3 py-2">
