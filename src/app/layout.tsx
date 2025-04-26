@@ -24,8 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="id">
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
