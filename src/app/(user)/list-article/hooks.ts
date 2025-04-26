@@ -8,7 +8,7 @@ import { filterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 
 export const useListArticle = () => {
-  const t = useTranslations("listArticles");
+  const t = useTranslations("ListArticles");
   const { categories, categoryOptions, setCategories } = useCategory();
 
   const {

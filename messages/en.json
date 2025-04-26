@@ -1,4 +1,10 @@
 {
+  "HomePage": {
+    "title": "The Journal : Design Resources, Interviews, and Industry News",
+    "subTitle": "Your daily dose of design insights!",
+    "noArticles": "No articles found",
+    "noMoreArticles": "No more articles"
+  },
   "Login": {
     "usernameRequired": "Username is required",
     "usernameFormatInvalid": "Invalid username format",
@@ -32,12 +38,12 @@
     "register": "Register",
     "login": "Log in"
   },
-  "footer": {
+  "Footer": {
     "logibrium": "Logibrium",
     "copyright": "© 2023 Blog journal. All rights reserved.",
     "contact": "Contact"
   }, 
-  "listArticles": {
+  "ListArticles": {
     "blogGenzet": "Blog genzet",
     "title": "The Journal : Design Resources, Interviews, and Industry News",
     "subTitle": "Your daily dose of design insights!",
