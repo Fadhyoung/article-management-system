@@ -1,0 +1,47 @@
+{
+  "Login": {
+    "usernameRequired": "Username is required",
+    "usernameFormatInvalid": "Invalid username format",
+    "username": "Username",
+    "usernamePlaceholder": "Input username",
+    "passwordRequired": "Password is required",
+    "passwordFormatInvalid": "Invalid password format",
+    "passwordLengthInvalid": "Password must not be longer than 6 characters",
+    "password": "Password",
+    "passwordPlaceholder": "Input password",
+    "dontHaveAnAccoutn": "Dont't have an account?",
+    "register": "Register",
+    "login": "Log in",
+    "fetchFailed": "Login failed, please check your username and password"
+  }, 
+  "Register": {
+    "usernameRequired": "Username is required",
+    "usernameFormatInvalid": "Invalid username format",
+    "username": "Username",
+    "usernamePlaceholder": "Input username",
+    "passwordRequired": "Password is required",
+    "passwordFormatInvalid": "Invalid password format",
+    "passwordLengthInvalid": "Password must not be longer than 6 characters",
+    "password": "Password",
+    "passwordPlaceholder": "Input password",
+    "roleRequired": "Role is required",
+    "roleFormatInvalid": "Invalid role format",
+    "role": "Role",
+    "rolePlaceholder": "Input role",
+    "alreadyHaveAccount": "Already have an account?",
+    "register": "Register",
+    "login": "Log in"
+  },
+  "footer": {
+    "logibrium": "Logibrium",
+    "copyright": "© 2023 Blog journal. All rights reserved.",
+    "contact": "Contact"
+  }, 
+  "listArticles": {
+    "blogGenzet": "Blog genzet",
+    "title": "The Journal : Design Resources, Interviews, and Industry News",
+    "subTitle": "Your daily dose of design insights!",
+    "noArticles": "No articles found",
+    "noMoreArticles": "No more articles"
+  }
+}

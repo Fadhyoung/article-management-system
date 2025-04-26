@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { NextIntlClientProvider } from "next-intl";
+import { NotificationProvider } from "@/providers/NotificationProvider";
+import { NotificationManager } from "@/components/NotificationManager";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,9 +26,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
-      <body className={`${geistSans.variable} ${geistMono.variable} bg-background`}>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} bg-background`}
+      >
+        <NextIntlClientProvider>
+          <NotificationProvider>
+            {children}
+            <NotificationManager />
+          </NotificationProvider>{" "}
+        </NextIntlClientProvider>
       </body>
     </html>
   );
