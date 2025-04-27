@@ -1,6 +1,6 @@
 "use client";
 
-import getArticleListAction from "@/app/(user)/list-article/actions";
+import getArticleListAction from "@/actions/article";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { Article } from "@/types/Articles";
 import { createContext, useContext, useEffect, useState } from "react";

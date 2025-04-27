@@ -48,7 +48,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         const response = await getCategoryAction();
         if (response.isSuccess) {
           setCategories(response.data);
-          console.log("Fetched categories:", response.data);
           return response.data;
         } else {
           console.log("Error fetching categories:", response.message);
@@ -59,8 +58,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
   const categoryOptions = generateOptions('name', undefined, categories?.data);
-
-  console.log("Category options:", categoryOptions);
 
   useEffect(() => {
     getCategory();

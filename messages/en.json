@@ -50,5 +50,11 @@
     "noArticles": "No articles found",
     "noMoreArticles": "No more articles",
     "getArticleSuccess": "Get article success"
+  },
+  "ArticleForm": {
+    "titleRequired": "Title is required",
+    "titleFormatInvalid": "Invalid title format",
+    "title": "Title",
+    "titlePlaceholder": "Input title"
   }
 }

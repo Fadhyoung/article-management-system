@@ -73,7 +73,7 @@ const CustomSelect = ({
         className={clsx(
           'flex items-center justify-between',
           'border p-2 cursor-pointer bg-white rounded-md',
-          isError ? 'border-red-500' : 'border-white',
+          isError ? 'border-red-500' : '',
           selectedValue ? 'text-black' : 'text-gray-400',
           className
         )}

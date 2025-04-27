@@ -5,3 +5,5 @@ export const APP_LIST_ARTICLE = '/list-article';
 export const APP_FORGOT_PASSWORD = '/auth/forgot-password';
 export const APP_VERIFY_PASSWORD = '/auth/verify';
 export const APP_PROFILE = '/profile';
+export const APP_ARTICLE_LIST_ARTICLE = '/articles/list-articles'
+export const APP_ARTICLE_FORM = '/articles/form'
