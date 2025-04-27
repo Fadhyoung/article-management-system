@@ -67,14 +67,13 @@ export default function CategoryPage() {
                 </tr>
               </thead>
               <tbody>
-                {categories?.data?.filter((category: Category) =>
+                {categories?.data
+                  ?.filter((category: Category) =>
                     category.name.toLowerCase().includes(search.toLowerCase())
                   )
                   .map((category: Category, idx: number) => (
                     <tr key={idx} className="text-center hover:bg-gray-50">
-                      <td className="py-3 px-4 border-y">
-                        {category.name}
-                      </td>
+                      <td className="py-3 px-4 border-y">{category.name}</td>
                       <td className="py-3 px-4 border-y">
                         {formatDate(category.updatedAt)}
                       </td>
@@ -86,7 +85,7 @@ export default function CategoryPage() {
                             className="underline hover:underline"
                             onClick={() => {
                               openModal("edit");
-                              setId("s");
+                              setId(category.id);
                             }}
                           >
                             Edit
@@ -95,7 +94,10 @@ export default function CategoryPage() {
                             buttonType="ghost"
                             variant="danger"
                             className=" hover:underline"
-                            onClick={() => openModal("delete")}
+                            onClick={() => {
+                              openModal("delete");
+                              setId(category.id);
+                            }}
                           >
                             Delete
                           </Button>

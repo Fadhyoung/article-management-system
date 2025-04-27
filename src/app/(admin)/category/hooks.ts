@@ -9,7 +9,7 @@ import { APP_ARTICLE_FORM, APP_CATEGORY } from "@/constants";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useState } from "react";
 import { useModalProvider } from "@/providers/ModalProvider";
-import postCategoryAction, { editCategoryAction } from "@/app/(admin)/category/actions";
+import postCategoryAction, { deleteCategoryAction, editCategoryAction } from "@/app/(admin)/category/actions";
 
 interface status {
   isAdd: boolean;
@@ -32,10 +32,12 @@ export const useCategory = () => {
   const handleWriteCategory = async (form: CategoryForm) => {
     try {
       let response;
-      if (id) {
+      if (id && status?.isEdit) {
         response = await editCategoryAction(form, id);
-      } else {
+      } else if (status?.isAdd) {
         response = await postCategoryAction(form);
+      } else {
+        response = await deleteCategoryAction(id);
       }
       if (response.isSuccess) {
         getCategory();
@@ -52,7 +54,7 @@ export const useCategory = () => {
       console.error("Error creating article:", error);
       showNotification({
         type: "error",
-        message: t("createArticleError"),
+        message: (error as Error).message,
       });
     }
   };
