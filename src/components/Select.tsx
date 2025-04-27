@@ -36,12 +36,6 @@ const CustomSelect = ({
   );
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (value !== selectedValue) {
-      setSelectedValue(value ?? null);
-    }
-  }, [value]);
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };

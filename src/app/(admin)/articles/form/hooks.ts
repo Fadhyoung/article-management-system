@@ -9,7 +9,7 @@ import { APP_ARTICLE_FORM, APP_ARTICLE_LIST_ARTICLE } from "@/constants";
 import { ArticleForm } from "@/types/Articles";
 import { useEffect, useState } from "react";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
-import postArticleAction from "@/app/(admin)/articles/form/actions";
+import postArticleAction, { putArticleAction } from "@/app/(admin)/articles/form/actions";
 import { getDetailArticle } from "@/actions/article";
 
 export const useArticleForm = () => {
@@ -74,7 +74,7 @@ export const useArticleForm = () => {
       const selectedCategory = categoryOptions.find(
         (option) => option.label === article.category.name
       );
-      console.log(selectedCategory?.label);
+      console.log("category label: " ,selectedCategory?.label);
       reset({
         title: article.title || "",
         categoryId: selectedCategory?.label ?? undefined,
@@ -88,9 +88,14 @@ export const useArticleForm = () => {
   }, [id, article, reset]);
   
 
-  const handleCreateArticle = async (form: ArticleForm) => {
+  const handleWriteArticle = async (form: ArticleForm) => {
     try {
-      const response = await postArticleAction(form);
+      let response;
+      if (id) {
+        response = await putArticleAction(form, id);
+      } else {
+        response = await postArticleAction(form);
+      }      
       if (response.isSuccess && response.data) {
         router.push(APP_ARTICLE_LIST_ARTICLE);
       } else {
@@ -130,6 +135,6 @@ export const useArticleForm = () => {
     preview,
     setPreview,
     handleFileChange,
-    handleCreateArticle,
+    handleWriteArticle,
   };
 };

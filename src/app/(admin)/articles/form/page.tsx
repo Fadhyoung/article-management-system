@@ -11,6 +11,7 @@ import { useArticleForm } from "@/app/(admin)/articles/form/hooks";
 import CustomSelect from "@/components/Select";
 import Image from "next/image";
 import Link from "next/link";
+import { APP_CATEGORY } from "@/constants";
 
 export default function CreateArticlePage() {
   const [wordCount, setWordCount] = useState(0);
@@ -25,14 +26,14 @@ export default function CreateArticlePage() {
     control,
     errors,
     handleFileChange,
-    handleCreateArticle,
+    handleWriteArticle,
   } = useArticleForm();
 
   return (
     <div className="min-h-screen p-6">
       {/* Form */}
       <form
-        onSubmit={handleSubmit(handleCreateArticle)}
+        onSubmit={handleSubmit(handleWriteArticle)}
         className="space-y-6 p-6 rounded-lg shadow-md border bg-background2"
       >
         {/* IMAGE UPLOAD */}
@@ -131,7 +132,9 @@ export default function CreateArticlePage() {
             control={control}
             render={({ field, fieldState }) => (
               <CustomSelect
+                label="Category"
                 name="categoryId"
+                required
                 options={categoryOptions}
                 value={field.value || ""}
                 onChange={(selectedValue) => {
@@ -155,7 +158,7 @@ export default function CreateArticlePage() {
             <Typography type="body" variant="accent">
               The existing category list can be seen in the category
             </Typography>
-            <Link href={"#"} className="text-primary">menu</Link>
+            <Link href={APP_CATEGORY} className="text-primary">menu</Link>
           </div>
         </div>
 
