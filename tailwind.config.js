@@ -22,7 +22,7 @@ module.exports = {
         144: "36rem",
       },
       screens: {
-        xs: "475px",
+        xs: "300px",
         "3xl": "1600px",
       },
       boxShadow: {

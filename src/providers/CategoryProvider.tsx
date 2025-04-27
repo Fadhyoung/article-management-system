@@ -1,6 +1,6 @@
 "use client";
 
-import getCategoryAction from "@/app/(user)/list-article/actions";
+import { getCategoryAction } from "@/app/(user)/list-article/actions";
 import { OptionProps } from "@/components/Select";
 import { CategoryResponse } from "@/types/Category";
 import { generateOptions } from "@/utils/generateOptions";

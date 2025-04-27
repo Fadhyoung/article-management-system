@@ -4,59 +4,23 @@ import { useTranslations } from "next-intl";
 import { useCategory } from "@/providers/CategoryProvider";
 import { filterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
-import getArticleListAction from "@/app/(user)/list-article/actions";
-import { useNotificationProvider } from "@/providers/NotificationProvider";
-import { Article } from "@/types/Articles";
 import { useRouter } from "next/navigation";
+import { useArticle } from "@/providers/ArticleProvider";
 
 export const useListArticle = () => {
   const t = useTranslations("ListArticles");
   const { categories, categoryOptions } = useCategory();
   const router = useRouter();
 
-  const [articles, setArticles] = useState<Article[]>([]);
+  const { articles } = useArticle();
 
   const {
     control,
-  } = useForm<filterForm>();
-
-  const { showNotification } = useNotificationProvider();
-
-  const getArticles = async () => {
-    try {
-      const response = await getArticleListAction();
-      if (response.isSuccess) {
-        console.log("Fetched articles:", response);
-        setArticles(response.data.data);        
-        showNotification({
-        type: "success",
-        message: t("getArticleSuccess"),
-        mode: "toast",
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
-    } catch (error) {
-      showNotification({
-        type: "error",
-        message: (error as Error).message,
-        mode: "toast",
-      });
-    }
-  };
+  } = useForm<filterForm>(); 
 
   const goToDetailArticle = (id: string) => {
     router.push(`/article/${id}`);
   };
-
-  useEffect(() => {
-    getArticles();
-  }, []);
 
   return {
     t,

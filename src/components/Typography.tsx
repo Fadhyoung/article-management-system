@@ -29,7 +29,7 @@ const variantClasses: Record<NonNullable<TypographyProps['variant']>, string> = 
 
 const typeClasses: Record<TypographyProps['type'], string> = {  
   massiveTitle: 'lg:text-9xl xs:text-5xl font-bold tracking-tight leading-none',
-  display: 'lg:text-5xl xs:text-4xl font-bold tracking-tighter leading-none',
+  display: 'lg:text-5xl xs:text-2xl font-bold tracking-tighter leading-none',
   title: 'lg:text-3xl xs:text-xl font-semibold leading-snug',
   cardtitle: 'lg:text-2xl xs:text-xl font-semibold leading-snug',
   subtitle: 'lg:text-lg xs:text-base font-light leading-relaxed',

@@ -22,9 +22,6 @@ export default async function getDetailArticle(id: string): Promise<
       };
     }
 
-    console.log("====================================")
-    console.log("Response data:", response.data);
-
     return {
       isSuccess: true,
       message: "Get category successful",

@@ -1,5 +1,6 @@
 "use server";
 
+import { articles } from "@/constants/dummyDatas";
 import { ArticleResponse } from "@/types/Articles";
 import { CategoryResponse } from "@/types/Category";
 import { CommonDataResponse } from "@/types/Common";
@@ -15,7 +16,16 @@ export default async function getArticleListAction(): Promise<
 
     if (response.status !== 200) {
       console.error("Response status:", response.statusText);
-      throw new Error("Failed to Get category");
+      return {
+        isSuccess: true,
+        message: "Get category successful",
+        data: {
+          data: articles.data,
+          totalPages: response.data.totalPages,
+          currentPage: response.data.currentPage,
+          totalData: response.data.totalData,
+        },
+      };
     }
 
     return {

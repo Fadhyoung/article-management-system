@@ -34,7 +34,7 @@ export default function HomeComponent() {
       >
         <div className="px-4 py-12 flex flex-col gap-10 justify-center items-center bg-primary/85">
           {/* NAVBAR */}
-          <div className="w-full px-40 my-10 flex justify-between items-center">
+          <div className="w-full px-40 my-10 hidden md:flex justify-between items-center">
             <Image
               src={"/images/img_icon_white.png"}
               alt="logo"
@@ -50,7 +50,7 @@ export default function HomeComponent() {
             </div>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
+          <div className="w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
             <Typography type="subtitle">{t("blogGenzet")}</Typography>
             <Typography type="display">{t("title")}</Typography>
             <Typography type="cardtitle" weight="300">
@@ -59,8 +59,7 @@ export default function HomeComponent() {
           </div>
 
           <div className="max-w-2xl mx-auto p-3 flex flex-col md:flex-row gap-4 justify-center items-center bg-secondary rounded-md">
-            <div className="flex-1">
-              <div className="space-y-2">
+            <div className="flex-1 w-full">
                 <Controller
                   name="category"
                   control={control}
@@ -80,13 +79,13 @@ export default function HomeComponent() {
                       }}
                       isError={!!fieldState.error}
                       errorText={fieldState.error?.message}
+                      className="w-full md:w-fit bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
                     />
                   )}
                 />
-              </div>
             </div>
             <div className="flex-1">
-              <div className="w-96 bg-white rounded-md flex items-center px-3 py-2">
+              <div className="w-full md:w-96 bg-white rounded-md flex items-center px-3 py-2">
                 <Search size={16} className="text-gray-500 mr-2" />
                 <Controller
                   name="search"
@@ -100,7 +99,7 @@ export default function HomeComponent() {
                       radius="md"
                       isError={!!error}
                       errorText={error?.message}
-                      className="w-96 bg-transparent text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
+                      className="bg-transparent text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -125,7 +124,7 @@ export default function HomeComponent() {
 
           {/* Blog posts grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
-            {articles.map((article) => (
+            {articles?.map((article) => (
               <article
                 key={article.id}
                 className="rounded-lg overflow-hidden"

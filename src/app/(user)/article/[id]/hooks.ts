@@ -9,6 +9,7 @@ import getDetailArticle from "@/app/(user)/article/[id]/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { Article } from "@/types/Articles";
 import { useParams } from "next/navigation";
+import { useArticle } from "@/providers/ArticleProvider";
 
 export const useDetailArticle = () => {
   const t = useTranslations("ListArticles");
@@ -22,6 +23,8 @@ export const useDetailArticle = () => {
   const {
     control,
   } = useForm<filterForm>();
+
+  const { articles } = useArticle();
 
   const { showNotification } = useNotificationProvider();
 
@@ -62,5 +65,6 @@ export const useDetailArticle = () => {
     categories,
     categoryOptions,
     article,
+    articles,
   };
 };
