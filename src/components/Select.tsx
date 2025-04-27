@@ -71,7 +71,7 @@ const CustomSelect = ({
         className={clsx(
           'flex items-center justify-between',
           'border p-2 cursor-pointer bg-white rounded-md',
-          isError ? 'border-red-500' : 'border-gray-300',
+          isError ? 'border-red-500' : 'border-white',
           selectedValue ? 'text-black' : 'text-gray-400'
         )}
         onClick={toggleDropdown}

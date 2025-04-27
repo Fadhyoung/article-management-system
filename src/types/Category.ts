@@ -1,3 +1,5 @@
+import { Pagination } from "@/types/Common";
+
 export interface Category {
   id: string;
   userId: string;
@@ -6,15 +8,13 @@ export interface Category {
   updatedAt: string;
 }
 
-export interface CategoryResponse {
+export interface CategoryResponse extends Pagination {
   data: Category[];
-  totalPages: number;
-  currentPage: number;
-  totalData: number;
 }
 
 export interface filterForm {
-  name: string;
+  category: string;
   page: number;
   limit: number;
+  search: string;
 }

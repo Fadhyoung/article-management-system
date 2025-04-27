@@ -48,6 +48,7 @@
     "title": "The Journal : Design Resources, Interviews, and Industry News",
     "subTitle": "Your daily dose of design insights!",
     "noArticles": "No articles found",
-    "noMoreArticles": "No more articles"
+    "noMoreArticles": "No more articles",
+    "getArticleSuccess": "Get article success"
   }
 }

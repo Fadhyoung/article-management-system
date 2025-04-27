@@ -5,17 +5,19 @@ import { useCategory } from "@/providers/CategoryProvider";
 import { filterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import getArticleListAction from "@/app/(user)/list-article/actions";
+import getDetailArticle from "@/app/(user)/article/[id]/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { Article } from "@/types/Articles";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
-export const useListArticle = () => {
+export const useDetailArticle = () => {
   const t = useTranslations("ListArticles");
   const { categories, categoryOptions } = useCategory();
-  const router = useRouter();
 
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [article, setArticle] = useState<Article>();
+
+  const params = useParams();
+  const id = params?.id as string;
 
   const {
     control,
@@ -23,12 +25,12 @@ export const useListArticle = () => {
 
   const { showNotification } = useNotificationProvider();
 
-  const getArticles = async () => {
+  const getArticle = async (id: string) => {
     try {
-      const response = await getArticleListAction();
+      const response = await getDetailArticle(id);
       if (response.isSuccess) {
         console.log("Fetched articles:", response);
-        setArticles(response.data.data);        
+        setArticle(response.data);        
         showNotification({
         type: "success",
         message: t("getArticleSuccess"),
@@ -50,20 +52,15 @@ export const useListArticle = () => {
     }
   };
 
-  const goToDetailArticle = (id: string) => {
-    router.push(`/article/${id}`);
-  };
-
   useEffect(() => {
-    getArticles();
-  }, []);
+    if (id) {getArticle(id);}    
+  }, [id]);
 
   return {
     t,
     control,
     categories,
     categoryOptions,
-    articles,
-    goToDetailArticle,
+    article,
   };
 };

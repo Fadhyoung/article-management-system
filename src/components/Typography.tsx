@@ -24,7 +24,7 @@ const variantClasses: Record<NonNullable<TypographyProps['variant']>, string> = 
   muted: 'text-gray-500',
   success: 'text-green-500 px-1',
   danger: 'text-red-600 font-semibold',
-  accent: 'text-amber',
+  accent: 'text-accent',
 };
 
 const typeClasses: Record<TypographyProps['type'], string> = {  
@@ -47,7 +47,7 @@ const colorClasses: Record<NonNullable<TypographyProps['color']>, string> = {
   muted: 'text-gray-400',
   highlight: 'bg-yellow-100 text-yellow-800 px-1',
   danger: 'text-red-600 font-semibold',
-  accent: 'text-amber',
+  accent: 'text-accent',
 };
 
 const visibleOnClasses: Record<
