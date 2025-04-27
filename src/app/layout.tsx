@@ -6,6 +6,7 @@ import { NotificationProvider } from "@/providers/NotificationProvider";
 import { NotificationManager } from "@/components/NotificationManager";
 import { CategoryProvider } from "@/providers/CategoryProvider";
 import { ArticleProvider } from "@/providers/ArticleProvider";
+import { ModalProvider } from "@/providers/ModalProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +37,10 @@ export default function RootLayout({
           <NotificationProvider>
             <CategoryProvider>    
               <ArticleProvider>
-                {children}
-                <NotificationManager />
+                <ModalProvider>
+                  {children}
+                  <NotificationManager />
+                </ModalProvider>
               </ArticleProvider>        
             </CategoryProvider>
           </NotificationProvider>{" "}

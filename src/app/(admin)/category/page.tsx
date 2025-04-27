@@ -72,7 +72,7 @@ export default function CategoryPage() {
                             variant="primary"
                             className="underline hover:underline"
                           >
-                            Preview
+                            Edit
                           </Button>
                           <Button
                             buttonType="ghost"
@@ -91,7 +91,7 @@ export default function CategoryPage() {
           </div>
 
           {/* Pagination */}
-          <div className="flex justify-center mt-6 space-x-4">
+          <div className="p-6 flex justify-center mt-6 space-x-4">
             <button className="px-4 py-2 border rounded hover:bg-gray-100">
               Previous
             </button>
