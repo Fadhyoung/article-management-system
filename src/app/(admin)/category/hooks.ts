@@ -5,10 +5,9 @@ import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { CategoryForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useArticle } from "@/providers/ArticleProvider";
 import { APP_ARTICLE_FORM, APP_ARTICLE_LIST_ARTICLE } from "@/constants";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useModalProvider } from "@/providers/ModalProvider";
 import postCategoryAction, { editCategoryAction } from "@/app/(admin)/category/actions";
 
@@ -25,7 +24,6 @@ export const useCategory = () => {
   const { categories, categoryOptions } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
   const { isOpen, setIsOpen } = useModalProvider();
-  const { articles, getArticles } = useArticle();
 
   const { control, handleSubmit } = useForm<CategoryForm>();
   const [status, setStatus] = useState<status>();
@@ -72,17 +70,12 @@ export const useCategory = () => {
     router.push(APP_ARTICLE_FORM);
   };
 
-  useEffect(() => {
-    getArticles();
-  }, []);
-
   return {
     t,
     control,
     handleSubmit,
     categories,
     categoryOptions,
-    articles,
 
     isOpen,
     setIsOpen,

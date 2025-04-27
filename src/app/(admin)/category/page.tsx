@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Article } from "@/types/Articles";
 import { formatDate } from "@/utils/formatDate";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
@@ -9,15 +8,17 @@ import { useCategory } from "@/app/(admin)/category/hooks";
 import Typography from "@/components/Typography";
 import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
+import { Category } from "@/types/Category";
 
 export default function CategoryPage() {
   const [search, setSearch] = useState("");
 
   const {
+    categories,
+
     t,
     control,
     handleSubmit,
-    articles,
     status,
     openModal,
     isOpen,
@@ -26,7 +27,7 @@ export default function CategoryPage() {
     setId,
   } = useCategory();
 
-  console.log("the articles is ", articles);
+  console.log("the categories is ", categories);
 
   return (
     <>
@@ -68,17 +69,16 @@ export default function CategoryPage() {
                 </tr>
               </thead>
               <tbody>
-                {articles
-                  ?.filter((article: Article) =>
-                    article.title.toLowerCase().includes(search.toLowerCase())
+                {categories?.data?.filter((category: Category) =>
+                    category.name.toLowerCase().includes(search.toLowerCase())
                   )
-                  .map((article: Article, idx: number) => (
+                  .map((category: Category, idx: number) => (
                     <tr key={idx} className="text-center hover:bg-gray-50">
                       <td className="py-3 px-4 border-y">
-                        {article.category.name}
+                        {category.name}
                       </td>
                       <td className="py-3 px-4 border-y">
-                        {formatDate(article.createdAt)}
+                        {formatDate(category.updatedAt)}
                       </td>
                       <td className="py-3 px-4  border-y">
                         <div className="flex gap-2 justify-center">
@@ -140,29 +140,38 @@ export default function CategoryPage() {
                   ? "Edit Category"
                   : "Delete Category"}
               </Typography>
-              <div>
-                <Controller
-                  name="name"
-                  defaultValue=""
-                  control={control}
-                  rules={{
-                    required: t("nameRequired"),
-                  }}
-                  render={({ field, fieldState }) => (
-                    <Input
-                      {...field}
-                      label={t("name")}
-                      placeholder={t("namePlaceholder")}
-                      isError={!!fieldState.error}
-                      errorText={fieldState.error?.message}
-                      variant="primary"
-                      size="md"
-                      radius="md"
-                      required
-                    />
-                  )}
-                />
-              </div>
+
+              {status?.isDelete ? (
+                <Typography type="caption" variant="accent">
+                  Delete category “Technology”? This will remove it from master
+                  data permanently.
+                </Typography>
+              ) : (
+                <div>
+                  <Controller
+                    name="name"
+                    defaultValue=""
+                    control={control}
+                    rules={{
+                      required: t("nameRequired"),
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Input
+                        {...field}
+                        label={t("name")}
+                        placeholder={t("namePlaceholder")}
+                        isError={!!fieldState.error}
+                        errorText={fieldState.error?.message}
+                        variant="primary"
+                        size="md"
+                        radius="md"
+                        required
+                      />
+                    )}
+                  />
+                </div>
+              )}
+
               <div className="w-fit flex gap-5 self-end">
                 <button
                   type="button"
@@ -171,12 +180,12 @@ export default function CategoryPage() {
                   Cancel
                 </button>
                 <Button
-                  variant={status?.isDelete ? 'danger' : 'primary'}
+                  variant={status?.isDelete ? "danger" : "primary"}
                   radius="md"
                   type="submit"
                   className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
                 >
-                  {status?.isAdd ? 'Add' : status?.isEdit ? 'Edit' : 'Delete'}
+                  {status?.isAdd ? "Add" : status?.isEdit ? "Edit" : "Delete"}
                 </Button>
               </div>
             </form>
