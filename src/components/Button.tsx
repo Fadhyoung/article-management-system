@@ -74,7 +74,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const buttonTypeStyles = {
-      solid: `${variantStyles[variant]} ${contrastTextColors[variant]}`,
+      solid: `${variantStyles[variant]} text-white`,
       outline: `${variantStyles[variant]} ${contrastTextColors[variant]} border text-black`,
       subtle: `${variantStyles[variant]} bg-opacity-50 ${contrastTextColors[variant]}`,
       ghost: `${contrastTextColors[variant]} bg-transparent`,

@@ -57,5 +57,10 @@
     "title": "Title",
     "titlePlaceholder": "Input title",
     "getArticleSuccess": "Get article success"
+  },
+  "ListCategory": {
+    "name": "Name",
+    "namePlaceholder": "Insert category name",
+    "nameRequired": "Please insert category name"
   }
 }

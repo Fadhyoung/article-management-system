@@ -2,29 +2,47 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { filterForm } from "@/types/Category";
+import { CategoryForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useArticle } from "@/providers/ArticleProvider";
-import { APP_ARTICLE_FORM } from "@/constants";
-import deleteArticleAction from "@/app/(admin)/articles/list-articles/actions";
+import { APP_ARTICLE_FORM, APP_CATEGORY } from "@/constants";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
-import { useEffect } from "react";
+import { useState } from "react";
+import { useModalProvider } from "@/providers/ModalProvider";
+import postCategoryAction, { deleteCategoryAction, editCategoryAction } from "@/app/(admin)/category/actions";
+
+interface status {
+  isAdd: boolean;
+  isEdit: boolean;
+  isDelete: boolean;
+}
 
 export const useCategory = () => {
-  const t = useTranslations("ListArticles");
-  const { categories, categoryOptions } = useCategoryProvider();
+  const t = useTranslations("ListCategory");
   const router = useRouter();
+
+  const { categories, categoryOptions, getCategory } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
-  const { articles, getArticles } = useArticle();
+  const { isOpen, setIsOpen } = useModalProvider();
 
-  const { control } = useForm<filterForm>();
+  const { control, handleSubmit, reset } = useForm<CategoryForm>();
+  const [status, setStatus] = useState<status>();
+  const [id, setId] = useState<string>('');
 
-  const handleDeleteArticle = async (id: string) => {
+  const handleWriteCategory = async (form: CategoryForm) => {
     try {
-      const response = await deleteArticleAction(id);
+      let response;
+      if (id && status?.isEdit) {
+        response = await editCategoryAction(form, id);
+      } else if (status?.isAdd) {
+        response = await postCategoryAction(form);
+      } else {
+        response = await deleteCategoryAction(id);
+      }
       if (response.isSuccess) {
-        getArticles();
+        getCategory();
+        handleCloseModal();
+        router.push(APP_CATEGORY);        
       } else {
         showNotification({
           type: "error",
@@ -33,11 +51,22 @@ export const useCategory = () => {
         });
       }
     } catch (error) {
-      console.error("Error deleting article:", error);
+      console.error("Error creating article:", error);
       showNotification({
         type: "error",
-        message: t("deleteArticleError"),
+        message: (error as Error).message,
       });
+    }
+  };
+
+  const openModal = (status: string) => {
+    setIsOpen(true);
+    if (status == "add") {
+      setStatus({ isAdd: true, isEdit: false, isDelete: false });
+    } else if (status == "edit") {
+      setStatus({ isAdd: false, isEdit: true, isDelete: false });
+    } else {
+      setStatus({ isAdd: false, isEdit: false, isDelete: true });
     }
   };
 
@@ -45,17 +74,28 @@ export const useCategory = () => {
     router.push(APP_ARTICLE_FORM);
   };
 
-  useEffect(() => {
-    getArticles();
-  }, []);
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setStatus(undefined);
+    setId('');
+    reset();
+  };
 
   return {
     t,
     control,
+    handleSubmit,
     categories,
     categoryOptions,
-    articles,
+
+    isOpen,
+    setIsOpen,
+    status,
+    openModal,
+    setId,
+
     goToCreateArticle,
-    handleDeleteArticle,
+    handleWriteCategory,
+    handleCloseModal,
   };
 };

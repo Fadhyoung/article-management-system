@@ -1,17 +1,31 @@
 "use client";
 
 import { useState } from "react";
-import { useArticles } from "@/app/(admin)/articles/list-articles/hooks";
-import { Article } from "@/types/Articles";
 import { formatDate } from "@/utils/formatDate";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import { useCategory } from "@/app/(admin)/category/hooks";
+import Typography from "@/components/Typography";
+import { Controller } from "react-hook-form";
+import Input from "@/components/Input";
+import { Category } from "@/types/Category";
 
 export default function CategoryPage() {
   const [search, setSearch] = useState("");
 
-  const { articles, goToCreateArticle, handleDeleteArticle } = useArticles();
+  const {
+    categories,
 
-  console.log("the articles is ", articles);
+    t,
+    control,
+    handleSubmit,
+    status,
+    openModal,
+    isOpen,
+    handleWriteCategory,
+    setId,
+    handleCloseModal,
+  } = useCategory();
 
   return (
     <>
@@ -36,7 +50,7 @@ export default function CategoryPage() {
             <Button
               className="bg-blue-600 text-white py-2 px-4 rounded-lg"
               radius="md"
-              onClick={goToCreateArticle}
+              onClick={() => openModal("add")}
             >
               + Add Articles
             </Button>
@@ -53,17 +67,15 @@ export default function CategoryPage() {
                 </tr>
               </thead>
               <tbody>
-                {articles
-                  ?.filter((article: Article) =>
-                    article.title.toLowerCase().includes(search.toLowerCase())
+                {categories?.data
+                  ?.filter((category: Category) =>
+                    category.name.toLowerCase().includes(search.toLowerCase())
                   )
-                  .map((article: Article, idx: number) => (
+                  .map((category: Category, idx: number) => (
                     <tr key={idx} className="text-center hover:bg-gray-50">
+                      <td className="py-3 px-4 border-y">{category.name}</td>
                       <td className="py-3 px-4 border-y">
-                        {article.category.name}
-                      </td>
-                      <td className="py-3 px-4 border-y">
-                        {formatDate(article.createdAt)}
+                        {formatDate(category.updatedAt)}
                       </td>
                       <td className="py-3 px-4  border-y">
                         <div className="flex gap-2 justify-center">
@@ -71,6 +83,10 @@ export default function CategoryPage() {
                             buttonType="ghost"
                             variant="primary"
                             className="underline hover:underline"
+                            onClick={() => {
+                              openModal("edit");
+                              setId(category.id);
+                            }}
                           >
                             Edit
                           </Button>
@@ -78,7 +94,10 @@ export default function CategoryPage() {
                             buttonType="ghost"
                             variant="danger"
                             className=" hover:underline"
-                            onClick={() => handleDeleteArticle(article.id)}
+                            onClick={() => {
+                              openModal("delete");
+                              setId(category.id);
+                            }}
                           >
                             Delete
                           </Button>
@@ -105,6 +124,78 @@ export default function CategoryPage() {
           </div>
         </div>
       </main>
+      <Modal
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        body={
+          <>
+            <form
+              onSubmit={handleSubmit(handleWriteCategory)}
+              className="flex flex-col gap-5"
+            >
+              <Typography type="subtitle">
+                {status?.isAdd
+                  ? "Add Category"
+                  : status?.isEdit
+                  ? "Edit Category"
+                  : "Delete Category"}
+              </Typography>
+
+              {status?.isDelete ? (
+                <Typography type="caption" variant="accent">
+                  Delete category “Technology”? This will remove it from master
+                  data permanently.
+                </Typography>
+              ) : (
+                <div>
+                  <Controller
+                    name="name"
+                    defaultValue=""
+                    control={control}
+                    rules={{
+                      required: t("nameRequired"),
+                    }}
+                    render={({ field, fieldState }) => (
+                      <Input
+                        {...field}
+                        label={t("name")}
+                        placeholder={t("namePlaceholder")}
+                        isError={!!fieldState.error}
+                        errorText={fieldState.error?.message}
+                        variant="primary"
+                        size="md"
+                        radius="md"
+                        required
+                      />
+                    )}
+                  />
+                </div>
+              )}
+
+              <div className="w-fit flex gap-5 self-end">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  buttonType="outline"
+                  radius="md"
+                  className="border py-2 px-4 rounded-lg hover:bg-gray-100"
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant={status?.isDelete ? "danger" : "primary"}
+                  radius="md"
+                  type="submit"
+                  className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                >
+                  {status?.isAdd ? "Add" : status?.isEdit ? "Edit" : "Delete"}
+                </Button>
+              </div>
+            </form>
+          </>
+        }
+      />
     </>
   );
 }
