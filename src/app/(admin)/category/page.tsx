@@ -22,12 +22,10 @@ export default function CategoryPage() {
     status,
     openModal,
     isOpen,
-    setIsOpen,
     handleWriteCategory,
     setId,
+    handleCloseModal,
   } = useCategory();
-
-  console.log("the categories is ", categories);
 
   return (
     <>
@@ -126,7 +124,7 @@ export default function CategoryPage() {
       </main>
       <Modal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={handleCloseModal}
         body={
           <>
             <form
@@ -173,12 +171,16 @@ export default function CategoryPage() {
               )}
 
               <div className="w-fit flex gap-5 self-end">
-                <button
+                <Button
                   type="button"
+                  variant="secondary"
+                  buttonType="outline"
+                  radius="md"
                   className="border py-2 px-4 rounded-lg hover:bg-gray-100"
+                  onClick={handleCloseModal}
                 >
                   Cancel
-                </button>
+                </Button>
                 <Button
                   variant={status?.isDelete ? "danger" : "primary"}
                   radius="md"

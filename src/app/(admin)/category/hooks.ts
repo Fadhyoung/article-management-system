@@ -5,7 +5,7 @@ import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { CategoryForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { APP_ARTICLE_FORM, APP_ARTICLE_LIST_ARTICLE } from "@/constants";
+import { APP_ARTICLE_FORM, APP_CATEGORY } from "@/constants";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useState } from "react";
 import { useModalProvider } from "@/providers/ModalProvider";
@@ -21,11 +21,11 @@ export const useCategory = () => {
   const t = useTranslations("ListCategory");
   const router = useRouter();
 
-  const { categories, categoryOptions } = useCategoryProvider();
+  const { categories, categoryOptions, getCategory } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
   const { isOpen, setIsOpen } = useModalProvider();
 
-  const { control, handleSubmit } = useForm<CategoryForm>();
+  const { control, handleSubmit, reset } = useForm<CategoryForm>();
   const [status, setStatus] = useState<status>();
   const [id, setId] = useState<string>('');
 
@@ -38,7 +38,9 @@ export const useCategory = () => {
         response = await postCategoryAction(form);
       }
       if (response.isSuccess) {
-        router.push(APP_ARTICLE_LIST_ARTICLE);
+        getCategory();
+        handleCloseModal();
+        router.push(APP_CATEGORY);        
       } else {
         showNotification({
           type: "error",
@@ -70,6 +72,13 @@ export const useCategory = () => {
     router.push(APP_ARTICLE_FORM);
   };
 
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setStatus(undefined);
+    setId('');
+    reset();
+  };
+
   return {
     t,
     control,
@@ -85,5 +94,6 @@ export const useCategory = () => {
 
     goToCreateArticle,
     handleWriteCategory,
+    handleCloseModal,
   };
 };

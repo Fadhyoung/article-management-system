@@ -4,8 +4,8 @@ import { SubmitHandler } from "react-hook-form";
 import { registerAction } from "@/app/auth/register/actions";
 import { useTranslations } from "next-intl";
 import {
-  APP_DASHBOARD,
   APP_FORGOT_PASSWORD,
+  APP_LIST_ARTICLE,
   ERR_INVALID_EMAIL_OR_PASSWORD,
 } from "@/constants";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ export const useRegister = () => {
     try {
       const response = await registerAction(form);
       if (response.isSuccess && response.data) {
-        router.push(APP_DASHBOARD);
+        router.push(APP_LIST_ARTICLE);
       } else if (response.message == ERR_INVALID_EMAIL_OR_PASSWORD) {
         showNotification({
           type: "error",
