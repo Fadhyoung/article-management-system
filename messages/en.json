@@ -55,6 +55,7 @@
     "titleRequired": "Title is required",
     "titleFormatInvalid": "Invalid title format",
     "title": "Title",
-    "titlePlaceholder": "Input title"
+    "titlePlaceholder": "Input title",
+    "getArticleSuccess": "Get article success"
   }
 }

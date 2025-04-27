@@ -6,12 +6,12 @@ import { filterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
-import { APP_ARTICLE, APP_ARTICLE_FORM } from "@/constants";
+import { APP_ARTICLE_FORM } from "@/constants";
 import deleteArticleAction from "@/app/(admin)/articles/list-articles/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useEffect } from "react";
 
-export const useArticles = () => {
+export const useCategory = () => {
   const t = useTranslations("ListArticles");
   const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
@@ -21,7 +21,6 @@ export const useArticles = () => {
   const { control } = useForm<filterForm>();
 
   const handleDeleteArticle = async (id: string) => {
-    console.log("the id is ", id);
     try {
       const response = await deleteArticleAction(id);
       if (response.isSuccess) {
@@ -46,14 +45,6 @@ export const useArticles = () => {
     router.push(APP_ARTICLE_FORM);
   };
 
-  const goToDetailArticle = (id: string) => {
-    router.push(`${APP_ARTICLE}${id}`);
-  };
-
-  const goToEditArticle = (id: string) => {
-    router.push(`${APP_ARTICLE_FORM}?id=${id}`);
-  };
-
   useEffect(() => {
     getArticles();
   }, []);
@@ -66,7 +57,5 @@ export const useArticles = () => {
     articles,
     goToCreateArticle,
     handleDeleteArticle,
-    goToDetailArticle,
-    goToEditArticle,
   };
 };

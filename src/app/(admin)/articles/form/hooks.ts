@@ -1,27 +1,32 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useCategory } from "@/providers/CategoryProvider";
+import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
 import { APP_ARTICLE_FORM, APP_ARTICLE_LIST_ARTICLE } from "@/constants";
 import { ArticleForm } from "@/types/Articles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import postArticleAction from "@/app/(admin)/articles/form/actions";
+import { getDetailArticle } from "@/actions/article";
 
 export const useArticleForm = () => {
   const t = useTranslations("ArticleForm");
-  const { categories, categoryOptions } = useCategory();
+  const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
 
-  const { articles } = useArticle();
+  const { article, setArticle } = useArticle();
   const { showNotification } = useNotificationProvider();
   const [preview, setPreview] = useState<string | null>(null);
 
+  const params = useSearchParams();
+  const id = params.get("id");
+
   const {
     register,
+    reset,
     handleSubmit,
     control,
     formState: { errors },
@@ -30,6 +35,58 @@ export const useArticleForm = () => {
   const goToCreateArticle = () => {
     router.push(APP_ARTICLE_FORM);
   };
+
+  const getArticle = async (id: string) => {
+      try {
+        const response = await getDetailArticle(id);
+        if (response.isSuccess) {
+          console.log("Fetched articles:", response);
+          setArticle(response.data);        
+          showNotification({
+          type: "success",
+          message: t("getArticleSuccess"),
+          mode: "toast",
+          });
+        } else {
+          showNotification({
+            type: "error",
+            message: response.message,
+            mode: "toast",
+          });
+        }
+      } catch (error) {
+        showNotification({
+          type: "error",
+          message: (error as Error).message,
+          mode: "toast",
+        });
+      }
+    };
+
+  useEffect(() => {
+    if (id) {
+      getArticle(id);
+    }
+  }, [])
+
+  useEffect(() => {    
+    if (id && article && categoryOptions != null) {
+      const selectedCategory = categoryOptions.find(
+        (option) => option.label === article.category.name
+      );
+      console.log(selectedCategory?.label);
+      reset({
+        title: article.title || "",
+        categoryId: selectedCategory?.label ?? undefined,
+        content: article.content || "",
+        thumbnail: undefined,
+      });
+      if (article.imageUrl) {
+        setPreview(article.imageUrl);
+      }
+    }
+  }, [id, article, reset]);
+  
 
   const handleCreateArticle = async (form: ArticleForm) => {
     try {
@@ -50,7 +107,7 @@ export const useArticleForm = () => {
         message: t("createArticleError"),
       });
     }
-  };  
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -65,7 +122,6 @@ export const useArticleForm = () => {
     control,
     categories,
     categoryOptions,
-    articles,
     register,
     handleSubmit,
     errors,

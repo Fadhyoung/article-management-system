@@ -34,7 +34,7 @@ const categroyContext = createContext<CategoryState>({
   getCategory: async () => {},
 });
 
-export const useCategory = () => useContext(categroyContext);
+export const useCategoryProvider = () => useContext(categroyContext);
 
 export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

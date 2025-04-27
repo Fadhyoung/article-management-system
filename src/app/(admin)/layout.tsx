@@ -1,5 +1,7 @@
 import Typography from "@/components/Typography";
+import { APP_ARTICLE_LIST_ARTICLE, APP_CATEGORY } from "@/constants";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,15 +10,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <aside className="w-64 bg-primary text-white flex flex-col gap-10 p-6">
         <Image src={"/images/img_icon_white.png"} alt="logo" width={150} height={150} />
         <nav className="flex flex-col gap-4">
-          <a href="#" className="bg-blue-600 py-2 px-4 rounded-lg">
+          <Link href={APP_ARTICLE_LIST_ARTICLE} className="bg-blue-600 py-2 px-4 rounded-lg">
             Articles
-          </a>
-          <a href="#" className="hover:bg-blue-600 py-2 px-4 rounded-lg">
+          </Link>
+          <Link href={APP_CATEGORY} className="hover:bg-blue-600 py-2 px-4 rounded-lg">
             Category
-          </a>
-          <a href="#" className="hover:bg-blue-600 py-2 px-4 rounded-lg">
+          </Link>
+          <Link href="#" className="hover:bg-blue-600 py-2 px-4 rounded-lg">
             Logout
-          </a>
+          </Link>
         </nav>
       </aside>
       <div className="w-full">

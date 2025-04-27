@@ -1,16 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { useArticles } from "@/app/(admin)/articles/list-articles/hooks";
 import { Article } from "@/types/Articles";
 import { formatDate } from "@/utils/formatDate";
 import Button from "@/components/Button";
 
-export default function ArticlesPage() {
+export default function CategoryPage() {
   const [search, setSearch] = useState("");
 
-  const { articles, goToCreateArticle, goToDetailArticle, handleDeleteArticle, goToEditArticle } = useArticles();
+  const { articles, goToCreateArticle, handleDeleteArticle } = useArticles();
+
+  console.log("the articles is ", articles);
 
   return (
     <>
@@ -23,11 +24,6 @@ export default function ArticlesPage() {
 
           {/* Search & Filter */}
           <div className="p-6 flex items-center gap-4">
-            <div>
-              <select className="border rounded-lg p-2">
-                <option>Category</option>
-              </select>
-            </div>
             <div className="flex-1">
               <input
                 type="text"
@@ -49,10 +45,8 @@ export default function ArticlesPage() {
           {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full text-left border">
-              <thead className="bg-gray-100">
+              <thead className="text-center bg-gray-100">
                 <tr>
-                  <th className="py-3 px-4 border-y">Thumbnails</th>
-                  <th className="py-3 px-4 border-y">Title</th>
                   <th className="py-3 px-4 border-y">Category</th>
                   <th className="py-3 px-4 border-y">Created at</th>
                   <th className="py-3 px-4 border-y">Action</th>
@@ -64,18 +58,7 @@ export default function ArticlesPage() {
                     article.title.toLowerCase().includes(search.toLowerCase())
                   )
                   .map((article: Article, idx: number) => (
-                    <tr key={idx} className="hover:bg-gray-50">
-                      <td className="py-3 px-4 border-y">
-                        <Image
-                          src={article?.imageUrl || "/images/placeholder.jpeg"}
-                          alt="thumbnail"
-                          width={10}
-                          height={10}
-                          className="w-14 h-14 object-cover rounded"
-                          unoptimized={true}
-                        />
-                      </td>
-                      <td className="py-3 px-4 border-y">{article.title}</td>
+                    <tr key={idx} className="text-center hover:bg-gray-50">
                       <td className="py-3 px-4 border-y">
                         {article.category.name}
                       </td>
@@ -83,22 +66,13 @@ export default function ArticlesPage() {
                         {formatDate(article.createdAt)}
                       </td>
                       <td className="py-3 px-4  border-y">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 justify-center">
                           <Button
                             buttonType="ghost"
                             variant="primary"
                             className="underline hover:underline"
-                            onClick={() => goToDetailArticle(article.id)}
                           >
                             Preview
-                          </Button>
-                          <Button
-                            buttonType="ghost"
-                            variant="primary"
-                            className="underline hover:underline"
-                            onClick={() => goToEditArticle(article.id)}
-                          >                            
-                            Edit
                           </Button>
                           <Button
                             buttonType="ghost"

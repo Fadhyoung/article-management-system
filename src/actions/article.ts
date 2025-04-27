@@ -1,5 +1,5 @@
-import { articles } from "@/constants/dummyDatas";
-import { ArticleResponse } from "@/types/Articles";
+import { articles, Article as dummydata  } from "@/constants/dummyDatas";
+import { Article, ArticleResponse } from "@/types/Articles";
 import { CommonDataResponse } from "@/types/Common";
 import axios from "axios";
 
@@ -34,6 +34,36 @@ export default async function getArticleListAction(): Promise<
         currentPage: response.data.currentPage,
         totalData: response.data.totalData,
       },
+    };
+  } catch (error) {
+    if (process.env.NODE_ENV === "development") {
+      console.log("Server error: ", error);
+    }
+    throw error;
+  }
+}
+
+export async function getDetailArticle(id: string): Promise<
+  CommonDataResponse<Article>
+> {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`
+    );
+
+    if (response.status !== 200) {
+      console.error("Response status:", response.statusText);
+      return {
+        isSuccess: true,
+        message: "Get category successful",
+        data: dummydata,
+      };
+    }
+
+    return {
+      isSuccess: true,
+      message: "Get category successful",
+      data: response.data,
     };
   } catch (error) {
     if (process.env.NODE_ENV === "development") {

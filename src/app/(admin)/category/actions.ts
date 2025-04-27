@@ -22,6 +22,9 @@ export default async function deleteArticleAction(id: string): Promise<
         }
       );
 
+      console.log("============================================================================")
+      console.log("Response status:", response.data);
+
     if (response.status !== 200) {
       console.error("Response status:", response.statusText);
       return {

@@ -62,14 +62,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const contrastTextColors = {
-      primary: 'text-white',
+      primary: 'text-primary',
       secondary: 'text-black',
       tertiary: 'text-white',
       accent: 'text-darkBlue',
       info: 'text-sky-700',
       success: 'text-white',
       warning: 'text-black',
-      danger: 'text-white',
+      danger: 'text-red-500',
       default: 'text-black',
     };
 

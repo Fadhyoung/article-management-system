@@ -1,11 +1,11 @@
 'use client';
 
 import { useTranslations } from "next-intl";
-import { useCategory } from "@/providers/CategoryProvider";
+import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { filterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import getDetailArticle from "@/app/(user)/article/[id]/actions";
+import { getDetailArticle } from "@/actions/article";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { Article } from "@/types/Articles";
 import { useParams } from "next/navigation";
@@ -13,7 +13,7 @@ import { useArticle } from "@/providers/ArticleProvider";
 
 export const useDetailArticle = () => {
   const t = useTranslations("ListArticles");
-  const { categories, categoryOptions } = useCategory();
+  const { categories, categoryOptions } = useCategoryProvider();
 
   const [article, setArticle] = useState<Article>();
 

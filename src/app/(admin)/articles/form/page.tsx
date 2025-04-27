@@ -10,6 +10,7 @@ import Input from "@/components/Input";
 import { useArticleForm } from "@/app/(admin)/articles/form/hooks";
 import CustomSelect from "@/components/Select";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CreateArticlePage() {
   const [wordCount, setWordCount] = useState(0);
@@ -130,7 +131,7 @@ export default function CreateArticlePage() {
             control={control}
             render={({ field, fieldState }) => (
               <CustomSelect
-                name="category"
+                name="categoryId"
                 options={categoryOptions}
                 value={field.value || ""}
                 onChange={(selectedValue) => {
@@ -138,7 +139,11 @@ export default function CreateArticlePage() {
                     (category) => category.name === selectedValue
                   );
 
+                  console.log('selectedValue', selectedValue);
+
                   field.onChange(selectedCategory?.id ?? null);
+
+                  console.log('inserted value ', selectedCategory?.id);
                 }}
                 isError={!!fieldState.error}
                 errorText={fieldState.error?.message}
@@ -146,6 +151,12 @@ export default function CreateArticlePage() {
               />
             )}
           />
+          <div className="py-1 flex gap-2">          
+            <Typography type="body" variant="accent">
+              The existing category list can be seen in the category
+            </Typography>
+            <Link href={"#"} className="text-primary">menu</Link>
+          </div>
         </div>
 
         {/* Content Editor */}
