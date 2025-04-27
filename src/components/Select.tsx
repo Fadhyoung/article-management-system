@@ -16,6 +16,7 @@ interface SelectProps {
   required?: boolean;
   value?: string | number;
   onChange: (value: string | number) => void;
+  className?: string;
 }
 
 const CustomSelect = ({
@@ -27,6 +28,7 @@ const CustomSelect = ({
   required,
   value,
   onChange,
+  className,
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | number | null>(
@@ -71,8 +73,9 @@ const CustomSelect = ({
         className={clsx(
           'flex items-center justify-between',
           'border p-2 cursor-pointer bg-white rounded-md',
-          isError ? 'border-red-500' : 'border-gray-300',
-          selectedValue ? 'text-black' : 'text-gray-400'
+          isError ? 'border-red-500' : 'border-white',
+          selectedValue ? 'text-black' : 'text-gray-400',
+          className
         )}
         onClick={toggleDropdown}
       >

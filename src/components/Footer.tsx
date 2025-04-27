@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl";
 
 const Footer = () => {
 
-    const t = useTranslations("footer");
+    const t = useTranslations("Footer");
     
   return (
     <footer className="bg-indigo-700 text-white py-4">
