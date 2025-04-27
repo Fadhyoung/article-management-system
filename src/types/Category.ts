@@ -18,3 +18,7 @@ export interface filterForm {
   limit: number;
   search: string;
 }
+
+export interface CategoryForm {
+  name: string;
+}

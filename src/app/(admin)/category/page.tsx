@@ -1,15 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { useArticles } from "@/app/(admin)/articles/list-articles/hooks";
 import { Article } from "@/types/Articles";
 import { formatDate } from "@/utils/formatDate";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import { useCategory } from "@/app/(admin)/category/hooks";
+import Typography from "@/components/Typography";
+import { Controller } from "react-hook-form";
+import Input from "@/components/Input";
 
 export default function CategoryPage() {
   const [search, setSearch] = useState("");
 
-  const { articles, goToCreateArticle, handleDeleteArticle } = useArticles();
+  const {
+    t,
+    control,
+    handleSubmit,
+    articles,
+    status,
+    openModal,
+    isOpen,
+    setIsOpen,
+    handleWriteCategory,
+    setId,
+  } = useCategory();
 
   console.log("the articles is ", articles);
 
@@ -36,7 +51,7 @@ export default function CategoryPage() {
             <Button
               className="bg-blue-600 text-white py-2 px-4 rounded-lg"
               radius="md"
-              onClick={goToCreateArticle}
+              onClick={() => openModal("add")}
             >
               + Add Articles
             </Button>
@@ -71,6 +86,10 @@ export default function CategoryPage() {
                             buttonType="ghost"
                             variant="primary"
                             className="underline hover:underline"
+                            onClick={() => {
+                              openModal("edit");
+                              setId("s");
+                            }}
                           >
                             Edit
                           </Button>
@@ -78,7 +97,7 @@ export default function CategoryPage() {
                             buttonType="ghost"
                             variant="danger"
                             className=" hover:underline"
-                            onClick={() => handleDeleteArticle(article.id)}
+                            onClick={() => openModal("delete")}
                           >
                             Delete
                           </Button>
@@ -105,6 +124,65 @@ export default function CategoryPage() {
           </div>
         </div>
       </main>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        body={
+          <>
+            <form
+              onSubmit={handleSubmit(handleWriteCategory)}
+              className="flex flex-col gap-5"
+            >
+              <Typography type="subtitle">
+                {status?.isAdd
+                  ? "Add Category"
+                  : status?.isEdit
+                  ? "Edit Category"
+                  : "Delete Category"}
+              </Typography>
+              <div>
+                <Controller
+                  name="name"
+                  defaultValue=""
+                  control={control}
+                  rules={{
+                    required: t("nameRequired"),
+                  }}
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      label={t("name")}
+                      placeholder={t("namePlaceholder")}
+                      isError={!!fieldState.error}
+                      errorText={fieldState.error?.message}
+                      variant="primary"
+                      size="md"
+                      radius="md"
+                      required
+                    />
+                  )}
+                />
+              </div>
+              <div className="w-fit flex gap-5 self-end">
+                <button
+                  type="button"
+                  className="border py-2 px-4 rounded-lg hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <Button
+                  variant={status?.isDelete ? 'danger' : 'primary'}
+                  radius="md"
+                  type="submit"
+                  className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                >
+                  {status?.isAdd ? 'Add' : status?.isEdit ? 'Edit' : 'Delete'}
+                </Button>
+              </div>
+            </form>
+          </>
+        }
+      />
     </>
   );
 }
