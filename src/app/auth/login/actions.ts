@@ -11,7 +11,7 @@ export async function loginAction(
 ): Promise<CommonDataResponse<Profile | null>> {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+      `${process.env.API_BASE_URL}/auth/login`,
       {
         username: loginRequest.username,
         password: loginRequest.password,
@@ -35,7 +35,7 @@ export async function loginAction(
 
     try {
       const response_get_profile = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/profile`,
+        `${process.env.API_BASE_URL}/auth/profile`,
         {
           headers: {
             "Content-Type": "application/json",
