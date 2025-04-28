@@ -74,7 +74,6 @@ export const useArticleForm = () => {
       const selectedCategory = categoryOptions.find(
         (option) => option.label === article.category.name
       );
-      console.log("category label: " ,selectedCategory?.label);
       reset({
         title: article.title || "",
         categoryId: selectedCategory?.label ?? undefined,
