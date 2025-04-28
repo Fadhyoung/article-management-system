@@ -46,7 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({ className, imageUrl }) => {
   return (
     <div
       className={clsx(
-        "w-full py-5 px-40 fixed top-0 z-50 hidden md:flex justify-between items-center border-b bg-white",
+        "w-full py-5 px-10 md:px-40 fixed left-0 top-0 z-50 flex justify-between items-center border-b bg-white",
         className
       )}
     >
