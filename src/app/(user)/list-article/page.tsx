@@ -11,9 +11,15 @@ import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import { debounce } from "lodash";
 import { formatDate } from "@/utils/formatDate";
+import { truncateContent } from "@/utils/truncateText";
+import Button from "@/components/Button";
+import { useRef, useState } from "react";
 
 export default function HomeComponent() {
-  const { t, control, categories, categoryOptions, articles } = useListArticle();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { t, control, categories, categoryOptions, articles } =
+    useListArticle();
 
   const handleChangeCategory = (category: Category | undefined) => {
     console.log("User selected category:", category);
@@ -22,6 +28,18 @@ export default function HomeComponent() {
   const handleSearch = debounce((search: string) => {
     console.log("User selected category:", search);
   }, 300);
+
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  
+  // Toggle modal visibility
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+  const handleButtonClick = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+    }
+    toggleModal();
+  };
 
   return (
     <>
@@ -42,12 +60,27 @@ export default function HomeComponent() {
               height={150}
               className="bg-transparent"
             />
-            <div className="flex items-center">
+            <Button ref={buttonRef} className="flex items-center" onClick={handleButtonClick}>
               <div className="bg-white bg-opacity-20 rounded-full p-1 mr-2">
                 <User size={16} className="text-white" />
               </div>
               <span className="text-sm">James Clark</span>
-            </div>
+            </Button>
+
+            {/* Modal */}
+            {isModalOpen && (
+              <div
+                className="absolute top-0 bg-white shadow-md rounded-lg p-5"
+              >
+                <p className="text-sm">Profile Settings</p>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-blue-500"
+                >
+                  Close
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
@@ -60,29 +93,29 @@ export default function HomeComponent() {
 
           <div className="max-w-2xl mx-auto p-3 flex flex-col md:flex-row gap-4 justify-center items-center bg-secondary rounded-md">
             <div className="flex-1 w-full">
-                <Controller
-                  name="category"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <CustomSelect
-                      name="category"
-                      options={categoryOptions}
-                      value={field.value || ""}
-                      onChange={(selectedValue) => {
-                        const selectedCategory = categories?.data.find(
-                          (category) => category.name === selectedValue
-                        );
+              <Controller
+                name="category"
+                control={control}
+                render={({ field, fieldState }) => (
+                  <CustomSelect
+                    name="category"
+                    options={categoryOptions}
+                    value={field.value || ""}
+                    onChange={(selectedValue) => {
+                      const selectedCategory = categories?.data.find(
+                        (category) => category.name === selectedValue
+                      );
 
-                        field.onChange(selectedCategory ?? null);
+                      field.onChange(selectedCategory ?? null);
 
-                        handleChangeCategory?.(selectedCategory);
-                      }}
-                      isError={!!fieldState.error}
-                      errorText={fieldState.error?.message}
-                      className="w-full md:w-fit bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
-                    />
-                  )}
-                />
+                      handleChangeCategory?.(selectedCategory);
+                    }}
+                    isError={!!fieldState.error}
+                    errorText={fieldState.error?.message}
+                    className="w-full md:w-fit bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
+                  />
+                )}
+              />
             </div>
             <div className="flex-1">
               <div className="w-full md:w-96 bg-white rounded-md flex items-center px-3 py-2">
@@ -125,10 +158,7 @@ export default function HomeComponent() {
           {/* Blog posts grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
             {articles?.map((article) => (
-              <article
-                key={article.id}
-                className="rounded-lg overflow-hidden"
-              >
+              <article key={article.id} className="rounded-lg overflow-hidden">
                 <Link href={`/article/${article.id}`} className="block">
                   <div className="relative h-48 border rounded-2xl overflow-hidden">
                     <Image
@@ -140,7 +170,9 @@ export default function HomeComponent() {
                   </div>
                 </Link>
                 <div className="p-4">
-                  <div className="text-xs text-gray-500 mb-2">{formatDate(article.updatedAt)}</div>
+                  <div className="text-xs text-gray-500 mb-2">
+                    {formatDate(article.updatedAt)}
+                  </div>
                   <h3 className="font-bold text-lg mb-2">
                     <Link
                       href={"#"}
@@ -149,13 +181,13 @@ export default function HomeComponent() {
                       {article.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-gray-600 mb-3">{article.content}</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {truncateContent(article.content, 15)}
+                  </p>
                   <div className="flex flex-wrap gap-2">
-                      <span
-                        className='text-xs px-3 py-2 rounded-full bg-tertiary'
-                      >
-                        {article.category.name}
-                      </span>
+                    <span className="text-xs px-3 py-2 rounded-full bg-tertiary">
+                      {article.category.name}
+                    </span>
                   </div>
                 </div>
               </article>

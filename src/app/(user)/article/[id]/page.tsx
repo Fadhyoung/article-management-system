@@ -6,6 +6,8 @@ import { useDetailArticle } from "@/app/(user)/article/[id]/hooks";
 import Image from "next/image";
 import Link from "next/link";
 import { useProfile } from "@/providers/ProfileProvider";
+import { truncateContent } from "@/utils/truncateText";
+import { User } from "lucide-react";
 
 export default function HomeComponent() {
   const { article, articles } = useDetailArticle();
@@ -14,14 +16,34 @@ export default function HomeComponent() {
 
   return (
     <div className="w-5/6 mx-auto flex flex-col gap-1 items-center justify-center text-left">
+
+      {/* NAVBAR */}
+      <div className="w-full px-40 py-10 fixed top-0 hidden md:flex justify-between items-center border-b bg-white">
+        <Image
+          src={"/images/img_icon.png"}
+          alt="logo"
+          width={150}
+          height={150}
+          className="bg-transparent"
+        />
+        <div className="flex items-center">
+          <div className="bg-white bg-opacity-20 rounded-full p-1 mr-2">
+            <User size={16} className="text-white" />
+          </div>
+          <span className="text-sm">James Clark</span>
+        </div>
+      </div>
+
       {/* DETAIL ARTICLE */}
-      <div className="flex flex-col gap-4 items-center justify-center py-8">
-        <Typography type="subtitle" variant="accent">{formatDate(article?.createdAt || "")}</Typography>
+      <div className="mt-32 flex flex-col gap-4 items-center justify-center py-8">
+        <Typography type="subtitle" variant="accent">
+          {formatDate(article?.createdAt || "")}
+        </Typography>
         <Typography type="display">{article?.title}</Typography>
       </div>
 
       <div className="w-full flex flex-col gap-10 items-center justify-center text-left">
-        <Image 
+        <Image
           src={article?.imageUrl || "/images/header_bg.jpeg"}
           alt="Article Image"
           height={200}
@@ -29,7 +51,12 @@ export default function HomeComponent() {
           className="w-full h-96 object-cover rounded-2xl"
           unoptimized
         />
-        <Typography type="body" variant="accent" weight="300" className="w-full text-left">
+        <Typography
+          type="body"
+          variant="accent"
+          weight="300"
+          className="w-full text-left"
+        >
           {article?.content}
         </Typography>
       </div>
@@ -44,10 +71,7 @@ export default function HomeComponent() {
           {/* Blog posts grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 md:gap-16">
             {articles?.map((article) => (
-              <article
-                key={article.id}
-                className="rounded-lg overflow-hidden"
-              >
+              <article key={article.id} className="rounded-lg overflow-hidden">
                 <Link href={`/article/${article.id}`} className="block">
                   <div className="relative h-48 border rounded-2xl overflow-hidden">
                     <Image
@@ -59,7 +83,9 @@ export default function HomeComponent() {
                   </div>
                 </Link>
                 <div className="p-4">
-                  <div className="text-xs text-gray-500 mb-2">{formatDate(article.updatedAt)}</div>
+                  <div className="text-xs text-gray-500 mb-2">
+                    {formatDate(article.updatedAt)}
+                  </div>
                   <h3 className="font-bold text-lg mb-2">
                     <Link
                       href={"#"}
@@ -68,38 +94,17 @@ export default function HomeComponent() {
                       {article.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-gray-600 mb-3">{article.content}</p>
+                  <p className="text-sm text-gray-600 mb-3">
+                    {truncateContent(article.content, 10)}
+                  </p>
                   <div className="flex flex-wrap gap-2">
-                      <span
-                        className='text-xs px-3 py-2 rounded-full bg-tertiary'
-                      >
-                        {article.category.name}
-                      </span>
+                    <span className="text-xs px-3 py-2 rounded-full bg-tertiary">
+                      {article.category.name}
+                    </span>
                   </div>
                 </div>
               </article>
             ))}
-          </div>
-
-          {/* Pagination */}
-          <div className="flex justify-center mt-10">
-            <nav className="flex items-center gap-1">
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
-                Previous
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm bg-indigo-600 text-white">
-                1
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
-                2
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
-                3
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
-                Next
-              </button>
-            </nav>
           </div>
         </div>
       </main>
