@@ -1,14 +1,14 @@
 'use server'
 
-import { articles } from "@/constants/dummyDatas";
-import { ArticleForm, ArticleResponse } from "@/types/Articles";
+import { Article as dummyData } from "@/constants/dummyDatas";
+import { Article, ArticleForm } from "@/types/Articles";
 import { CommonDataResponse } from "@/types/Common";
 import axios from "axios";
 import { cookies } from "next/headers";
 
 
 export default async function postArticleAction(form: ArticleForm): Promise<
-  CommonDataResponse<ArticleResponse>
+  CommonDataResponse<Article>
 > {
   try {
     const cookieStore = await cookies();
@@ -35,24 +35,14 @@ export default async function postArticleAction(form: ArticleForm): Promise<
       return {
         isSuccess: true,
         message: "Get category successful",
-        data: {
-          data: articles.data,
-          totalPages: response.data.totalPages,
-          currentPage: response.data.currentPage,
-          totalData: response.data.totalData,
-        },
+        data: response.data.data
       };
     }
 
     return {
       isSuccess: true,
       message: "Get category successful",
-      data: {
-        data: response.data.data,
-        totalPages: response.data.totalPages,
-        currentPage: response.data.currentPage,
-        totalData: response.data.totalData,
-      },
+      data: response.data.data
     };
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
@@ -63,7 +53,7 @@ export default async function postArticleAction(form: ArticleForm): Promise<
 }
 
 export async function putArticleAction(form: ArticleForm, id: string): Promise<
-  CommonDataResponse<ArticleResponse>
+  CommonDataResponse<Article>
 > {
   try {
     const cookieStore = await cookies();
@@ -90,24 +80,14 @@ export async function putArticleAction(form: ArticleForm, id: string): Promise<
       return {
         isSuccess: true,
         message: "Get category successful",
-        data: {
-          data: articles.data,
-          totalPages: response.data.totalPages,
-          currentPage: response.data.currentPage,
-          totalData: response.data.totalData,
-        },
+        data: dummyData
       };
     }
 
     return {
       isSuccess: true,
       message: "Get category successful",
-      data: {
-        data: response.data.data,
-        totalPages: response.data.totalPages,
-        currentPage: response.data.currentPage,
-        totalData: response.data.totalData,
-      },
+      data: response.data.data
     };
   } catch (error) {
     if (process.env.NODE_ENV === "development") {
