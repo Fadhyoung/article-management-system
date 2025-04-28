@@ -23,11 +23,9 @@ export const useListArticle = () => {
 
   const handlePageClick = async (page: number) => {
     try {
-      // Call the action with the updated page number and the current items per page (pagination.dataPerPage)
       const response = await getArticleListAction(page, pagination.dataPerPage);
 
       if (response.isSuccess) {
-        // Update the state with the new articles and pagination info
         setArticles(response.data.data);
         setPagination({
           ...pagination,
@@ -35,7 +33,7 @@ export const useListArticle = () => {
           totalData: response.data.totalData,
           totalPages: Math.ceil(
             response.data.totalData / pagination.dataPerPage
-          ), // Calculate total pages
+          ),
         });
       } else {
         showNotification({
@@ -56,8 +54,6 @@ export const useListArticle = () => {
   const handlePrevious = async () => {
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
-  
-      // Call the action to fetch articles for the previous page
       const response = await getArticleListAction(newPage, pagination.dataPerPage);
   
       if (response.isSuccess) {
@@ -82,7 +78,6 @@ export const useListArticle = () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
   
-      // Call the action to fetch articles for the next page
       const response = await getArticleListAction(newPage, pagination.dataPerPage);
   
       if (response.isSuccess) {

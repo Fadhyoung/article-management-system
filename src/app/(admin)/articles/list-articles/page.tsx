@@ -10,7 +10,21 @@ import Button from "@/components/Button";
 export default function ArticlesPage() {
   const [search, setSearch] = useState("");
 
-  const { articles, goToCreateArticle, goToDetailArticle, handleDeleteArticle, goToEditArticle } = useArticles();
+  const {
+    pagination,
+
+    articles,
+    goToCreateArticle,
+    goToDetailArticle,
+    handleDeleteArticle,
+    goToEditArticle,
+
+    handlePageClick,
+    handleNext,
+    handlePrevious,
+  } = useArticles();
+
+  const { currentPage, totalPages } = pagination;
 
   return (
     <>
@@ -97,7 +111,7 @@ export default function ArticlesPage() {
                             variant="primary"
                             className="underline hover:underline"
                             onClick={() => goToEditArticle(article.id)}
-                          >                            
+                          >
                             Edit
                           </Button>
                           <Button
@@ -117,18 +131,42 @@ export default function ArticlesPage() {
           </div>
 
           {/* Pagination */}
-          <div className="p-6 flex justify-center mt-6 space-x-4">
-            <button className="px-4 py-2 border rounded hover:bg-gray-100">
-              Previous
-            </button>
-            <button className="px-4 py-2 border rounded bg-gray-200">1</button>
-            <button className="px-4 py-2 border rounded hover:bg-gray-100">
-              2
-            </button>
-            <button className="px-4 py-2 border rounded hover:bg-gray-100">
-              Next
-            </button>
+          <div className="flex justify-center m-10">
+            <nav className="flex items-center gap-1">
+              <button
+                onClick={handlePrevious}
+                disabled={currentPage === 1}
+                className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Previous
+              </button>
+
+              {Array.from({ length: totalPages ?? 0 }, (_, i) => i + 1).map(
+                (page: number) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageClick(page)}
+                    className={`px-3 py-1 border border-gray-300 rounded text-sm ${
+                      page === pagination.currentPage
+                        ? "bg-indigo-600 text-white"
+                        : "text-gray-500 hover:bg-gray-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            </nav>
           </div>
+          
         </div>
       </main>
     </>

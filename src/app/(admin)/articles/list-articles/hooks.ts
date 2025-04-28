@@ -10,13 +10,15 @@ import { APP_ARTICLE, APP_ARTICLE_FORM } from "@/constants";
 import deleteArticleAction from "@/app/(admin)/articles/list-articles/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useEffect } from "react";
+import getArticleListAction from "@/actions/article";
 
 export const useArticles = () => {
   const t = useTranslations("ListArticles");
   const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
   const { showNotification } = useNotificationProvider();
-  const { articles, getArticles } = useArticle();
+  const { pagination, setPagination, setArticles, articles, getArticles } =
+    useArticle();
 
   const { control } = useForm<filterForm>();
 
@@ -42,6 +44,93 @@ export const useArticles = () => {
     }
   };
 
+  const handlePageClick = async (page: number) => {
+    try {
+      const response = await getArticleListAction(page, pagination.dataPerPage);
+
+      if (response.isSuccess) {
+        setArticles(response.data.data);
+        setPagination({
+          ...pagination,
+          currentPage: page,
+          totalData: response.data.totalData,
+          totalPages: Math.ceil(
+            response.data.totalData / pagination.dataPerPage
+          ),
+        });
+      } else {
+        showNotification({
+          type: "error",
+          message: response.message,
+          mode: "toast",
+        });
+      }
+    } catch (error) {
+      showNotification({
+        type: "error",
+        message: (error as Error).message,
+        mode: "toast",
+      });
+    }
+  };
+
+  const handlePrevious = async () => {
+    if (pagination.currentPage > 1) {
+      const newPage = pagination.currentPage - 1;
+      const response = await getArticleListAction(
+        newPage,
+        pagination.dataPerPage
+      );
+
+      if (response.isSuccess) {
+        setArticles(response.data.data);
+        setPagination({
+          ...pagination,
+          currentPage: newPage,
+          totalData: response.data.totalData,
+          totalPages: Math.ceil(
+            response.data.totalData / pagination.dataPerPage
+          ),
+        });
+      } else {
+        showNotification({
+          type: "error",
+          message: response.message,
+          mode: "toast",
+        });
+      }
+    }
+  };
+
+  const handleNext = async () => {
+    if (pagination.currentPage < (pagination.totalPages ?? 0)) {
+      const newPage = pagination.currentPage + 1;
+
+      const response = await getArticleListAction(
+        newPage,
+        pagination.dataPerPage
+      );
+
+      if (response.isSuccess) {
+        setArticles(response.data.data);
+        setPagination({
+          ...pagination,
+          currentPage: newPage,
+          totalData: response.data.totalData,
+          totalPages: Math.ceil(
+            response.data.totalData / pagination.dataPerPage
+          ),
+        });
+      } else {
+        showNotification({
+          type: "error",
+          message: response.message,
+          mode: "toast",
+        });
+      }
+    }
+  };
+
   const goToCreateArticle = () => {
     router.push(APP_ARTICLE_FORM);
   };
@@ -59,6 +148,8 @@ export const useArticles = () => {
   }, []);
 
   return {
+    pagination,
+    
     t,
     control,
     categories,
@@ -68,5 +159,9 @@ export const useArticles = () => {
     handleDeleteArticle,
     goToDetailArticle,
     goToEditArticle,
+
+    handlePageClick,
+    handlePrevious,
+    handleNext,
   };
 };

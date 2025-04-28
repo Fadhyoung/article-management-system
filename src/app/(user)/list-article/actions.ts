@@ -4,12 +4,17 @@ import { CategoryResponse } from "@/types/Category";
 import { CommonDataResponse } from "@/types/Common";
 import axios from "axios";
 
-export async function getCategoryAction(): Promise<
+export async function getCategoryAction(page? : number, limit?: number): Promise<
   CommonDataResponse<CategoryResponse>
 > {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories`, {
+        params: {
+          page,
+          limit,
+        },
+      }
     );
 
     if (response.status !== 200) {

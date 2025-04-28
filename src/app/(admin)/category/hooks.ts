@@ -9,7 +9,11 @@ import { APP_ARTICLE_FORM, APP_CATEGORY } from "@/constants";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useState } from "react";
 import { useModalProvider } from "@/providers/ModalProvider";
-import postCategoryAction, { deleteCategoryAction, editCategoryAction } from "@/app/(admin)/category/actions";
+import postCategoryAction, {
+  deleteCategoryAction,
+  editCategoryAction,
+} from "@/app/(admin)/category/actions";
+import { getCategoryAction } from "@/app/(user)/list-article/actions";
 
 interface status {
   isAdd: boolean;
@@ -21,13 +25,13 @@ export const useCategory = () => {
   const t = useTranslations("ListCategory");
   const router = useRouter();
 
-  const { categories, categoryOptions, getCategory } = useCategoryProvider();
+  const { pagination, setPagination, categories, categoryOptions, setCategories, getCategory } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
   const { isOpen, setIsOpen } = useModalProvider();
 
   const { control, handleSubmit, reset } = useForm<CategoryForm>();
   const [status, setStatus] = useState<status>();
-  const [id, setId] = useState<string>('');
+  const [id, setId] = useState<string>("");
 
   const handleWriteCategory = async (form: CategoryForm) => {
     try {
@@ -42,7 +46,7 @@ export const useCategory = () => {
       if (response.isSuccess) {
         getCategory();
         handleCloseModal();
-        router.push(APP_CATEGORY);        
+        router.push(APP_CATEGORY);
       } else {
         showNotification({
           type: "error",
@@ -70,6 +74,93 @@ export const useCategory = () => {
     }
   };
 
+  const handlePageClick = async (page: number) => {
+    try {
+      const response = await getCategoryAction(page);
+
+      if (response.isSuccess) {
+        setCategories(response.data);
+        setPagination({
+          ...pagination,
+          currentPage: page,
+          totalData: response.data.totalData,
+          totalPages: Math.ceil(
+            response.data.totalData / pagination.dataPerPage
+          ),
+        });
+      } else {
+        showNotification({
+          type: "error",
+          message: response.message,
+          mode: "toast",
+        });
+      }
+    } catch (error) {
+      showNotification({
+        type: "error",
+        message: (error as Error).message,
+        mode: "toast",
+      });
+    }
+  };
+
+  const handlePrevious = async () => {
+    if (pagination.currentPage > 1) {
+      const newPage = pagination.currentPage - 1;
+      const response = await getCategoryAction(
+        newPage,
+        pagination.dataPerPage
+      );
+
+      if (response.isSuccess) {
+        setCategories(response.data);
+        setPagination({
+          ...pagination,
+          currentPage: newPage,
+          totalData: response.data.totalData,
+          totalPages: Math.ceil(
+            response.data.totalData / pagination.dataPerPage
+          ),
+        });
+      } else {
+        showNotification({
+          type: "error",
+          message: response.message,
+          mode: "toast",
+        });
+      }
+    }
+  };
+
+  const handleNext = async () => {
+    if (pagination.currentPage < (pagination.totalPages ?? 0)) {
+      const newPage = pagination.currentPage + 1;
+
+      const response = await getCategoryAction(
+        newPage,
+        pagination.dataPerPage
+      );
+
+      if (response.isSuccess) {
+        setCategories(response.data);
+        setPagination({
+          ...pagination,
+          currentPage: newPage,
+          totalData: response.data.totalData,
+          totalPages: Math.ceil(
+            response.data.totalData / pagination.dataPerPage
+          ),
+        });
+      } else {
+        showNotification({
+          type: "error",
+          message: response.message,
+          mode: "toast",
+        });
+      }
+    }
+  };
+
   const goToCreateArticle = () => {
     router.push(APP_ARTICLE_FORM);
   };
@@ -77,7 +168,7 @@ export const useCategory = () => {
   const handleCloseModal = () => {
     setIsOpen(false);
     setStatus(undefined);
-    setId('');
+    setId("");
     reset();
   };
 
@@ -97,5 +188,10 @@ export const useCategory = () => {
     goToCreateArticle,
     handleWriteCategory,
     handleCloseModal,
+
+    pagination,
+    handlePageClick,
+    handleNext,
+    handlePrevious,
   };
 };

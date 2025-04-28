@@ -52,7 +52,7 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getArticles = async () => {
     try {
-      const response = await getArticleListAction(1, 5);
+      const response = await getArticleListAction(1, 6);
       if (response.isSuccess) {
         setArticles(response.data.data);    
         setPagination({
