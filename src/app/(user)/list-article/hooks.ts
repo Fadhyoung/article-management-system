@@ -29,6 +29,7 @@ export const useListArticle = () => {
 
   return {
     t,
+    router,
     control,
     categories,
     categoryOptions,

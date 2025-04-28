@@ -1,7 +1,7 @@
 "use client";
 
 import ProfileComponent from "@/components/ProfileComponent";
-import { APP_ARTICLE_LIST_ARTICLE, APP_PROFILE } from "@/constants";
+import { APP_ARTICLE_LIST_ARTICLE } from "@/constants";
 import { Profile } from "@/types/User";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

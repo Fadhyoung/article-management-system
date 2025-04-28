@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { BodyHeader } from "@/app/(admin)/components/bodyHeared";
 import Modal from "@/components/Modal";
-import { useModalProvider } from "@/providers/ModalProvider";
 import Typography from "@/components/Typography";
 import Button from "@/components/Button";
 import { useRouter } from "next/navigation";

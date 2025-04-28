@@ -14,14 +14,12 @@ import { useForm } from "react-hook-form";
 import { LoginForm } from "@/types/Auth";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useState } from "react";
-import { useProfile } from "@/providers/ProfileProvider";
 
 export const useLogin = () => {
   const t = useTranslations("Login");
   const router = useRouter();
 
   const { showNotification } = useNotificationProvider();
-  const { setProfile } = useProfile();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);

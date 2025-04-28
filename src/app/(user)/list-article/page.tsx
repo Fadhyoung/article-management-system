@@ -1,7 +1,7 @@
 "use client";
 
 import Typography from "@/components/Typography";
-import { Search, User } from "lucide-react";
+import { LogOut, Search, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useListArticle } from "@/app/(user)/list-article/hooks";
@@ -13,12 +13,14 @@ import { debounce } from "lodash";
 import { formatDate } from "@/utils/formatDate";
 import { truncateContent } from "@/utils/truncateText";
 import Button from "@/components/Button";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { logoutAction } from "@/actions/Auth";
+import { APP_LOGIN } from "@/constants";
 
 export default function HomeComponent() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { t, control, categories, categoryOptions, articles } =
+  const { t, router,  control, categories, categoryOptions, articles } =
     useListArticle();
 
   const handleChangeCategory = (category: Category | undefined) => {
@@ -29,30 +31,31 @@ export default function HomeComponent() {
     console.log("User selected category:", search);
   }, 300);
 
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
-  
-  // Toggle modal visibility
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
-
-  const handleButtonClick = () => {
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-    }
-    toggleModal();
-  };
+  const handleLogout = async () => {
+      try {
+        const response = await logoutAction();
+        if (response.isSuccess) {
+          router.push(APP_LOGIN)
+        } else {
+          console.error("Logout failed:", response.message);
+        }
+      } catch (error) {
+        console.error("Error during logout:", error);
+      }
+    };
 
   return (
     <>
       {/* Header with gradient background */}
       <header
-        className="text-white bg-cover bg-center"
+        className="bg-cover bg-center"
         style={{
           backgroundImage: "url('/images/header_bg.jpeg')",
         }}
       >
         <div className="px-4 py-12 flex flex-col gap-10 justify-center items-center bg-primary/85">
           {/* NAVBAR */}
-          <div className="w-full px-40 my-10 hidden md:flex justify-between items-center">
+          <div className="relative w-full px-40 my-10 hidden md:flex justify-between items-center">
             <Image
               src={"/images/img_icon_white.png"}
               alt="logo"
@@ -60,7 +63,7 @@ export default function HomeComponent() {
               height={150}
               className="bg-transparent"
             />
-            <Button ref={buttonRef} className="flex items-center" onClick={handleButtonClick}>
+            <Button className="flex items-center" onClick={() => setIsDropdownOpen((prev) => !prev)}>
               <div className="bg-white bg-opacity-20 rounded-full p-1 mr-2">
                 <User size={16} className="text-white" />
               </div>
@@ -68,25 +71,30 @@ export default function HomeComponent() {
             </Button>
 
             {/* Modal */}
-            {isModalOpen && (
-              <div
-                className="absolute top-0 bg-white shadow-md rounded-lg p-5"
+            {isDropdownOpen && (
+            <div className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50">
+              <Link
+                href="/profile"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
               >
-                <p className="text-sm">Profile Settings</p>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="text-blue-500"
-                >
-                  Close
-                </button>
-              </div>
-            )}
+                My Account
+              </Link>
+              <Button
+                variant="danger"
+                buttonType="ghost"
+                onClick={handleLogout}
+              >
+                <LogOut />
+                Logout
+              </Button>
+            </div>
+          )}
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
-            <Typography type="subtitle">{t("blogGenzet")}</Typography>
-            <Typography type="display">{t("title")}</Typography>
-            <Typography type="cardtitle" weight="300">
+            <Typography variant="white" type="subtitle">{t("blogGenzet")}</Typography>
+            <Typography variant="white" type="display">{t("title")}</Typography>
+            <Typography variant="white" type="cardtitle" weight="300">
               {t("subTitle")}
             </Typography>
           </div>

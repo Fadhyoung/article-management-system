@@ -9,7 +9,6 @@ import { Profile } from "@/types/User";
 export async function loginAction(
   loginRequest: LoginForm
 ): Promise<CommonDataResponse<Profile | null>> {
-  console.log("Login request:", loginRequest);
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
@@ -25,9 +24,6 @@ export async function loginAction(
     );
 
     const result = response;
-    console.log("=================================================");
-    console.log("Login result:", result);
-    console.log("the token result:", result.data.token);
 
     if (!result) {
       return {
@@ -50,6 +46,14 @@ export async function loginAction(
 
       const cookieStore = await cookies();
       cookieStore.set("token", result.data.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24,
+      });
+
+      cookieStore.set("user_role", result.data.role, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         path: "/",

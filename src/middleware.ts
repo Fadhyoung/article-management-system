@@ -40,33 +40,18 @@ export function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get('token')?.value;
+  const userRole = request.cookies.get('user_role')?.value;
   const pathname = request.nextUrl.pathname;
 
   if (!token && !isPublicRoute(pathname)) {
     return NextResponse.redirect(new URL(APP_LOGIN, request.url));
   }
 
-  if (token) {
-    const userRole = getUserRoleFromLocalStorage();
-
-    if (isRestrictedRoute(pathname) && userRole !== 'Admin') {
-      return NextResponse.redirect(new URL(APP_LIST_ARTICLE, request.url));
-    }
+  if (userRole && isRestrictedRoute(pathname) && userRole !== 'Admin') {
+    return NextResponse.redirect(new URL(APP_LIST_ARTICLE, request.url));
   }
 
   return NextResponse.next();
-}
-
-function getUserRoleFromLocalStorage(): string | null {
-  if (typeof window !== 'undefined') {
-    const userData = localStorage.getItem('profile');
-    console.log("usedata is ", userData);
-    if (userData) {
-      const parsedUser = JSON.parse(userData);
-      return parsedUser.role || null;
-    }
-  }
-  return null;
 }
 
 export const config = {
