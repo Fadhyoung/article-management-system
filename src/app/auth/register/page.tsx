@@ -12,14 +12,14 @@ import { useState } from "react";
 import { useRegister } from "@/app/auth/register/hooks";
 
 export default function RegisterPage() {
-  const { control, errors, handleSubmit, handleSubmitLogin, t } = useRegister();
+  const { control, errors, handleSubmit, handleSubmitRegister, t } = useRegister();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return (
     <form
-      onSubmit={handleSubmit(handleSubmitLogin)}
+      onSubmit={handleSubmit(handleSubmitRegister)}
       className="w-full space-y-4 flex flex-col justify-center"
     >
       <div>

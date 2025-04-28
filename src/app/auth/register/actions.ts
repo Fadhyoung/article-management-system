@@ -25,8 +25,7 @@ export async function registerAction(
     );
 
     const result = response;
-    console.log('=================================================')
-    console.log('Login result:', result);
+
 
     if (!result) {
       return {

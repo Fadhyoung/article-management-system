@@ -4,7 +4,6 @@ import { SubmitHandler } from "react-hook-form";
 import { registerAction } from "@/app/auth/register/actions";
 import { useTranslations } from "next-intl";
 import {
-  APP_FORGOT_PASSWORD,
   APP_LIST_ARTICLE,
   ERR_INVALID_EMAIL_OR_PASSWORD,
 } from "@/constants";
@@ -25,7 +24,7 @@ export const useRegister = () => {
     formState: { errors },
   } = useForm<RegisterForm>();
 
-  const handleSubmitLogin: SubmitHandler<RegisterForm> = async (form) => {
+  const handleSubmitRegister: SubmitHandler<RegisterForm> = async (form) => {
     try {
       const response = await registerAction(form);
       if (response.isSuccess && response.data) {
@@ -49,16 +48,11 @@ export const useRegister = () => {
     }
   };
 
-  const goToForgotPasswordPage = () => {
-    router.push(APP_FORGOT_PASSWORD);
-  };
-
   return {
     t,
     control,
     errors,
-    handleSubmitLogin,
+    handleSubmitRegister,
     handleSubmit,
-    goToForgotPasswordPage,
   };
 };
