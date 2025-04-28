@@ -12,7 +12,7 @@ export default async function deleteArticleAction(id: string): Promise<
     const token = cookieStore.get('token')?.value;
 
     const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
+        `${process.env.API_BASE_URL}/articles/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

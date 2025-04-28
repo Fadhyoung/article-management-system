@@ -31,6 +31,13 @@ export const useArticles = () => {
           mode: "modal",
           message: response.message,
         });
+      } else {
+        setFilter({
+          category: '',
+          limit: 9,
+          page: 1,
+          search: ''
+        })
       }
     } catch (error) {
       console.error("Error deleting article:", error);

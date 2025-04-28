@@ -16,7 +16,7 @@ export default async function postArticleAction(form: ArticleForm): Promise<
     const token = cookieStore.get('token')?.value;
 
     const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,
+        `${process.env.API_BASE_URL}/articles`,
         {
           title: form.title,
           content: form.content,
@@ -61,7 +61,7 @@ export async function putArticleAction(form: ArticleForm, id: string): Promise<
     const token = cookieStore.get('token')?.value;
 
     const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`,
+        `${process.env.API_BASE_URL}/articles/${id}`,
         {
           title: form.title,
           content: form.content,

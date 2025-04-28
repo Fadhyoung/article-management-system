@@ -9,7 +9,7 @@ export async function getCategoryAction(page? : number, limit?: number): Promise
 > {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories`, {
+      `${process.env.API_BASE_URL}/categories`, {
         params: {
           page,
           limit,

@@ -11,7 +11,7 @@ export async function registerAction(
     console.log('Login request:', registerRequest);
 
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`,
+      `${process.env.API_BASE_URL}/auth/register`,
       {
         username: registerRequest.username,
         password: registerRequest.password,

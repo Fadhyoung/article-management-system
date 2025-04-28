@@ -13,7 +13,7 @@ export default async function postCategoryAction(form: CategoryForm): Promise<
     const token = cookieStore.get('token')?.value;
 
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories`,
+      `${process.env.API_BASE_URL}/categories`,
       {
         name: form.name,
       },
@@ -25,9 +25,6 @@ export default async function postCategoryAction(form: CategoryForm): Promise<
         },
       }
     );
-
-      console.log("============================================================================")
-      console.log("Response status:", response.data);
 
     if (response.status !== 200) {
       console.error("Response status:", response.statusText);
@@ -57,7 +54,7 @@ export async function editCategoryAction(form: CategoryForm, id: string): Promis
     const token = cookieStore.get('token')?.value;
 
     const response = await axios.put(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories/${id}`,
+      `${process.env.API_BASE_URL}/categories/${id}`,
       {
         name: form.name,
       },
@@ -69,9 +66,6 @@ export async function editCategoryAction(form: CategoryForm, id: string): Promis
         },
       }
     );
-
-      console.log("============================================================================")
-      console.log("Response status:", response.data);
 
     if (response.status !== 200) {
       console.error("Response status:", response.statusText);
@@ -101,7 +95,7 @@ export async function deleteCategoryAction(id: string): Promise<
     const token = cookieStore.get('token')?.value;
 
     const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/categories/${id}`,
+        `${process.env.API_BASE_URL}/categories/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

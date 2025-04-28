@@ -10,7 +10,7 @@ export default async function getArticleListAction(page?: number, limit?:number,
 > {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,{
+      `${process.env.API_BASE_URL}/articles`,{
         params: {
           page,
           limit,
@@ -60,7 +60,7 @@ export async function getDetailArticle(id: string): Promise<
 > {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles/${id}`
+      `${process.env.API_BASE_URL}/articles/${id}`
     );
 
     if (response.status !== 200) {

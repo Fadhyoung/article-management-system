@@ -1,7 +1,6 @@
 "use client";
 
 import Typography from "@/components/Typography";
-import { LogOut, Search, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useListArticle } from "@/app/(user)/list-article/hooks";
@@ -10,14 +9,10 @@ import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import { formatDate } from "@/utils/formatDate";
 import { truncateContent } from "@/utils/truncateText";
-import Button from "@/components/Button";
-import { useState } from "react";
-import { logoutAction } from "@/actions/Auth";
-import { APP_LOGIN, APP_USER_PROFILE } from "@/constants";
+import Navbar from "@/app/(user)/components/Navbar";
+import { Search } from "lucide-react";
 
 export default function HomeComponent() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const {
     handleSubmit,
     handleFilter,
@@ -26,7 +21,6 @@ export default function HomeComponent() {
     handleNext,
     handlePrevious,
     t,
-    router,
     control,
     categories,
     categoryOptions,
@@ -36,22 +30,8 @@ export default function HomeComponent() {
 
   const { currentPage, totalPages } = pagination;
 
-  const handleLogout = async () => {
-    try {
-      const response = await logoutAction();
-      if (response.isSuccess) {
-        router.push(APP_LOGIN);
-      } else {
-        console.error("Logout failed:", response.message);
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
-
   return (
     <>
-      {/* Header with gradient background */}
       <header
         className="bg-cover bg-center"
         style={{
@@ -60,57 +40,9 @@ export default function HomeComponent() {
       >
         <div className="px-4 py-12 flex flex-col gap-10 justify-center items-center bg-primary/85">
           {/* NAVBAR */}
-          <div className="relative w-full px-40 my-10 hidden md:flex justify-between items-center">
-            <Image
-              src={"/images/img_icon_white.png"}
-              alt="logo"
-              width={150}
-              height={150}
-              className="bg-transparent"
-            />
-            <Button
-              variant="tertiary"
-              buttonType="ghost"
-              className="flex items-center"
-              onClick={() => setIsDropdownOpen((prev) => !prev)}
-            >
-              <div className="bg-white bg-opacity-20 rounded-full p-1 mr-2">
-                <User size={16} className="text-white" />
-              </div>
-              <span className="text-sm">James Clark</span>
-            </Button>
+          <Navbar className="!bg-transparent !border-0 !text-white" imageUrl="/images/img_icon_white.png" />
 
-            {/* Modal */}
-            {isDropdownOpen && (
-                <div
-                  className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Link
-                  href={APP_USER_PROFILE}
-                  className="block px-4 py-2 text-sm hover:bg-gray-100"
-                  >
-                  My Account
-                  </Link>
-                  <Button
-                  variant="danger"
-                  buttonType="ghost"
-                  onClick={handleLogout}
-                  >
-                  <LogOut />
-                  Logout
-                  </Button>
-                </div>
-                )}
-                {isDropdownOpen && (
-                <div
-                  className="fixed inset-0 z-40"
-                  onClick={() => setIsDropdownOpen(false)} // Close dropdown on outside click
-                />
-            )}
-          </div>
-
-          <div className="w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
+          <div className="mt-20 w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
             <Typography variant="white" type="subtitle">
               {t("blogGenzet")}
             </Typography>
