@@ -26,7 +26,7 @@ const categroyContext = createContext<CategoryState>({
   pagination: {
     currentPage: 1,
     totalData: 0,
-    dataPerPage: 1,
+    dataPerPage: 9,
   },
   setPagination: () => {},
 
@@ -46,7 +46,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [pagination, setPagination] = useState<Pagination>({
     currentPage: 1,
     totalData: 0,
-    dataPerPage: 3,
+    dataPerPage: 9,
   },)
 
   const getCategory = async () => {
