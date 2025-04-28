@@ -9,7 +9,11 @@ import { truncateContent } from "@/utils/truncateText";
 import Navbar from "@/app/(user)/components/Navbar";
 
 export default function HomeComponent() {
-  const { t, article, articles } = useDetailArticle();
+  const { t, article, articles, loading } = useDetailArticle();
+
+  if (loading) {
+    return <div>Loading...</div>; // <-- Show a spinner, skeleton, or "Loading..." text
+  }
 
   return (
     <div className="w-5/6 mx-auto flex flex-col gap-1 items-center justify-center text-left">
@@ -45,7 +49,7 @@ export default function HomeComponent() {
       </div>
 
       {/* Main content */}
-      <main className="flex-grow bg-white py-8">
+      <main className="w-full flex-grow bg-red py-8">
         <div className="">
           <div className="text-sm text-gray-500 mb-6">
             <Typography type="cardtitle">{t('otherArticles')}</Typography>

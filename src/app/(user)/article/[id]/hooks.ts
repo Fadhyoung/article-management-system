@@ -21,7 +21,7 @@ export const useDetailArticle = () => {
   const id = params?.id as string;
 
   const { control } = useForm<filterForm>();
-
+  const [loading, setLoading] = useState<boolean>(true);
   const { articles, setFilter } = useArticle();
 
   const { showNotification } = useNotificationProvider();
@@ -31,11 +31,6 @@ export const useDetailArticle = () => {
       const response = await getDetailArticle(id);
       if (response.isSuccess) {
         setArticle(response.data);
-        showNotification({
-          type: "success",
-          message: response.message,
-          mode: "toast",
-        });
       } else {
         showNotification({
           type: "error",
@@ -49,6 +44,8 @@ export const useDetailArticle = () => {
         message: (error as Error).message,
         mode: "toast",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,5 +63,7 @@ export const useDetailArticle = () => {
     categoryOptions,
     article,
     articles,
+
+    loading,
   };
 };
