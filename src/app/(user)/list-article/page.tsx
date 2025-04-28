@@ -122,7 +122,7 @@ export default function HomeComponent() {
 
       {/* Main content */}
       <main className="flex-grow bg-white py-8">
-        <div className="container mx-auto px-4 space-y-5">
+        <div className="w-full md:w-5/6 mx-auto px-4 space-y-5">
           <Typography type="body">
             Showing: <span className="font-medium"> {pagination.totalData} articles</span>
           </Typography>
