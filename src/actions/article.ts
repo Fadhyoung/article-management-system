@@ -20,9 +20,6 @@ export default async function getArticleListAction(page?: number, limit?:number,
       }
     );
 
-    console.log('====================================================');
-    console.log(response.data);
-
     if (response.status !== 200) {
       console.error("Response status:", response.statusText);
       return {

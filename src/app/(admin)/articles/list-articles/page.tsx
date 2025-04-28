@@ -12,6 +12,7 @@ import CustomSelect from "@/components/Select";
 
 export default function ArticlesPage() {
   const {
+    t,
     pagination,
 
     handleFilter,
@@ -41,7 +42,10 @@ export default function ArticlesPage() {
       <main className="flex-1 p-8">
         <div className="rounded-2xl shadow-md border bg-background2 overflow-hidden">
           <div className="p-6 flex justify-between items-center border-b">
-            <div className="text-lg font-semibold">Total Articles: 20</div>
+            <div className="text-lg font-semibold">
+              {" "}
+              {t("totalArticles")} {pagination.totalData}
+            </div>
           </div>
 
           {/* Search & Filter */}
@@ -112,7 +116,7 @@ export default function ArticlesPage() {
               radius="md"
               onClick={goToCreateArticle}
             >
-              + Add Articles
+              {t("addArticle")}
             </Button>
           </form>
 
@@ -121,11 +125,11 @@ export default function ArticlesPage() {
             <table className="w-full text-left border">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-3 px-4 border-y">Thumbnails</th>
-                  <th className="py-3 px-4 border-y">Title</th>
-                  <th className="py-3 px-4 border-y">Category</th>
-                  <th className="py-3 px-4 border-y">Created at</th>
-                  <th className="py-3 px-4 border-y">Action</th>
+                  <th className="py-3 px-4 border-y">{t("tableThumbnails")}</th>
+                  <th className="py-3 px-4 border-y">{t("tableTitle")}</th>
+                  <th className="py-3 px-4 border-y">{t("tableCategory")}</th>
+                  <th className="py-3 px-4 border-y">{t("tableCreatedAt")}</th>
+                  <th className="py-3 px-4 border-y">{t("tableAction")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -156,7 +160,7 @@ export default function ArticlesPage() {
                           className="underline hover:underline"
                           onClick={() => goToDetailArticle(article.id)}
                         >
-                          Preview
+                          {"preview"}
                         </Button>
                         <Button
                           buttonType="ghost"
@@ -164,7 +168,7 @@ export default function ArticlesPage() {
                           className="underline hover:underline"
                           onClick={() => goToEditArticle(article.id)}
                         >
-                          Edit
+                          {"edit"}
                         </Button>
                         <Button
                           buttonType="ghost"
@@ -172,7 +176,7 @@ export default function ArticlesPage() {
                           className=" hover:underline"
                           onClick={() => handleDeleteArticle(article.id)}
                         >
-                          Delete
+                          {"delete"}
                         </Button>
                       </div>
                     </td>
@@ -184,7 +188,7 @@ export default function ArticlesPage() {
 
           {/* Pagination */}
           <div className="flex justify-center m-10">
-            <nav className="flex items-center gap-1">
+          <nav className="flex items-center gap-1">
               <button
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
@@ -200,7 +204,7 @@ export default function ArticlesPage() {
                     onClick={() => handlePageClick(page)}
                     className={`px-3 py-1 border border-gray-300 rounded text-sm ${
                       page === pagination.currentPage
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-primary text-white"
                         : "text-gray-500 hover:bg-gray-50"
                     }`}
                   >
@@ -214,7 +218,7 @@ export default function ArticlesPage() {
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                {t('next')}
               </button>
             </nav>
           </div>

@@ -14,11 +14,12 @@ import { getDetailArticle } from "@/actions/article";
 
 export const useArticleForm = (id: string | null) => {
   const t = useTranslations("ArticleForm");
-  const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
 
+  const { categories, categoryOptions } = useCategoryProvider();
   const { article, setArticle } = useArticle();
   const { showNotification } = useNotificationProvider();
+  
   const [preview, setPreview] = useState<string | null>(null);
 
   const {
@@ -37,7 +38,6 @@ export const useArticleForm = (id: string | null) => {
       try {
         const response = await getDetailArticle(id);
         if (response.isSuccess) {
-          console.log("Fetched articles:", response);
           setArticle(response.data);        
           showNotification({
           type: "success",
@@ -102,10 +102,9 @@ export const useArticleForm = (id: string | null) => {
         });
       }
     } catch (error) {
-      console.error("Error creating article:", error);
       showNotification({
         type: "error",
-        message: t("createArticleError"),
+        message: (error as Error).message,
       });
     }
   };
@@ -127,6 +126,7 @@ export const useArticleForm = (id: string | null) => {
     handleSubmit,
     errors,
     goToCreateArticle,
+    router,
 
     preview,
     setPreview,

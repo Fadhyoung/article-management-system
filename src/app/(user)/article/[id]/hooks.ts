@@ -12,7 +12,7 @@ import { useParams } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
 
 export const useDetailArticle = () => {
-  const t = useTranslations("ListArticles");
+  const t = useTranslations("Article");
   const { categories, categoryOptions } = useCategoryProvider();
 
   const [article, setArticle] = useState<Article>();
@@ -30,11 +30,10 @@ export const useDetailArticle = () => {
     try {
       const response = await getDetailArticle(id);
       if (response.isSuccess) {
-        console.log("Fetched articles:", response);
         setArticle(response.data);
         showNotification({
           type: "success",
-          message: t("getArticleSuccess"),
+          message: response.message,
           mode: "toast",
         });
       } else {

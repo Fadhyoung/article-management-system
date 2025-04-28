@@ -5,8 +5,10 @@ import Typography from "@/components/Typography";
 import { APP_PROFILE } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export const BodyHeader = () => {
+  const t = useTranslations('Navbar');
   const router = useRouter();
   const [username, setUsername] = useState<string | undefined>(undefined);
 
@@ -25,7 +27,7 @@ export const BodyHeader = () => {
   return (
     <>
       <header className="w-full py-4 px-10 flex items-center justify-between border bg-background2">
-        <Typography type="cardtitle">Articles</Typography>
+        <Typography type="cardtitle">{t('articles')}</Typography>
         <div className="flex items-center gap-2">
           <Button
             buttonType="ghost"

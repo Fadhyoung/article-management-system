@@ -10,7 +10,6 @@ import { cookies } from "next/headers";
 export default async function postArticleAction(form: ArticleForm): Promise<
   CommonDataResponse<Article>
 > {
-  console.log("ther form is",form);
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
@@ -32,7 +31,6 @@ export default async function postArticleAction(form: ArticleForm): Promise<
       );
 
     if (response.status !== 200) {
-      console.error("Response status:", response.statusText);
       return {
         isSuccess: true,
         message: "Get category successful",

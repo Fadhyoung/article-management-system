@@ -174,7 +174,7 @@ export default function HomeComponent() {
                 disabled={currentPage === 1}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Previous
+                {t('previous')}
               </button>
 
               {Array.from({ length: totalPages ?? 0 }, (_, i) => i + 1).map(
@@ -198,7 +198,7 @@ export default function HomeComponent() {
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                {t('next')}
               </button>
             </nav>
           </div>
