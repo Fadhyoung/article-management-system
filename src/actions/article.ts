@@ -5,7 +5,7 @@ import { Article, ArticleResponse } from "@/types/Articles";
 import { CommonDataResponse } from "@/types/Common";
 import axios from "axios";
 
-export default async function getArticleListAction(page?: number, limit?:number): Promise<
+export default async function getArticleListAction(page?: number, limit?:number, title?: string, category?: string): Promise<
   CommonDataResponse<ArticleResponse>
 > {
   try {
@@ -14,6 +14,8 @@ export default async function getArticleListAction(page?: number, limit?:number)
         params: {
           page,
           limit,
+          title,
+          category,
         },
       }
     );

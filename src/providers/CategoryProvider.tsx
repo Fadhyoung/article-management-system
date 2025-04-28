@@ -51,7 +51,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getCategory = async () => {
     try {
-      const response = await getCategoryAction(1, 2);
+      const response = await getCategoryAction(1, 10);
       if (response.isSuccess) {
         console.log('sdfafasdfas ', response)
         setCategories(response.data);

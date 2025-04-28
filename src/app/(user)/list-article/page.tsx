@@ -6,21 +6,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { useListArticle } from "@/app/(user)/list-article/hooks";
 import CustomSelect from "@/components/Select";
-import { Category } from "@/types/Category";
 import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
-import { debounce } from "lodash";
 import { formatDate } from "@/utils/formatDate";
 import { truncateContent } from "@/utils/truncateText";
 import Button from "@/components/Button";
 import { useState } from "react";
 import { logoutAction } from "@/actions/Auth";
-import { APP_LOGIN } from "@/constants";
+import { APP_LOGIN, APP_USER_PROFILE } from "@/constants";
 
 export default function HomeComponent() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const {
+    handleSubmit,
+    handleFilter,
+    watch,
     pagination,
     handleNext,
     handlePrevious,
@@ -34,14 +35,6 @@ export default function HomeComponent() {
   } = useListArticle();
 
   const { currentPage, totalPages } = pagination;
-
-  const handleChangeCategory = (category: Category | undefined) => {
-    console.log("User selected category:", category);
-  };
-
-  const handleSearch = debounce((search: string) => {
-    console.log("User selected category:", search);
-  }, 300);
 
   const handleLogout = async () => {
     try {
@@ -76,6 +69,8 @@ export default function HomeComponent() {
               className="bg-transparent"
             />
             <Button
+              variant="tertiary"
+              buttonType="ghost"
               className="flex items-center"
               onClick={() => setIsDropdownOpen((prev) => !prev)}
             >
@@ -89,7 +84,7 @@ export default function HomeComponent() {
             {isDropdownOpen && (
               <div className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50">
                 <Link
-                  href="/profile"
+                  href={APP_USER_PROFILE}
                   className="block px-4 py-2 text-sm hover:bg-gray-100"
                 >
                   My Account
@@ -118,7 +113,10 @@ export default function HomeComponent() {
             </Typography>
           </div>
 
-          <div className="max-w-2xl mx-auto p-3 flex flex-col md:flex-row gap-4 justify-center items-center bg-secondary rounded-md">
+          <form
+            className="max-w-2xl mx-auto p-3 flex flex-col md:flex-row gap-4 justify-center items-center bg-secondary rounded-md"
+            onSubmit={handleSubmit(handleFilter)}
+          >
             <div className="flex-1 w-full">
               <Controller
                 name="category"
@@ -132,10 +130,12 @@ export default function HomeComponent() {
                       const selectedCategory = categories?.data.find(
                         (category) => category.name === selectedValue
                       );
-
                       field.onChange(selectedCategory ?? null);
 
-                      handleChangeCategory?.(selectedCategory);
+                      handleFilter({
+                        search: watch("search") || "",
+                        category: selectedCategory?.name || "",
+                      });
                     }}
                     isError={!!fieldState.error}
                     errorText={fieldState.error?.message}
@@ -153,6 +153,7 @@ export default function HomeComponent() {
                   render={({ field, fieldState: { error } }) => (
                     <Input
                       {...field}
+                      value={field.value ?? ""}
                       placeholder="Search articles..."
                       variant="primary"
                       size="sm"
@@ -163,7 +164,10 @@ export default function HomeComponent() {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
-                          handleSearch(field.value);
+                          handleFilter({
+                            search: field.value || "",
+                            category: watch("category") || "",
+                          });
                         }
                       }}
                     />
@@ -171,7 +175,7 @@ export default function HomeComponent() {
                 />
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </header>
 
