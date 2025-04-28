@@ -11,9 +11,12 @@ import CustomSelect from "@/components/Select";
 import Image from "next/image";
 import Link from "next/link";
 import { APP_CATEGORY } from "@/constants";
+import { useSearchParams } from "next/navigation";
 
-export default function CreateArticlePage() {
+function ArticleFormContent() {
   const [wordCount, setWordCount] = useState(0);
+  const params = useSearchParams();
+  const id = params.get("id");
   const {
     t,
     preview,
@@ -26,7 +29,7 @@ export default function CreateArticlePage() {
     errors,
     handleFileChange,
     handleWriteArticle,
-  } = useArticleForm();
+  } = useArticleForm(id);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -212,6 +215,14 @@ export default function CreateArticlePage() {
           </div>
         </form>
       </div>
+    </Suspense>
+  );
+}
+
+export default function CreateArticlePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ArticleFormContent />
     </Suspense>
   );
 }

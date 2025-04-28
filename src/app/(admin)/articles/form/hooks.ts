@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { useForm } from "react-hook-form";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
 import { APP_ARTICLE_FORM, APP_ARTICLE_LIST_ARTICLE } from "@/constants";
 import { ArticleForm } from "@/types/Articles";
@@ -12,7 +12,7 @@ import { useNotificationProvider } from "@/providers/NotificationProvider";
 import postArticleAction, { putArticleAction } from "@/app/(admin)/articles/form/actions";
 import { getDetailArticle } from "@/actions/article";
 
-export const useArticleForm = () => {
+export const useArticleForm = (id: string | null) => {
   const t = useTranslations("ArticleForm");
   const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
@@ -20,9 +20,6 @@ export const useArticleForm = () => {
   const { article, setArticle } = useArticle();
   const { showNotification } = useNotificationProvider();
   const [preview, setPreview] = useState<string | null>(null);
-
-  const params = useSearchParams();
-  const id = params.get("id");
 
   const {
     register,
@@ -95,7 +92,7 @@ export const useArticleForm = () => {
       } else {
         response = await postArticleAction(form);
       }      
-      if (response.isSuccess && response.data) {
+      if (response.isSuccess) {
         router.push(APP_ARTICLE_LIST_ARTICLE);
       } else {
         showNotification({
