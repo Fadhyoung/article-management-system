@@ -62,5 +62,8 @@
     "name": "Name",
     "namePlaceholder": "Insert category name",
     "nameRequired": "Please insert category name"
+  },
+  "Navbar": {
+    "logout": "Logout"
   }
 }

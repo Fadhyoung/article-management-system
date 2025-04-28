@@ -5,34 +5,17 @@ import { formatDate } from "@/utils/formatDate";
 import { useDetailArticle } from "@/app/(user)/article/[id]/hooks";
 import Image from "next/image";
 import Link from "next/link";
-import { useProfile } from "@/providers/ProfileProvider";
 import { truncateContent } from "@/utils/truncateText";
-import { User } from "lucide-react";
+import Navbar from "@/app/(user)/components/Navbar";
 
 export default function HomeComponent() {
   const { article, articles } = useDetailArticle();
-
-  const { profile } = useProfile();
 
   return (
     <div className="w-5/6 mx-auto flex flex-col gap-1 items-center justify-center text-left">
 
       {/* NAVBAR */}
-      <div className="w-full px-40 py-10 fixed top-0 hidden md:flex justify-between items-center border-b bg-white">
-        <Image
-          src={"/images/img_icon.png"}
-          alt="logo"
-          width={150}
-          height={150}
-          className="bg-transparent"
-        />
-        <div className="flex items-center">
-          <div className="bg-white bg-opacity-20 rounded-full p-1 mr-2">
-            <User size={16} className="text-white" />
-          </div>
-          <span className="text-sm">James Clark</span>
-        </div>
-      </div>
+      <Navbar />
 
       {/* DETAIL ARTICLE */}
       <div className="mt-32 flex flex-col gap-4 items-center justify-center py-8">

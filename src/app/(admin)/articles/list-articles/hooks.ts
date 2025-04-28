@@ -10,25 +10,22 @@ import { APP_ARTICLE, APP_ARTICLE_FORM } from "@/constants";
 import deleteArticleAction from "@/app/(admin)/articles/list-articles/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useEffect } from "react";
-import getArticleListAction from "@/actions/article";
+import { debounce } from "lodash";
 
 export const useArticles = () => {
   const t = useTranslations("ListArticles");
   const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
   const { showNotification } = useNotificationProvider();
-  const { pagination, setPagination, setArticles, articles, getArticles } =
+  const { pagination, articles, setFilter } =
     useArticle();
 
-  const { control } = useForm<filterForm>();
+    const { control, handleSubmit, watch } = useForm<filterForm>();
 
   const handleDeleteArticle = async (id: string) => {
-    console.log("the id is ", id);
     try {
       const response = await deleteArticleAction(id);
-      if (response.isSuccess) {
-        getArticles();
-      } else {
+      if (!response.isSuccess) {
         showNotification({
           type: "error",
           mode: "modal",
@@ -44,90 +41,46 @@ export const useArticles = () => {
     }
   };
 
-  const handlePageClick = async (page: number) => {
-    try {
-      const response = await getArticleListAction(page, pagination.dataPerPage);
+  const handleFilter = debounce(async (filters: { search: string; category: string }) => {
+      setFilter({
+        category: filters.category,
+        search: filters.search,
+        limit: pagination.dataPerPage,
+        page: pagination.currentPage,
+      })
+      }, 300);
 
-      if (response.isSuccess) {
-        setArticles(response.data.data);
-        setPagination({
-          ...pagination,
-          currentPage: page,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
-    } catch (error) {
-      showNotification({
-        type: "error",
-        message: (error as Error).message,
-        mode: "toast",
-      });
-    }
+  const handlePageClick = async (page: number) => {
+    setFilter({
+      category: '',
+      limit: pagination.dataPerPage,
+      page: page,
+      search: ''
+    })
   };
 
   const handlePrevious = async () => {
+    
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
-      const response = await getArticleListAction(
-        newPage,
-        pagination.dataPerPage
-      );
-
-      if (response.isSuccess) {
-        setArticles(response.data.data);
-        setPagination({
-          ...pagination,
-          currentPage: newPage,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
+      setFilter({
+        category: '',
+        limit: pagination.dataPerPage,
+        page: newPage,
+        search: ''
+      })
     }
   };
 
   const handleNext = async () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
-
-      const response = await getArticleListAction(
-        newPage,
-        pagination.dataPerPage
-      );
-
-      if (response.isSuccess) {
-        setArticles(response.data.data);
-        setPagination({
-          ...pagination,
-          currentPage: newPage,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
+      setFilter({
+        category: '',
+        limit: pagination.dataPerPage,
+        page: newPage,
+        search: ''
+      })
     }
   };
 
@@ -144,14 +97,23 @@ export const useArticles = () => {
   };
 
   useEffect(() => {
-    getArticles();
-  }, []);
+    setFilter({
+      category: '',
+      limit: 9,
+      page: 1,
+      search: ''
+    })
+  }, [])
 
   return {
-    pagination,
+    pagination,    
     
     t,
     control,
+    handleSubmit,
+    handleFilter,
+    watch,
+
     categories,
     categoryOptions,
     articles,

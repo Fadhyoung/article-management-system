@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
@@ -20,11 +20,9 @@ export const useDetailArticle = () => {
   const params = useParams();
   const id = params?.id as string;
 
-  const {
-    control,
-  } = useForm<filterForm>();
+  const { control } = useForm<filterForm>();
 
-  const { articles } = useArticle();
+  const { articles, setFilter } = useArticle();
 
   const { showNotification } = useNotificationProvider();
 
@@ -33,11 +31,11 @@ export const useDetailArticle = () => {
       const response = await getDetailArticle(id);
       if (response.isSuccess) {
         console.log("Fetched articles:", response);
-        setArticle(response.data);        
+        setArticle(response.data);
         showNotification({
-        type: "success",
-        message: t("getArticleSuccess"),
-        mode: "toast",
+          type: "success",
+          message: t("getArticleSuccess"),
+          mode: "toast",
         });
       } else {
         showNotification({
@@ -56,7 +54,10 @@ export const useDetailArticle = () => {
   };
 
   useEffect(() => {
-    if (id) {getArticle(id);}    
+    if (id) {
+      getArticle(id);
+      setFilter({ category: "", limit: 3, page: 1, search: "" });
+    }
   }, [id]);
 
   return {

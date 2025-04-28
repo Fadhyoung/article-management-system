@@ -82,22 +82,31 @@ export default function HomeComponent() {
 
             {/* Modal */}
             {isDropdownOpen && (
-              <div className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50">
-                <Link
+                <div
+                  className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Link
                   href={APP_USER_PROFILE}
                   className="block px-4 py-2 text-sm hover:bg-gray-100"
-                >
+                  >
                   My Account
-                </Link>
-                <Button
+                  </Link>
+                  <Button
                   variant="danger"
                   buttonType="ghost"
                   onClick={handleLogout}
-                >
+                  >
                   <LogOut />
                   Logout
-                </Button>
-              </div>
+                  </Button>
+                </div>
+                )}
+                {isDropdownOpen && (
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsDropdownOpen(false)} // Close dropdown on outside click
+                />
             )}
           </div>
 
@@ -181,10 +190,10 @@ export default function HomeComponent() {
 
       {/* Main content */}
       <main className="flex-grow bg-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="text-sm text-gray-500 mb-6">
-            Showing: <span className="font-medium">All 243 articles</span>
-          </div>
+        <div className="container mx-auto px-4 space-y-5">
+          <Typography type="body">
+            Showing: <span className="font-medium"> {pagination.totalData} articles</span>
+          </Typography>
 
           {/* Blog posts grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">

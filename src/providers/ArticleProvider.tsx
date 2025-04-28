@@ -3,8 +3,9 @@
 import getArticleListAction from "@/actions/article";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { Article } from "@/types/Articles";
+import { filterForm } from "@/types/Category";
 import { Pagination } from "@/types/Common";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface ArticleState {
     article: Article | undefined;
@@ -15,7 +16,10 @@ interface ArticleState {
     pagination: Pagination;
     setPagination: (pagination: Pagination) => void;
 
-    getArticles: () => void;
+    filter: filterForm | undefined;
+    setFilter: (filter: filterForm) => void;
+
+    getArticles: (filter: filterForm | undefined) => void;
 }
 
 const articleContext = createContext<ArticleState>({
@@ -27,9 +31,12 @@ const articleContext = createContext<ArticleState>({
   pagination: {
     currentPage: 1,
     totalData: 0,
-    dataPerPage: 1,
+    dataPerPage: 9,
   },
   setPagination: () => {},
+
+  filter: undefined,
+  setFilter: () => {},
 
   getArticles: () => {},
 });
@@ -45,14 +52,20 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
   const [pagination, setPagination] = useState<Pagination>({
     currentPage: 1,
     totalData: 0,
-    dataPerPage: 1,
+    dataPerPage: 9,
   },)
+  const [filter, setFilter] = useState<filterForm | undefined>({
+    category: '',
+    search: '',
+    limit: pagination.dataPerPage,
+    page: pagination.currentPage
+  });
   const [articles, setArticles] = useState<Article[] | undefined>(undefined);
   const [article, setArticle] = useState<Article | undefined>(undefined);
 
-  const getArticles = async () => {
+  const getArticles = async (filters: filterForm | undefined) => {
     try {
-      const response = await getArticleListAction(1, 6);
+      const response = await getArticleListAction(filters?.page, filters?.limit, filters?.search, filters?.category);
       if (response.isSuccess) {
         setArticles(response.data.data);    
         setPagination({
@@ -77,6 +90,10 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  useEffect(() => {
+    getArticles(filter);
+  }, [filter]);
+
   return (
     <articleContext.Provider
       value={{
@@ -87,6 +104,9 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
         articles,
         setArticles,
         getArticles,
+
+        filter,
+        setFilter
       }}
     >
       {children}

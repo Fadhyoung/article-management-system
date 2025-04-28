@@ -6,130 +6,73 @@ import { filterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
-import { useEffect } from "react";
-import getArticleListAction from "@/actions/article";
-import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { debounce } from "lodash";
+import { useEffect } from "react";
 
 export const useListArticle = () => {
   const t = useTranslations("ListArticles");
   const { categories, categoryOptions } = useCategoryProvider();
-  const { showNotification } = useNotificationProvider();
   const router = useRouter();
 
-  const { pagination, setPagination, articles, getArticles, setArticles } =
+  const { pagination, setPagination, articles, setFilter } =
     useArticle();
 
   const { control, handleSubmit, watch } = useForm<filterForm>();
 
   const handleFilter = debounce(async (filters: { search: string; category: string }) => {
-      try {
-        const response = await getArticleListAction(undefined, undefined, filters.search, filters.category);
-        if (response.isSuccess) {
-          setArticles(response.data.data);
-        } else {
-          showNotification({
-            type: "error",
-            message: response.message,
-            mode: "toast",
-          });
-        }
-      } catch (error) {
-        showNotification({
-          type: "error",
-          message: (error as Error).message,
-          mode: "toast",
-        });
-      }
+    setFilter({
+      category: filters.category,
+      search: filters.search,
+      limit: pagination.dataPerPage,
+      page: pagination.currentPage,
+    })
     }, 300);
 
   const handlePageClick = async (page: number) => {
-    try {
-      const response = await getArticleListAction(page, pagination.dataPerPage);
-
-      if (response.isSuccess) {
-        setArticles(response.data.data);
-        setPagination({
-          ...pagination,
-          currentPage: page,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
-    } catch (error) {
-      showNotification({
-        type: "error",
-        message: (error as Error).message,
-        mode: "toast",
-      });
-    }
+    setFilter({
+      category: '',
+      search: '',
+      limit: pagination.dataPerPage,
+      page: page,
+    })
   };
 
   const handlePrevious = async () => {
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
-      const response = await getArticleListAction(newPage, pagination.dataPerPage);
-  
-      if (response.isSuccess) {
-        setArticles(response.data.data);
-        setPagination({
-          ...pagination,
-          currentPage: newPage,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(response.data.totalData / pagination.dataPerPage),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
+      setFilter({
+        category: '',
+        search: '',
+        limit: pagination.dataPerPage,
+        page: newPage,
+      })
     }
   };
   
   const handleNext = async () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
-  
-      const response = await getArticleListAction(newPage, pagination.dataPerPage);
-  
-      if (response.isSuccess) {
-        setArticles(response.data.data);
-        setPagination({
-          ...pagination,
-          currentPage: newPage,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(response.data.totalData / pagination.dataPerPage),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
+      setFilter({
+        category: '',
+        search: '',
+        limit: pagination.dataPerPage,
+        page: newPage,
+      })
     }
   };
   
-
   const goToDetailArticle = (id: string) => {
     router.push(`/article/${id}`);
   };
 
   useEffect(() => {
-    getArticles();
-  }, []);
-
-  console.log("pagination ", pagination);
+    setFilter({
+      category: '',
+      limit: 9,
+      page: 1,
+      search: ''
+    })
+  }, [])
 
   return {
     handleSubmit,

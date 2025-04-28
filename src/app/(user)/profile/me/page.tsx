@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/app/(user)/components/Navbar";
 import ProfileComponent from "@/components/ProfileComponent";
 import { APP_ARTICLE_LIST_ARTICLE } from "@/constants";
 import { Profile } from "@/types/User";
@@ -24,7 +25,9 @@ export default function ProfilePage() {
 
   return (
     <main className="h-full flex-1 justify-center items-center p-8">
-      <div className="h-full flex justify-center items-center bg-white">
+      {/* NAVBAR */}
+      <Navbar />
+      <div className="h-full mt-32 flex justify-center items-center bg-white">
         <ProfileComponent data={profile} handleBack={goToDashboard} />
       </div>
     </main>

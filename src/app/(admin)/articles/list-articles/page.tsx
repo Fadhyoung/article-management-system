@@ -1,17 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { useArticles } from "@/app/(admin)/articles/list-articles/hooks";
 import { Article } from "@/types/Articles";
 import { formatDate } from "@/utils/formatDate";
 import Button from "@/components/Button";
+import { Search } from "lucide-react";
+import { Controller } from "react-hook-form";
+import Input from "@/components/Input";
+import CustomSelect from "@/components/Select";
 
 export default function ArticlesPage() {
-  const [search, setSearch] = useState("");
-
   const {
     pagination,
+
+    handleFilter,
+    control,
+    handleSubmit,
+    watch,
+
+    categories,
+    categoryOptions,
 
     articles,
     goToCreateArticle,
@@ -36,20 +45,67 @@ export default function ArticlesPage() {
           </div>
 
           {/* Search & Filter */}
-          <div className="p-6 flex items-center gap-4">
-            <div>
-              <select className="border rounded-lg p-2">
-                <option>Category</option>
-              </select>
-            </div>
-            <div className="flex-1">
-              <input
-                type="text"
-                placeholder="Search by title"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="border rounded-lg p-2 w-fit"
-              />
+          <form
+            onSubmit={handleSubmit(handleFilter)}
+            className="w-full p-6 flex gap-4 justify-between"
+          >
+            <div className="flex items-center gap-5">
+              <div className="flex-1 w-full">
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <CustomSelect
+                      name="category"
+                      options={categoryOptions}
+                      value={field.value || ""}
+                      onChange={(selectedValue) => {
+                        const selectedCategory = categories?.data.find(
+                          (category) => category.name === selectedValue
+                        );
+                        field.onChange(selectedCategory ?? null);
+
+                        handleFilter({
+                          search: watch("search") || "",
+                          category: selectedCategory?.name || "",
+                        });
+                      }}
+                      isError={!!fieldState.error}
+                      errorText={fieldState.error?.message}
+                      className="w-full md:w-fit bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
+                    />
+                  )}
+                />
+              </div>
+              <div className="w-full md:w-96 bg-white rounded-md flex items-center px-3 py-2">
+                <Search size={16} className="text-gray-500 mr-2" />
+                <Controller
+                  name="search"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <Input
+                      {...field}
+                      value={field.value ?? ""}
+                      placeholder="Search articles..."
+                      variant="primary"
+                      size="sm"
+                      radius="md"
+                      isError={!!error}
+                      errorText={error?.message}
+                      className="bg-transparent text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleFilter({
+                            search: field.value || "",
+                            category: watch("category") || "",
+                          });
+                        }
+                      }}
+                    />
+                  )}
+                />
+              </div>
             </div>
             <Button
               className="bg-blue-600 text-white py-2 px-4 rounded-lg"
@@ -58,7 +114,7 @@ export default function ArticlesPage() {
             >
               + Add Articles
             </Button>
-          </div>
+          </form>
 
           {/* Table */}
           <div className="overflow-x-auto">
@@ -73,59 +129,55 @@ export default function ArticlesPage() {
                 </tr>
               </thead>
               <tbody>
-                {articles
-                  ?.filter((article: Article) =>
-                    article.title.toLowerCase().includes(search.toLowerCase())
-                  )
-                  .map((article: Article, idx: number) => (
-                    <tr key={idx} className="hover:bg-gray-50">
-                      <td className="py-3 px-4 border-y">
-                        <Image
-                          src={article?.imageUrl || "/images/placeholder.jpeg"}
-                          alt="thumbnail"
-                          width={10}
-                          height={10}
-                          className="w-14 h-14 object-cover rounded"
-                          unoptimized={true}
-                        />
-                      </td>
-                      <td className="py-3 px-4 border-y">{article.title}</td>
-                      <td className="py-3 px-4 border-y">
-                        {article.category.name}
-                      </td>
-                      <td className="py-3 px-4 border-y">
-                        {formatDate(article.createdAt)}
-                      </td>
-                      <td className="py-3 px-4  border-y">
-                        <div className="flex gap-2">
-                          <Button
-                            buttonType="ghost"
-                            variant="primary"
-                            className="underline hover:underline"
-                            onClick={() => goToDetailArticle(article.id)}
-                          >
-                            Preview
-                          </Button>
-                          <Button
-                            buttonType="ghost"
-                            variant="primary"
-                            className="underline hover:underline"
-                            onClick={() => goToEditArticle(article.id)}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            buttonType="ghost"
-                            variant="danger"
-                            className=" hover:underline"
-                            onClick={() => handleDeleteArticle(article.id)}
-                          >
-                            Delete
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                {articles?.map((article: Article, idx: number) => (
+                  <tr key={idx} className="hover:bg-gray-50">
+                    <td className="py-3 px-4 border-y">
+                      <Image
+                        src={article?.imageUrl || "/images/placeholder.jpeg"}
+                        alt="thumbnail"
+                        width={10}
+                        height={10}
+                        className="w-14 h-14 object-cover rounded"
+                        unoptimized={true}
+                      />
+                    </td>
+                    <td className="py-3 px-4 border-y">{article.title}</td>
+                    <td className="py-3 px-4 border-y">
+                      {article.category.name}
+                    </td>
+                    <td className="py-3 px-4 border-y">
+                      {formatDate(article.createdAt)}
+                    </td>
+                    <td className="py-3 px-4  border-y">
+                      <div className="flex gap-2">
+                        <Button
+                          buttonType="ghost"
+                          variant="primary"
+                          className="underline hover:underline"
+                          onClick={() => goToDetailArticle(article.id)}
+                        >
+                          Preview
+                        </Button>
+                        <Button
+                          buttonType="ghost"
+                          variant="primary"
+                          className="underline hover:underline"
+                          onClick={() => goToEditArticle(article.id)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          buttonType="ghost"
+                          variant="danger"
+                          className=" hover:underline"
+                          onClick={() => handleDeleteArticle(article.id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -166,7 +218,6 @@ export default function ArticlesPage() {
               </button>
             </nav>
           </div>
-          
         </div>
       </main>
     </>
