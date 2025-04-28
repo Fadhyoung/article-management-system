@@ -72,6 +72,7 @@ export const articles: ArticleResponse = {
   totalPages: 3,
   currentPage: 1,
   totalData: 10,
+  dataPerPage: 9,
 };
 
 export const Article = {
