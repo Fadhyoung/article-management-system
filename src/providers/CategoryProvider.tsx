@@ -46,12 +46,12 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [pagination, setPagination] = useState<Pagination>({
     currentPage: 1,
     totalData: 0,
-    dataPerPage: 1,
+    dataPerPage: 3,
   },)
 
   const getCategory = async () => {
     try {
-      const response = await getCategoryAction(1, 10);
+      const response = await getCategoryAction(1, 3);
       if (response.isSuccess) {
         console.log('sdfafasdfas ', response)
         setCategories(response.data);
