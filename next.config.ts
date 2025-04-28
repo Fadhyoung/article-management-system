@@ -4,7 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['drive.google.com'],
+    domains: ['drive.google.com', 'nkihbopqxauxphmaqvey.supabase.co'],
   },
 };
 

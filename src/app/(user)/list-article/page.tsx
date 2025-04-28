@@ -20,8 +20,20 @@ import { APP_LOGIN } from "@/constants";
 export default function HomeComponent() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { t, router,  control, categories, categoryOptions, articles } =
-    useListArticle();
+  const {
+    pagination,
+    handleNext,
+    handlePrevious,
+    t,
+    router,
+    control,
+    categories,
+    categoryOptions,
+    articles,
+    handlePageClick,
+  } = useListArticle();
+
+  const { currentPage, totalPages } = pagination;
 
   const handleChangeCategory = (category: Category | undefined) => {
     console.log("User selected category:", category);
@@ -32,17 +44,17 @@ export default function HomeComponent() {
   }, 300);
 
   const handleLogout = async () => {
-      try {
-        const response = await logoutAction();
-        if (response.isSuccess) {
-          router.push(APP_LOGIN)
-        } else {
-          console.error("Logout failed:", response.message);
-        }
-      } catch (error) {
-        console.error("Error during logout:", error);
+    try {
+      const response = await logoutAction();
+      if (response.isSuccess) {
+        router.push(APP_LOGIN);
+      } else {
+        console.error("Logout failed:", response.message);
       }
-    };
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
 
   return (
     <>
@@ -63,7 +75,10 @@ export default function HomeComponent() {
               height={150}
               className="bg-transparent"
             />
-            <Button className="flex items-center" onClick={() => setIsDropdownOpen((prev) => !prev)}>
+            <Button
+              className="flex items-center"
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+            >
               <div className="bg-white bg-opacity-20 rounded-full p-1 mr-2">
                 <User size={16} className="text-white" />
               </div>
@@ -72,28 +87,32 @@ export default function HomeComponent() {
 
             {/* Modal */}
             {isDropdownOpen && (
-            <div className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50">
-              <Link
-                href="/profile"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-              >
-                My Account
-              </Link>
-              <Button
-                variant="danger"
-                buttonType="ghost"
-                onClick={handleLogout}
-              >
-                <LogOut />
-                Logout
-              </Button>
-            </div>
-          )}
+              <div className="absolute top-full right-20 mt-2 p-2 w-48 bg-white border rounded-lg shadow-md z-50">
+                <Link
+                  href="/profile"
+                  className="block px-4 py-2 text-sm hover:bg-gray-100"
+                >
+                  My Account
+                </Link>
+                <Button
+                  variant="danger"
+                  buttonType="ghost"
+                  onClick={handleLogout}
+                >
+                  <LogOut />
+                  Logout
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
-            <Typography variant="white" type="subtitle">{t("blogGenzet")}</Typography>
-            <Typography variant="white" type="display">{t("title")}</Typography>
+            <Typography variant="white" type="subtitle">
+              {t("blogGenzet")}
+            </Typography>
+            <Typography variant="white" type="display">
+              {t("title")}
+            </Typography>
             <Typography variant="white" type="cardtitle" weight="300">
               {t("subTitle")}
             </Typography>
@@ -205,19 +224,35 @@ export default function HomeComponent() {
           {/* Pagination */}
           <div className="flex justify-center mt-10">
             <nav className="flex items-center gap-1">
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
+              <button
+                onClick={handlePrevious}
+                disabled={currentPage === 1}
+                className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 Previous
               </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm bg-indigo-600 text-white">
-                1
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
-                2
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
-                3
-              </button>
-              <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50">
+
+              {Array.from({ length: totalPages ?? 0 }, (_, i) => i + 1).map(
+                (page: number) => (
+                  <button
+                    key={page}
+                    onClick={() => handlePageClick(page)}
+                    className={`px-3 py-1 border border-gray-300 rounded text-sm ${
+                      page === pagination.currentPage
+                        ? "bg-indigo-600 text-white"
+                        : "text-gray-500 hover:bg-gray-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                )
+              )}
+
+              <button
+                onClick={handleNext}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 Next
               </button>
             </nav>

@@ -1,15 +1,25 @@
+'use server';
+
 import { articles, Article as dummydata  } from "@/constants/dummyDatas";
 import { Article, ArticleResponse } from "@/types/Articles";
 import { CommonDataResponse } from "@/types/Common";
 import axios from "axios";
 
-export default async function getArticleListAction(): Promise<
+export default async function getArticleListAction(page?: number, limit?:number): Promise<
   CommonDataResponse<ArticleResponse>
 > {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/articles`,{
+        params: {
+          page,
+          limit,
+        },
+      }
     );
+
+    console.log('====================================================');
+    console.log(response.data);
 
     if (response.status !== 200) {
       console.error("Response status:", response.statusText);
@@ -18,7 +28,7 @@ export default async function getArticleListAction(): Promise<
         message: "Get category successful",
         data: {
           data: articles.data,
-          totalPages: response.data.totalPages,
+          dataPerPage: response.data.totalPages,
           currentPage: response.data.currentPage,
           totalData: response.data.totalData,
         },
@@ -30,9 +40,9 @@ export default async function getArticleListAction(): Promise<
       message: "Get category successful",
       data: {
         data: response.data.data,
-        totalPages: response.data.totalPages,
-        currentPage: response.data.currentPage,
-        totalData: response.data.totalData,
+        dataPerPage: response.data.limit,
+        currentPage: response.data.page,
+        totalData: response.data.total,
       },
     };
   } catch (error) {

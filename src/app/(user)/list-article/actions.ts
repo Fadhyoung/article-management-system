@@ -22,7 +22,7 @@ export async function getCategoryAction(): Promise<
       message: "Get category successful",
       data: {
         data: response.data.data,
-        totalPages: response.data.totalPages,
+        dataPerPage: response.data.totalPages,
         currentPage: response.data.currentPage,
         totalData: response.data.totalData,
       },
