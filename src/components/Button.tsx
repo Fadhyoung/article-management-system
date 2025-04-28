@@ -48,7 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'flex gap-2 items-center justify-center font-medium focus:outline-none transition-all';
+      'flex gap-2 items-center justify-center font-medium focus:outline-none focus:none transition-all';
 
     const variantStyles = {
       primary: 'bg-primary border-primary',

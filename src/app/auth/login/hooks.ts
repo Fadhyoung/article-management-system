@@ -4,6 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import { loginAction } from "./actions";
 import { useTranslations } from "next-intl";
 import {
+  APP_ARTICLE_LIST_ARTICLE,
   APP_FORGOT_PASSWORD,
   APP_LIST_ARTICLE,
   ERR_INVALID_EMAIL_OR_PASSWORD,
@@ -13,12 +14,14 @@ import { useForm } from "react-hook-form";
 import { LoginForm } from "@/types/Auth";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useState } from "react";
+import { useProfile } from "@/providers/ProfileProvider";
 
 export const useLogin = () => {
   const t = useTranslations("Login");
   const router = useRouter();
 
   const { showNotification } = useNotificationProvider();
+  const { setProfile } = useProfile();
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
@@ -33,7 +36,12 @@ export const useLogin = () => {
     try {
       const response = await loginAction(form);
       if (response.isSuccess && response.data) {
-        router.push(APP_LIST_ARTICLE);
+        localStorage.setItem("profile", JSON.stringify(response.data));
+        if (response.data.role == 'User') {
+          router.push(APP_LIST_ARTICLE);
+        } else if (response.data.role == 'Admin') {
+          router.push(APP_ARTICLE_LIST_ARTICLE);
+        }        
       } else if (response.message == ERR_INVALID_EMAIL_OR_PASSWORD) {
         showNotification({
           type: "error",

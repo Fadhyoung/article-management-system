@@ -5,11 +5,12 @@ import { formatDate } from "@/utils/formatDate";
 import { useDetailArticle } from "@/app/(user)/article/[id]/hooks";
 import Image from "next/image";
 import Link from "next/link";
+import { useProfile } from "@/providers/ProfileProvider";
 
 export default function HomeComponent() {
   const { article, articles } = useDetailArticle();
 
-  console.log("article", article);
+  const { profile } = useProfile();
 
   return (
     <div className="w-5/6 mx-auto flex flex-col gap-1 items-center justify-center text-left">
