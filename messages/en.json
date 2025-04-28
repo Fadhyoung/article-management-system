@@ -19,7 +19,7 @@
     "register": "Register",
     "login": "Log in",
     "fetchFailed": "Login failed, please check your username and password"
-  }, 
+  },
   "Register": {
     "usernameRequired": "Username is required",
     "usernameFormatInvalid": "Invalid username format",
@@ -42,28 +42,73 @@
     "logibrium": "Logibrium",
     "copyright": "© 2023 Blog journal. All rights reserved.",
     "contact": "Contact"
-  }, 
+  },
   "ListArticles": {
     "blogGenzet": "Blog genzet",
     "title": "The Journal : Design Resources, Interviews, and Industry News",
     "subTitle": "Your daily dose of design insights!",
     "noArticles": "No articles found",
     "noMoreArticles": "No more articles",
-    "getArticleSuccess": "Get article success"
+    "getArticleSuccess": "Get article success",
+    "totalArticles": "Total Articles",
+    "addArticle": "+ Add Article",
+    "tableThumbnails": "Thumbnails",
+    "tableTitle": "Title",
+    "tableCategory": "Category",
+    "tableCreatedAt": "Created At",
+    "tableAction": "Action",
+    "preview": "Preview",
+    "edit": "Edit",
+    "delete": "Delete",
+    "previous": "Previous",
+    "next": "Next"
   },
   "ArticleForm": {
     "titleRequired": "Title is required",
     "titleFormatInvalid": "Invalid title format",
     "title": "Title",
     "titlePlaceholder": "Input title",
-    "getArticleSuccess": "Get article success"
+    "getArticleSuccess": "Get article success",
+    "categoryCaption": "The existing category list can be seen in the category",
+    "menu": "Menu",
+    "createArticle": "Create Article",
+    "thumbnails": "thumbnails",
+    "selectFile": "Click to select files",
+    "supportedFile": "Support File Type: .jpg or .png"
   },
   "ListCategory": {
     "name": "Name",
     "namePlaceholder": "Insert category name",
     "nameRequired": "Please insert category name"
   },
+  "ListCategories": {
+    "totalCategories": "Total Categories",
+    "addCategory": "+ Add Category",
+    "tableCategory": "Category",
+    "tableCreatedAt": "Created At",
+    "tableAction": "Action",
+    "preview": "Preview",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "previous": "Previous",
+    "next": "Next",
+    "nameRequired": "Name is required",
+    "nameFormatInvalid": "Invalid name format",
+    "name": "Name",
+    "namePlaceholder": "Input name",
+    "modalDesc": "Delete category “Technology”? This will remove it from master data permanently",
+    "cancel": "Cancel"
+  },
   "Navbar": {
-    "logout": "Logout"
+    "logout": "Logout",
+    "articles": "Articles",
+    "categories": "Categories",
+    "logoutConfirmation": " Are you sure want to logout? ",
+    "cancel": "Cancel",
+    "myAccount": "My Account"
+  },
+  "Article": {
+    "otherArticles": "Other Articles"
   }
 }

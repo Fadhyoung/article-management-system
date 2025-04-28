@@ -22,7 +22,7 @@ interface status {
 }
 
 export const useCategory = () => {
-  const t = useTranslations("ListCategory");
+  const t = useTranslations("ListCategories");
   const router = useRouter();
 
   const { pagination, setPagination, categories, categoryOptions, setCategories, getCategory } = useCategoryProvider();

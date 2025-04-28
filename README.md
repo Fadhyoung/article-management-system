@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Article Management System - Fanuhi App
 
-## Getting Started
+This is a Next.js project designed to [briefly describe the purpose of the project]. It uses React, Next.js, and various modern web development tools to provide a seamless user experience and high performance.
 
-First, run the development server:
+---
+
+## 📦 Features
+
+- Read Articles
+- Create Article
+- Edit Article
+- Delete Article
+- Auth
+- Profile
+- Notification
+
+---
+
+## ⚙️ Requirements
+
+- Node.js: v16.0.0 or later (Recommended: v18.x.x LTS)
+- Next.js: v13.0.0 or later
+- React: v18.0.0 or later
+- TailwindCSS: v3.0 or later
+- TypeScript: v5.x.x or later (Optional but recommended for type safety)
+- Axios: v1.9.0 or later
+- React Hook Form: v7.56.1 or later
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the app locally:
+
+### 1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone git@github.com:Fadhyoung/article-management-system.git
+cd article-management-system
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
+```
+npm install
+yarn install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run Localy
+```
+npm run build
+yarn run
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Environment Variables
+```
+API_BASE_URL=
+NODE_ENV=
+DISABLE_AUTH_MIDDLEWARE=
+```
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+article-management-system
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── images
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── README.md
+├── src
+│   ├── actions
+│   ├── app
+│   ├── components
+│   ├── constants
+│   ├── i18n
+│   ├── middleware.ts
+│   ├── providers
+│   ├── types
+│   └── utils
+├── tailwind.config.js
+├── tsconfig.json
+└── yarn.lock
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```

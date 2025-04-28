@@ -14,13 +14,13 @@ import { debounce } from "lodash";
 
 export const useArticles = () => {
   const t = useTranslations("ListArticles");
-  const { categories, categoryOptions } = useCategoryProvider();
   const router = useRouter();
-  const { showNotification } = useNotificationProvider();
-  const { pagination, articles, setFilter } =
-    useArticle();
 
-    const { control, handleSubmit, watch } = useForm<filterForm>();
+  const { categories, categoryOptions } = useCategoryProvider();
+  const { showNotification } = useNotificationProvider();
+  const { pagination, articles, setFilter } = useArticle();
+
+  const { control, handleSubmit, watch } = useForm<filterForm>();
 
   const handleDeleteArticle = async (id: string) => {
     try {
@@ -33,49 +33,50 @@ export const useArticles = () => {
         });
       } else {
         setFilter({
-          category: '',
+          category: "",
           limit: 9,
           page: 1,
-          search: ''
-        })
+          search: "",
+        });
       }
     } catch (error) {
-      console.error("Error deleting article:", error);
       showNotification({
         type: "error",
-        message: t("deleteArticleError"),
+        message: (error as Error).message,
       });
     }
   };
 
-  const handleFilter = debounce(async (filters: { search: string; category: string }) => {
+  const handleFilter = debounce(
+    async (filters: { search: string; category: string }) => {
       setFilter({
         category: filters.category,
         search: filters.search,
         limit: pagination.dataPerPage,
         page: pagination.currentPage,
-      })
-      }, 300);
+      });
+    },
+    300
+  );
 
   const handlePageClick = async (page: number) => {
     setFilter({
-      category: '',
+      category: "",
       limit: pagination.dataPerPage,
       page: page,
-      search: ''
-    })
+      search: "",
+    });
   };
 
   const handlePrevious = async () => {
-    
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
       setFilter({
-        category: '',
+        category: "",
         limit: pagination.dataPerPage,
         page: newPage,
-        search: ''
-      })
+        search: "",
+      });
     }
   };
 
@@ -83,11 +84,11 @@ export const useArticles = () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
       setFilter({
-        category: '',
+        category: "",
         limit: pagination.dataPerPage,
         page: newPage,
-        search: ''
-      })
+        search: "",
+      });
     }
   };
 
@@ -105,16 +106,16 @@ export const useArticles = () => {
 
   useEffect(() => {
     setFilter({
-      category: '',
+      category: "",
       limit: 9,
       page: 1,
-      search: ''
-    })
-  }, [])
+      search: "",
+    });
+  }, []);
 
   return {
-    pagination,    
-    
+    pagination,
+
     t,
     control,
     handleSubmit,

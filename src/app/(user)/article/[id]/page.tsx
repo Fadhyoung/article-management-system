@@ -9,7 +9,7 @@ import { truncateContent } from "@/utils/truncateText";
 import Navbar from "@/app/(user)/components/Navbar";
 
 export default function HomeComponent() {
-  const { article, articles } = useDetailArticle();
+  const { t, article, articles } = useDetailArticle();
 
   return (
     <div className="w-5/6 mx-auto flex flex-col gap-1 items-center justify-center text-left">
@@ -48,7 +48,7 @@ export default function HomeComponent() {
       <main className="flex-grow bg-white py-8">
         <div className="">
           <div className="text-sm text-gray-500 mb-6">
-            <Typography type="cardtitle">Other Articles</Typography>
+            <Typography type="cardtitle">{t('otherArticles')}</Typography>
           </div>
 
           {/* Blog posts grid */}

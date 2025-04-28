@@ -34,15 +34,13 @@ export default function CategoryPage() {
 
   const { currentPage, totalPages } = pagination;
 
-  console.log("the total page is: ", totalPages)
-
   return (
     <>
       {/* Main Content */}
       <main className="flex-1 p-8">
         <div className="rounded-2xl shadow-md border bg-background2 overflow-hidden">
           <div className="p-6 flex justify-between items-center border-b">
-            <div className="text-lg font-semibold">Total Articles: 20</div>
+            <div className="text-lg font-semibold">{t('totalCategories')} {pagination.totalData}</div>
           </div>
 
           {/* Search & Filter */}
@@ -61,7 +59,7 @@ export default function CategoryPage() {
               radius="md"
               onClick={() => openModal("add")}
             >
-              + Add Articles
+              {t('addCategory')}
             </Button>
           </div>
 
@@ -70,9 +68,9 @@ export default function CategoryPage() {
             <table className="w-full text-left border">
               <thead className="text-center bg-gray-100">
                 <tr>
-                  <th className="py-3 px-4 border-y">Category</th>
-                  <th className="py-3 px-4 border-y">Created at</th>
-                  <th className="py-3 px-4 border-y">Action</th>
+                  <th className="py-3 px-4 border-y">{t('tableCategory')}</th>
+                  <th className="py-3 px-4 border-y">{t('tableCreatedAt')}</th>
+                  <th className="py-3 px-4 border-y">{t('tableAction')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -97,7 +95,7 @@ export default function CategoryPage() {
                               setId(category.id);
                             }}
                           >
-                            Edit
+                            {t('edit')}
                           </Button>
                           <Button
                             buttonType="ghost"
@@ -108,7 +106,7 @@ export default function CategoryPage() {
                               setId(category.id);
                             }}
                           >
-                            Delete
+                            {t('delete')}
                           </Button>
                         </div>
                       </td>
@@ -136,7 +134,7 @@ export default function CategoryPage() {
                     onClick={() => handlePageClick(page)}
                     className={`px-3 py-1 border border-gray-300 rounded text-sm ${
                       page === pagination.currentPage
-                        ? "bg-indigo-600 text-white"
+                        ? "bg-primary text-white"
                         : "text-gray-500 hover:bg-gray-50"
                     }`}
                   >
@@ -150,7 +148,7 @@ export default function CategoryPage() {
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                {t('next')}
               </button>
             </nav>
           </div>
@@ -176,8 +174,7 @@ export default function CategoryPage() {
 
               {status?.isDelete ? (
                 <Typography type="caption" variant="accent">
-                  Delete category “Technology”? This will remove it from master
-                  data permanently.
+                  {t('modalDesc')}
                 </Typography>
               ) : (
                 <div>
@@ -214,7 +211,7 @@ export default function CategoryPage() {
                   className="border py-2 px-4 rounded-lg hover:bg-gray-100"
                   onClick={handleCloseModal}
                 >
-                  Cancel
+                  {t('cancel')}
                 </Button>
                 <Button
                   variant={status?.isDelete ? "danger" : "primary"}
@@ -222,7 +219,7 @@ export default function CategoryPage() {
                   type="submit"
                   className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
                 >
-                  {status?.isAdd ? "Add" : status?.isEdit ? "Edit" : "Delete"}
+                  {status?.isAdd ? t('Add') : status?.isEdit ? t('edit') : t('delete')}
                 </Button>
               </div>
             </form>

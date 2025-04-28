@@ -2,7 +2,7 @@
 
 import { Controller } from "react-hook-form";
 import { Suspense, useState } from "react";
-import { ArrowLeft, ImageUp } from "lucide-react";
+import { ArrowLeft, ImageUp, X } from "lucide-react";
 import Button from "@/components/Button";
 import Typography from "@/components/Typography";
 import Input from "@/components/Input";
@@ -26,6 +26,7 @@ function ArticleFormContent() {
     register,
     handleSubmit,
     control,
+    router,
     errors,
     handleFileChange,
     handleWriteArticle,
@@ -45,15 +46,16 @@ function ArticleFormContent() {
               buttonType="ghost"
               variant="secondary"
               className="flex text-sm text-gray-600 mr-4"
+              onClick={() => router.back()}
             >
               <ArrowLeft />
               <Typography type="cardtitle" className="ml-2">
-                Create Articles
+                {t('createArticle')}
               </Typography>
             </Button>
           </div>
           <div>
-            <label className="block mb-2 font-medium">Thumbnails</label>
+            <label className="block mb-2 font-medium">{t('thumbnails')}</label>
             {!preview ? (
               <div className="w-fit border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center">
                 <input
@@ -76,11 +78,11 @@ function ArticleFormContent() {
                     variant="muted"
                     className="cursor-pointer underline hover:underline mt-2"
                   >
-                    Click to select files
+                    {t('selectFile')}
                   </Typography>
                 </label>
                 <p className="text-xs text-gray-400 mt-2">
-                  Support File Type: .jpg or .png
+                  {t('supportedFile')}
                 </p>
               </div>
             ) : (
@@ -91,14 +93,13 @@ function ArticleFormContent() {
                   fill
                   className="object-cover rounded-lg border"
                 />
-                {/* Optional: Reset button */}
-                <button
+                <Button
                   type="button"
                   className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
                   onClick={() => setPreview(null)}
                 >
-                  ✕
-                </button>
+                  <X />
+                </Button>
               </div>
             )}
           </div>
@@ -159,10 +160,10 @@ function ArticleFormContent() {
             />
             <div className="py-1 flex gap-2">
               <Typography type="body" variant="accent">
-                The existing category list can be seen in the category
+                {t('categoryCaption')}
               </Typography>
               <Link href={APP_CATEGORY} className="text-primary">
-                menu
+                {t('menu')}
               </Link>
             </div>
           </div>
@@ -194,24 +195,22 @@ function ArticleFormContent() {
 
           {/* Buttons */}
           <div className="flex justify-end space-x-4">
-            <button
+            <Button
               type="button"
-              className="border py-2 px-4 rounded-lg hover:bg-gray-100"
+              buttonType="outline"
+              variant="secondary"
+              radius="lg"
             >
               Cancel
-            </button>
-            <button
-              type="button"
-              className="border py-2 px-4 rounded-lg hover:bg-gray-100"
-            >
-              Preview
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="primary"
               type="submit"
-              className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+              size="lg"
+              radius="lg"
             >
               Upload
-            </button>
+            </Button>
           </div>
         </form>
       </div>
