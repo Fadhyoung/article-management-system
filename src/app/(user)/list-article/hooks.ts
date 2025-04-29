@@ -21,7 +21,6 @@ export const useListArticle = () => {
   const { control, handleSubmit, watch } = useForm<FilterForm>();
 
   const handleFilter = debounce(async (filters: FilterForm) => {
-
     const response = await getArticleListAction(
       1,
       pagination.totalData,
@@ -37,7 +36,7 @@ export const useListArticle = () => {
 
     setPagination({
       dataPerPage: 9,
-      totalPages: Math.ceil(pagination.totalData / 9),
+      totalPages: Math.ceil(filteredArticleByCategory.length / 9),
       totalData: filteredArticleByCategory.length,
       currentPage: 1,
     });
