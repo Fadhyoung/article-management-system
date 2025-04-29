@@ -147,12 +147,7 @@ function ArticleFormContent() {
                     const selectedCategory = categories?.data.find(
                       (category) => category.name === selectedValue
                     );
-
-                    console.log("selectedValue", selectedValue);
-
                     field.onChange(selectedCategory?.id ?? null);
-
-                    console.log("inserted value ", selectedCategory?.id);
                   }}
                   isError={!!fieldState.error}
                   errorText={fieldState.error?.message}

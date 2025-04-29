@@ -26,6 +26,11 @@ export const useRegister = () => {
       const response = await registerAction(form);
       if (response.isSuccess && response.data) {
         localStorage.setItem("profile", JSON.stringify(response.data));
+        showNotification({
+          type: "success",
+          mode: "modal",
+          message: 'You Are Registered',
+        });
         if (response.data.role == "User") {
           router.push(APP_LIST_ARTICLE);
         } else if (response.data.role == "Admin") {

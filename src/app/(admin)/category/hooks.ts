@@ -5,7 +5,7 @@ import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { CategoryForm, FilterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { APP_ARTICLE_FORM, APP_CATEGORY } from "@/constants";
+import { APP_ARTICLE_FORM } from "@/constants";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useState } from "react";
 import { useModalProvider } from "@/providers/ModalProvider";
@@ -39,6 +39,7 @@ export const useCategory = () => {
   const { showNotification } = useNotificationProvider();
   const { isOpen, setIsOpen } = useModalProvider();
 
+  
   const { control, handleSubmit, reset } = useForm<CategoryForm>();
   const {
     control: filterControl,
@@ -57,12 +58,16 @@ export const useCategory = () => {
         response = await postCategoryAction(form);
       } else {
         response = await deleteCategoryAction(id);
-      }
-      if (response.isSuccess) {
+      }      
+      if (response.isSuccess) {        
+        showNotification({
+          message: 'Request Success',
+          mode: 'modal',
+          type: 'success'
+        })
         getCategory(filter);
         Math.ceil(pagination.totalData / 9);
         handleCloseModal();
-        router.push(APP_CATEGORY);
       } else {
         showNotification({
           type: "error",

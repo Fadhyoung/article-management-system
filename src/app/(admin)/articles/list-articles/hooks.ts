@@ -33,6 +33,11 @@ export const useArticles = () => {
           message: response.message,
         });
       } else {
+        showNotification({
+          type: "success",
+          mode: "modal",
+          message: 'Article deleted',
+        });
         setFilter({
           category: "",
           limit: 9,
