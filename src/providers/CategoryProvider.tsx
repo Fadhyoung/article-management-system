@@ -52,7 +52,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [pagination, setPagination] = useState<Pagination>({
     currentPage: 1,
     totalData: 0,
-    dataPerPage: 2,
+    dataPerPage: 9,
   },)
   const [filter, setFilter] = useState<FilterForm | undefined>({
     category: '',
