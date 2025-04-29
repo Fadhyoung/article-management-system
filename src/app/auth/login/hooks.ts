@@ -35,6 +35,11 @@ export const useLogin = () => {
       const response = await loginAction(form);
       if (response.isSuccess && response.data) {
         localStorage.setItem("profile", JSON.stringify(response.data));
+        showNotification({
+          type: "success",
+          mode: "modal",
+          message: 'Login Success',
+        });
         if (response.data.role == 'User') {
           router.push(APP_LIST_ARTICLE);
         } else if (response.data.role == 'Admin') {

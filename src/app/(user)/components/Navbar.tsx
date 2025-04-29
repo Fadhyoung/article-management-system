@@ -9,6 +9,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import Typography from "@/components/Typography";
 import { useTranslations } from "next-intl";
+import { useNotificationProvider } from "@/providers/NotificationProvider";
 
 interface NavbarProps {
   className?: string;
@@ -16,20 +17,34 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ className, imageUrl }) => {
+  const { showNotification } = useNotificationProvider();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const router = useRouter();
-  const t = useTranslations('Navbar');
+  const t = useTranslations("Navbar");
 
   const handleLogout = async () => {
     try {
       const response = await logoutAction();
       if (response.isSuccess) {
         router.push(APP_LOGIN);
+        showNotification({
+          type: "success",
+          mode: "modal",
+          message: "Logout Success",
+        });
       } else {
-        console.error("Logout failed:", response.message);
+        showNotification({
+          type: "error",
+          mode: "modal",
+          message: "Logout Failed",
+        });
       }
     } catch (error) {
-      console.error("Error during logout:", error);
+      showNotification({
+        type: "error",
+        mode: "modal",
+        message: (error as Error).message,
+      });
     }
   };
 
@@ -66,7 +81,9 @@ export const Navbar: React.FC<NavbarProps> = ({ className, imageUrl }) => {
         <div className="bg-primary bg-opacity-20 rounded-full p-1 mr-2">
           <User size={24} className="text-white" />
         </div>
-        <Typography type="subtitle" className={clsx(className)}>{username}</Typography>
+        <Typography type="subtitle" className={clsx(className)}>
+          {username}
+        </Typography>
       </Button>
 
       {/* Modal */}
@@ -79,11 +96,11 @@ export const Navbar: React.FC<NavbarProps> = ({ className, imageUrl }) => {
             href={APP_USER_PROFILE}
             className="block px-4 py-2 text-sm !text-black hover:bg-gray-100"
           >
-            {t('myAccount')}
+            {t("myAccount")}
           </Link>
           <Button variant="danger" buttonType="ghost" onClick={handleLogout}>
             <LogOut />
-            {t('logout')}
+            {t("logout")}
           </Button>
         </div>
       )}

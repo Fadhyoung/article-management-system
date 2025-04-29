@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 import { useNotificationProvider } from '@/providers/NotificationProvider';
 import Typography from '@/components/Typography';
-import Image from 'next/image';
 import Button from '@/components/Button';
 import { X } from 'lucide-react';
 
@@ -50,24 +49,12 @@ export const NotificationModal = () => {
             <Typography type="cardtitle" variant="success">
               Permintaan Berhasil
             </Typography>
-            <Image
-              src={'/images/img_success_notif.png'}
-              alt="Success notification image"
-              width={120}
-              height={120}
-            />
           </>
         ) : (
           <>
             <Typography type="cardtitle" variant="danger">
               Gagal Terhubung ke Server
             </Typography>
-            <Image
-              src={'/images/img_error_notif.png'}
-              alt="Success notification image"
-              width={120}
-              height={120}
-            />
           </>
         )}
         {notification.message}

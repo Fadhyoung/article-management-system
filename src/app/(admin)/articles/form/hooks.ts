@@ -46,11 +46,6 @@ export const useArticleForm = (id: string | null) => {
       const response = await getDetailArticle(id);
       if (response.isSuccess) {
         setArticle(response.data);
-        showNotification({
-          type: "success",
-          message: t("getArticleSuccess"),
-          mode: "toast",
-        });
       } else {
         showNotification({
           type: "error",
@@ -103,6 +98,7 @@ export const useArticleForm = (id: string | null) => {
   }, [id, article, reset]);
 
   const handleWriteArticle = async (form: ArticleForm) => {
+    console.log(form);
     try {
       let response;
       if (id) {
@@ -112,6 +108,11 @@ export const useArticleForm = (id: string | null) => {
       }
       if (response.isSuccess) {
         router.push(APP_ARTICLE_LIST_ARTICLE);
+        showNotification({
+          message: 'Success write article',
+          mode: 'modal',
+          type: 'success'
+        })
       } else {
         showNotification({
           type: "error",

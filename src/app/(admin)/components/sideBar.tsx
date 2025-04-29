@@ -10,8 +10,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useNotificationProvider } from "@/providers/NotificationProvider";
 
 export const SideBar = () => {
+  const {showNotification} = useNotificationProvider();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const router = useRouter();
   const t = useTranslations('Navbar');
@@ -21,11 +23,24 @@ export const SideBar = () => {
       const response = await logoutAction();
       if (response.isSuccess) {
         router.push(APP_LOGIN)
+        showNotification({
+          type: "success",
+          mode: "modal",
+          message: 'Logout Success',
+        });
       } else {
-        console.error("Logout failed:", response.message);
+        showNotification({
+          type: "error",
+          mode: "modal",
+          message: 'Logout Failed',
+        });
       }
     } catch (error) {
-      console.error("Error during logout:", error);
+      showNotification({
+        type: "error",
+        mode: "modal",
+        message: (error as Error).message,
+      });
     }
   };
   return (

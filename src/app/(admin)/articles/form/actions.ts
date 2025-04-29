@@ -58,6 +58,13 @@ export async function putArticleAction(form: ArticleForm, id: string): Promise<
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
 
+    console.log("Payload being sent:", {
+      title: form.title,
+      content: form.content,
+      categoryId: form.categoryId,
+    });
+    console.log("ID:", id);    
+
     const response = await axios.put(
         `${process.env.API_BASE_URL}/articles/${id}`,
         {
