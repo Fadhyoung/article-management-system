@@ -39,7 +39,7 @@ export const useLogin = () => {
           router.push(APP_LIST_ARTICLE);
         } else if (response.data.role == 'Admin') {
           router.push(APP_ARTICLE_LIST_ARTICLE);
-        }        
+        }
       } else if (response.message == ERR_INVALID_EMAIL_OR_PASSWORD) {
         showNotification({
           type: "error",
