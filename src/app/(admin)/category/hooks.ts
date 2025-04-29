@@ -71,7 +71,6 @@ export const useCategory = () => {
         });
       }
     } catch (error) {
-      console.error("Error creating article:", error);
       showNotification({
         type: "error",
         message: (error as Error).message,

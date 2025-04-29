@@ -21,30 +21,29 @@ export const useListArticle = () => {
   const { control, handleSubmit, watch } = useForm<FilterForm>();
 
   const handleFilter = debounce(async (filters: FilterForm) => {
-    setFilter({
-      search: filters.search,
-      limit: pagination.dataPerPage,
-      page: pagination.currentPage,
+
+    console.log(filters);
+    const response = await getArticleListAction(
+      1,
+      pagination.totalData,
+      filters.search
+    );
+
+    const filteredArticleByCategory =
+      response?.data.data.filter((article) =>
+        article.category.name
+          .toLowerCase()
+          .includes(filters.category!.toLowerCase())
+      ) ?? [];
+
+    setPagination({
+      dataPerPage: 9,
+      totalPages: Math.ceil(pagination.totalData / 9),
+      totalData: filteredArticleByCategory.length,
+      currentPage: 1,
     });
-    if (filters.category) {
-      const response = await getArticleListAction(1, pagination.totalData);
 
-      const filteredArticleByCategory =
-        response?.data.data.filter((article) =>
-          article.category.name
-            .toLowerCase()
-            .includes(filters.category!.toLowerCase())
-        ) ?? [];
-
-      setPagination({
-        dataPerPage: 9,
-        totalPages: Math.ceil(pagination.totalData / 9),
-        totalData: pagination.totalData,
-        currentPage: 1,
-      });
-
-      setArticles(filteredArticleByCategory);
-    }
+    setArticles(filteredArticleByCategory);
   }, 300);
 
   const handlePageClick = async (page: number) => {

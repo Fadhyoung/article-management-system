@@ -71,7 +71,7 @@ export default function HomeComponent() {
                       const selectedCategory = categories?.data.find(
                         (category) => category.name === selectedValue
                       );
-                      field.onChange(selectedCategory ?? null);
+                      field.onChange(selectedCategory?.name ?? null);
 
                       handleFilter({
                         search: watch("search") || "",
