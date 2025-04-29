@@ -62,8 +62,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getCategory = async (filters: FilterForm | undefined) => {
     try {
-      const response = await getCategoryAction(filters?.page, filters?.limit);
-      console.log(filters,pagination)      
+      const response = await getCategoryAction(filters?.page, filters?.limit);   
       if (response.isSuccess) {
         setCategories(response.data);
         setPagination({

@@ -48,7 +48,7 @@ export const useArticles = () => {
   };
 
   const handleFilter = debounce(
-    async (filters: { search: string; category: string }) => {
+    async (filters: FilterForm) => {
       setFilter({
         category: filters.category,
         search: filters.search,

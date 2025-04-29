@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { CategoryForm } from "@/types/Category";
+import { CategoryForm, FilterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { APP_ARTICLE_FORM, APP_CATEGORY } from "@/constants";
@@ -13,6 +13,8 @@ import postCategoryAction, {
   deleteCategoryAction,
   editCategoryAction,
 } from "@/app/(admin)/category/actions";
+import { debounce } from "lodash";
+import { getCategoryAction } from "@/app/(user)/list-article/actions";
 
 interface status {
   isAdd: boolean;
@@ -24,11 +26,25 @@ export const useCategory = () => {
   const t = useTranslations("ListCategories");
   const router = useRouter();
 
-  const { pagination, filter, setFilter, categories, categoryOptions,  getCategory } = useCategoryProvider();
+  const {
+    pagination,
+    setPagination,
+    filter,
+    setFilter,
+    categories,
+    setCategories,
+    categoryOptions,
+    getCategory,
+  } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
   const { isOpen, setIsOpen } = useModalProvider();
 
   const { control, handleSubmit, reset } = useForm<CategoryForm>();
+  const {
+    control: filterControl,
+    handleSubmit: filterHandle,
+    watch,
+  } = useForm<FilterForm>();
   const [status, setStatus] = useState<status>();
   const [id, setId] = useState<string>("");
 
@@ -44,6 +60,7 @@ export const useCategory = () => {
       }
       if (response.isSuccess) {
         getCategory(filter);
+        Math.ceil(pagination.totalData / 9);
         handleCloseModal();
         router.push(APP_CATEGORY);
       } else {
@@ -73,6 +90,36 @@ export const useCategory = () => {
     }
   };
 
+  const handleFilter = debounce(async (filters: FilterForm) => {
+    if (!filters.search) {
+      getCategory(filter);
+    } else {
+      const response = await getCategoryAction(1, pagination.totalData);
+
+      const filteredCategories =
+        response?.data.data.filter((category) =>
+          category.name.toLowerCase().includes(filters.search!.toLowerCase())
+        ) ?? [];
+
+      console.log(filteredCategories);
+
+      setPagination({
+        dataPerPage: 9,
+        totalPages: Math.ceil(pagination.totalData / 9),
+        totalData: pagination.totalData,
+        currentPage: 1,
+      });
+
+      setCategories({
+        data: filteredCategories,
+        dataPerPage: pagination.dataPerPage,
+        totalPages: pagination.totalPages,
+        currentPage: pagination.currentPage,
+        totalData: pagination.totalData,
+      });
+    }
+  }, 300);
+
   const handlePageClick = async (page: number) => {
     setFilter({
       limit: pagination.dataPerPage,
@@ -87,7 +134,7 @@ export const useCategory = () => {
         limit: pagination.dataPerPage,
         page: newPage,
       });
-      }
+    }
   };
 
   const handleNext = async () => {
@@ -109,11 +156,14 @@ export const useCategory = () => {
     setStatus(undefined);
     setId("");
     reset();
-  };  
+  };
 
   return {
     t,
     control,
+    filterControl,
+    filterHandle,
+    watch,
     handleSubmit,
     categories,
     categoryOptions,
@@ -132,5 +182,7 @@ export const useCategory = () => {
     handlePageClick,
     handleNext,
     handlePrevious,
+
+    handleFilter,
   };
 };
