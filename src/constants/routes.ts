@@ -9,4 +9,5 @@ export const APP_USER_PROFILE = '/profile/me';
 export const APP_ARTICLE_LIST_ARTICLE = '/articles/list-articles'
 export const APP_ARTICLE_FORM = '/articles/form'
 export const APP_ARTICLE = '/article/'
+export const APP_PREVIEW = '/preview/'
 export const APP_CATEGORY = '/category'

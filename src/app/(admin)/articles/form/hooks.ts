@@ -5,11 +5,17 @@ import { useCategoryProvider } from "@/providers/CategoryProvider";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
-import { APP_ARTICLE_FORM, APP_ARTICLE_LIST_ARTICLE } from "@/constants";
-import { ArticleForm } from "@/types/Articles";
+import {
+  APP_ARTICLE_FORM,
+  APP_ARTICLE_LIST_ARTICLE,
+  APP_PREVIEW,
+} from "@/constants";
+import { Article, ArticleForm } from "@/types/Articles";
 import { useEffect, useState } from "react";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
-import postArticleAction, { putArticleAction } from "@/app/(admin)/articles/form/actions";
+import postArticleAction, {
+  putArticleAction,
+} from "@/app/(admin)/articles/form/actions";
 import { getDetailArticle } from "@/actions/article";
 
 export const useArticleForm = (id: string | null) => {
@@ -19,13 +25,14 @@ export const useArticleForm = (id: string | null) => {
   const { categories, categoryOptions } = useCategoryProvider();
   const { article, setArticle } = useArticle();
   const { showNotification } = useNotificationProvider();
-  
+
   const [preview, setPreview] = useState<string | null>(null);
 
   const {
     register,
     reset,
     handleSubmit,
+    getValues,
     control,
     formState: { errors },
   } = useForm<ArticleForm>();
@@ -35,38 +42,50 @@ export const useArticleForm = (id: string | null) => {
   };
 
   const getArticle = async (id: string) => {
-      try {
-        const response = await getDetailArticle(id);
-        if (response.isSuccess) {
-          setArticle(response.data);        
-          showNotification({
+    try {
+      const response = await getDetailArticle(id);
+      if (response.isSuccess) {
+        setArticle(response.data);
+        showNotification({
           type: "success",
           message: t("getArticleSuccess"),
           mode: "toast",
-          });
-        } else {
-          showNotification({
-            type: "error",
-            message: response.message,
-            mode: "toast",
-          });
-        }
-      } catch (error) {
+        });
+      } else {
         showNotification({
           type: "error",
-          message: (error as Error).message,
+          message: response.message,
           mode: "toast",
         });
       }
-    };
+    } catch (error) {
+      showNotification({
+        type: "error",
+        message: (error as Error).message,
+        mode: "toast",
+      });
+    }
+  };
+
+  const goToPreviewPage = (article: Article) => {
+    setArticle(article);
+    router.push(APP_PREVIEW);
+  };
 
   useEffect(() => {
     if (id) {
       getArticle(id);
     }
-  }, [])
+    if (article) {
+      reset({
+        title: article.title,
+        content: article.content,
+        categoryId: article.categoryId,
+      });
+    }
+  }, []);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (id && article && categoryOptions != null) {
       const selectedCategory = categoryOptions.find(
         (option) => option.label === article.category.name
@@ -82,7 +101,6 @@ export const useArticleForm = (id: string | null) => {
       }
     }
   }, [id, article, reset]);
-  
 
   const handleWriteArticle = async (form: ArticleForm) => {
     try {
@@ -91,7 +109,7 @@ export const useArticleForm = (id: string | null) => {
         response = await putArticleAction(form, id);
       } else {
         response = await postArticleAction(form);
-      }      
+      }
       if (response.isSuccess) {
         router.push(APP_ARTICLE_LIST_ARTICLE);
       } else {
@@ -120,12 +138,14 @@ export const useArticleForm = (id: string | null) => {
   return {
     t,
     control,
+    getValues,
     categories,
     categoryOptions,
     register,
     handleSubmit,
     errors,
     goToCreateArticle,
+    goToPreviewPage,
     router,
 
     preview,
