@@ -54,7 +54,7 @@ export default function CategoryPage() {
           <div className="p-6 flex items-center gap-4">
             <form
               onSubmit={filterHandle(handleFilter)}
-              className="w-full p-6 flex gap-4 justify-between"
+              className="w-full flex gap-4 justify-between"
             >
               <div className="w-full md:w-96 bg-white rounded-md flex items-center px-3 py-2">
                 <Search size={16} className="text-gray-500 mr-2" />
@@ -88,7 +88,6 @@ export default function CategoryPage() {
             </form>
 
             <Button
-              className="bg-blue-600 text-white py-2 px-4 rounded-lg"
               radius="md"
               onClick={() => openModal("add")}
             >
