@@ -22,7 +22,6 @@ export const useListArticle = () => {
 
   const handleFilter = debounce(async (filters: FilterForm) => {
 
-    console.log(filters);
     const response = await getArticleListAction(
       1,
       pagination.totalData,

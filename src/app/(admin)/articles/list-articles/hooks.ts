@@ -11,6 +11,7 @@ import deleteArticleAction from "@/app/(admin)/articles/list-articles/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useEffect } from "react";
 import { debounce } from "lodash";
+import getArticleListAction from "@/actions/article";
 
 export const useArticles = () => {
   const t = useTranslations("ListArticles");
@@ -18,7 +19,7 @@ export const useArticles = () => {
 
   const { categories, categoryOptions } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
-  const { pagination, articles, setFilter } = useArticle();
+  const { pagination, setPagination, articles, setArticles, setFilter } = useArticle();
 
   const { control, handleSubmit, watch } = useForm<FilterForm>();
 
@@ -47,17 +48,30 @@ export const useArticles = () => {
     }
   };
 
-  const handleFilter = debounce(
-    async (filters: FilterForm) => {
-      setFilter({
-        category: filters.category,
-        search: filters.search,
-        limit: pagination.dataPerPage,
-        page: pagination.currentPage,
+  const handleFilter = debounce(async (filters: FilterForm) => {
+  
+      const response = await getArticleListAction(
+        1,
+        pagination.totalData,
+        filters.search
+      );
+  
+      const filteredArticleByCategory =
+        response?.data.data.filter((article) =>
+          article.category.name
+            .toLowerCase()
+            .includes(filters.category!.toLowerCase())
+        ) ?? [];
+  
+      setPagination({
+        dataPerPage: 9,
+        totalPages: Math.ceil(pagination.totalData / 9),
+        totalData: filteredArticleByCategory.length,
+        currentPage: 1,
       });
-    },
-    300
-  );
+  
+      setArticles(filteredArticleByCategory);
+    }, 300);
 
   const handlePageClick = async (page: number) => {
     setFilter({

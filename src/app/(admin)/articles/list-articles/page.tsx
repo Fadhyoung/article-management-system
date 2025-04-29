@@ -67,7 +67,7 @@ export default function ArticlesPage() {
                         const selectedCategory = categories?.data.find(
                           (category) => category.name === selectedValue
                         );
-                        field.onChange(selectedCategory ?? null);
+                        field.onChange(selectedCategory?.name ?? null);
 
                         handleFilter({
                           search: watch("search") || "",
@@ -76,7 +76,7 @@ export default function ArticlesPage() {
                       }}
                       isError={!!fieldState.error}
                       errorText={fieldState.error?.message}
-                      className="w-full md:w-fit bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
+                      className="w-full md:!w-40 bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
                     />
                   )}
                 />
@@ -188,7 +188,7 @@ export default function ArticlesPage() {
 
           {/* Pagination */}
           <div className="flex justify-center m-10">
-          <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-1">
               <button
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
@@ -218,7 +218,7 @@ export default function ArticlesPage() {
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {t('next')}
+                {t("next")}
               </button>
             </nav>
           </div>
