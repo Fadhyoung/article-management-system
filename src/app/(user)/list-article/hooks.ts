@@ -36,8 +36,6 @@ export const useListArticle = () => {
             .includes(filters.category!.toLowerCase())
         ) ?? [];
 
-      console.log(filteredArticleByCategory);
-
       setPagination({
         dataPerPage: 9,
         totalPages: Math.ceil(pagination.totalData / 9),
