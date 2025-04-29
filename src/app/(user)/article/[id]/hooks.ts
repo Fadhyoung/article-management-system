@@ -2,8 +2,6 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { filterForm } from "@/types/Category";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { getDetailArticle } from "@/actions/article";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
@@ -20,7 +18,6 @@ export const useDetailArticle = () => {
   const params = useParams();
   const id = params?.id as string;
 
-  const { control } = useForm<filterForm>();
   const [loading, setLoading] = useState<boolean>(true);
   const { articles, setFilter } = useArticle();
 
@@ -58,7 +55,6 @@ export const useDetailArticle = () => {
 
   return {
     t,
-    control,
     categories,
     categoryOptions,
     article,

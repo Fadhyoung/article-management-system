@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { filterForm } from "@/types/Category";
+import { FilterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
@@ -20,7 +20,7 @@ export const useArticles = () => {
   const { showNotification } = useNotificationProvider();
   const { pagination, articles, setFilter } = useArticle();
 
-  const { control, handleSubmit, watch } = useForm<filterForm>();
+  const { control, handleSubmit, watch } = useForm<FilterForm>();
 
   const handleDeleteArticle = async (id: string) => {
     try {
@@ -61,10 +61,8 @@ export const useArticles = () => {
 
   const handlePageClick = async (page: number) => {
     setFilter({
-      category: "",
       limit: pagination.dataPerPage,
       page: page,
-      search: "",
     });
   };
 
@@ -72,10 +70,8 @@ export const useArticles = () => {
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
       setFilter({
-        category: "",
         limit: pagination.dataPerPage,
         page: newPage,
-        search: "",
       });
     }
   };
@@ -84,10 +80,8 @@ export const useArticles = () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
       setFilter({
-        category: "",
         limit: pagination.dataPerPage,
         page: newPage,
-        search: "",
       });
     }
   };

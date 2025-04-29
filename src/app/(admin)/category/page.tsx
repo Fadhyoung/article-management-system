@@ -74,11 +74,7 @@ export default function CategoryPage() {
                 </tr>
               </thead>
               <tbody>
-                {categories?.data
-                  ?.filter((category: Category) =>
-                    category.name.toLowerCase().includes(search.toLowerCase())
-                  )
-                  .map((category: Category, idx: number) => (
+                {categories?.data.map((category: Category, idx: number) => (
                     <tr key={idx} className="text-center hover:bg-gray-50">
                       <td className="py-3 px-4 border-y">{category.name}</td>
                       <td className="py-3 px-4 border-y">

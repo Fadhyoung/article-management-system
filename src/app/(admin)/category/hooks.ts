@@ -13,7 +13,6 @@ import postCategoryAction, {
   deleteCategoryAction,
   editCategoryAction,
 } from "@/app/(admin)/category/actions";
-import { getCategoryAction } from "@/app/(user)/list-article/actions";
 
 interface status {
   isAdd: boolean;
@@ -25,7 +24,7 @@ export const useCategory = () => {
   const t = useTranslations("ListCategories");
   const router = useRouter();
 
-  const { pagination, setPagination, categories, categoryOptions, setCategories, getCategory } = useCategoryProvider();
+  const { pagination, filter, setFilter, categories, categoryOptions,  getCategory } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
   const { isOpen, setIsOpen } = useModalProvider();
 
@@ -44,7 +43,7 @@ export const useCategory = () => {
         response = await deleteCategoryAction(id);
       }
       if (response.isSuccess) {
-        getCategory();
+        getCategory(filter);
         handleCloseModal();
         router.push(APP_CATEGORY);
       } else {
@@ -75,89 +74,29 @@ export const useCategory = () => {
   };
 
   const handlePageClick = async (page: number) => {
-    try {
-      const response = await getCategoryAction(page);
-
-      if (response.isSuccess) {
-        setCategories(response.data);
-        setPagination({
-          ...pagination,
-          currentPage: page,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
-    } catch (error) {
-      showNotification({
-        type: "error",
-        message: (error as Error).message,
-        mode: "toast",
-      });
-    }
+    setFilter({
+      limit: pagination.dataPerPage,
+      page: page,
+    });
   };
 
   const handlePrevious = async () => {
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
-      const response = await getCategoryAction(
-        newPage,
-        pagination.dataPerPage
-      );
-
-      if (response.isSuccess) {
-        setCategories(response.data);
-        setPagination({
-          ...pagination,
-          currentPage: newPage,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
+      setFilter({
+        limit: pagination.dataPerPage,
+        page: newPage,
+      });
       }
-    }
   };
 
   const handleNext = async () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
-
-      const response = await getCategoryAction(
-        newPage,
-        pagination.dataPerPage
-      );
-
-      if (response.isSuccess) {
-        setCategories(response.data);
-        setPagination({
-          ...pagination,
-          currentPage: newPage,
-          totalData: response.data.totalData,
-          totalPages: Math.ceil(
-            response.data.totalData / pagination.dataPerPage
-          ),
-        });
-      } else {
-        showNotification({
-          type: "error",
-          message: response.message,
-          mode: "toast",
-        });
-      }
+      setFilter({
+        limit: pagination.dataPerPage,
+        page: newPage,
+      });
     }
   };
 
@@ -170,7 +109,7 @@ export const useCategory = () => {
     setStatus(undefined);
     setId("");
     reset();
-  };
+  };  
 
   return {
     t,

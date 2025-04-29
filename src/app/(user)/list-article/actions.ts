@@ -27,7 +27,7 @@ export async function getCategoryAction(page? : number, limit?: number): Promise
       message: "Get category successful",
       data: {
         data: response.data.data,
-        dataPerPage: response.data.totalPages,
+        totalPages: response.data.totalPages,
         currentPage: response.data.currentPage,
         totalData: response.data.totalData,
       },

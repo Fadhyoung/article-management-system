@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { filterForm } from "@/types/Category";
+import { FilterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
@@ -17,7 +17,7 @@ export const useListArticle = () => {
   const { pagination, setPagination, articles, setFilter } =
     useArticle();
 
-  const { control, handleSubmit, watch } = useForm<filterForm>();
+  const { control, handleSubmit, watch } = useForm<FilterForm>();
 
   const handleFilter = debounce(async (filters: { search: string; category: string }) => {
     setFilter({
