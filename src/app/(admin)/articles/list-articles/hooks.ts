@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { filterForm } from "@/types/Category";
+import { FilterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useArticle } from "@/providers/ArticleProvider";
@@ -11,6 +11,7 @@ import deleteArticleAction from "@/app/(admin)/articles/list-articles/actions";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useEffect } from "react";
 import { debounce } from "lodash";
+import getArticleListAction from "@/actions/article";
 
 export const useArticles = () => {
   const t = useTranslations("ListArticles");
@@ -18,9 +19,9 @@ export const useArticles = () => {
 
   const { categories, categoryOptions } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
-  const { pagination, articles, setFilter } = useArticle();
+  const { pagination, setPagination, articles, setArticles, setFilter } = useArticle();
 
-  const { control, handleSubmit, watch } = useForm<filterForm>();
+  const { control, handleSubmit, watch } = useForm<FilterForm>();
 
   const handleDeleteArticle = async (id: string) => {
     try {
@@ -47,24 +48,35 @@ export const useArticles = () => {
     }
   };
 
-  const handleFilter = debounce(
-    async (filters: { search: string; category: string }) => {
-      setFilter({
-        category: filters.category,
-        search: filters.search,
-        limit: pagination.dataPerPage,
-        page: pagination.currentPage,
+  const handleFilter = debounce(async (filters: FilterForm) => {
+  
+      const response = await getArticleListAction(
+        1,
+        pagination.totalData,
+        filters.search
+      );
+  
+      const filteredArticleByCategory =
+        response?.data.data.filter((article) =>
+          article.category.name
+            .toLowerCase()
+            .includes(filters.category!.toLowerCase())
+        ) ?? [];
+  
+      setPagination({
+        dataPerPage: 9,
+        totalPages: Math.ceil(pagination.totalData / 9),
+        totalData: filteredArticleByCategory.length,
+        currentPage: 1,
       });
-    },
-    300
-  );
+  
+      setArticles(filteredArticleByCategory);
+    }, 300);
 
   const handlePageClick = async (page: number) => {
     setFilter({
-      category: "",
       limit: pagination.dataPerPage,
       page: page,
-      search: "",
     });
   };
 
@@ -72,10 +84,8 @@ export const useArticles = () => {
     if (pagination.currentPage > 1) {
       const newPage = pagination.currentPage - 1;
       setFilter({
-        category: "",
         limit: pagination.dataPerPage,
         page: newPage,
-        search: "",
       });
     }
   };
@@ -84,10 +94,8 @@ export const useArticles = () => {
     if (pagination.currentPage < (pagination.totalPages ?? 0)) {
       const newPage = pagination.currentPage + 1;
       setFilter({
-        category: "",
         limit: pagination.dataPerPage,
         page: newPage,
-        search: "",
       });
     }
   };

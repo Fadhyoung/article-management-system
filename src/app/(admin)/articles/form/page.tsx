@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { APP_CATEGORY } from "@/constants";
 import { useSearchParams } from "next/navigation";
+import { Article } from "@/types/Articles";
 
 function ArticleFormContent() {
   const [wordCount, setWordCount] = useState(0);
@@ -30,6 +31,7 @@ function ArticleFormContent() {
     errors,
     handleFileChange,
     handleWriteArticle,
+    goToPreviewPage,
   } = useArticleForm(id);
 
   return (
@@ -50,12 +52,12 @@ function ArticleFormContent() {
             >
               <ArrowLeft />
               <Typography type="cardtitle" className="ml-2">
-                {t('createArticle')}
+                {t("createArticle")}
               </Typography>
             </Button>
           </div>
           <div>
-            <label className="block mb-2 font-medium">{t('thumbnails')}</label>
+            <label className="block mb-2 font-medium">{t("thumbnails")}</label>
             {!preview ? (
               <div className="w-fit border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center">
                 <input
@@ -78,11 +80,11 @@ function ArticleFormContent() {
                     variant="muted"
                     className="cursor-pointer underline hover:underline mt-2"
                   >
-                    {t('selectFile')}
+                    {t("selectFile")}
                   </Typography>
                 </label>
                 <p className="text-xs text-gray-400 mt-2">
-                  {t('supportedFile')}
+                  {t("supportedFile")}
                 </p>
               </div>
             ) : (
@@ -160,10 +162,10 @@ function ArticleFormContent() {
             />
             <div className="py-1 flex gap-2">
               <Typography type="body" variant="accent">
-                {t('categoryCaption')}
+                {t("categoryCaption")}
               </Typography>
               <Link href={APP_CATEGORY} className="text-primary">
-                {t('menu')}
+                {t("menu")}
               </Link>
             </div>
           </div>
@@ -204,11 +206,46 @@ function ArticleFormContent() {
               Cancel
             </Button>
             <Button
-              variant="primary"
-              type="submit"
-              size="lg"
+              type="button"
+              buttonType="outline"
+              variant="secondary"
               radius="lg"
+              onClick={handleSubmit((values) => {
+                const selectedCategory = categories?.data.find(
+                  (category) => category.id === values.categoryId
+                );
+
+                const previewData: Article = {
+                  id: "preview-id",
+                  userId: "user-123",
+                  categoryId: values.categoryId,
+                  title: values.title,
+                  content: values.content,
+                  imageUrl: null,
+                  createdAt: "2025-04-26T05:00:41.444Z",
+                  updatedAt: "2025-04-26T05:00:41.444Z",
+                  category: {
+                    id: selectedCategory?.id ?? "cat-001",
+                    userId: selectedCategory?.userId ?? "user-123",
+                    name: selectedCategory?.name ?? "Uncategorized",
+                    createdAt:
+                      selectedCategory?.createdAt ?? "2025-04-26T05:00:41.444Z",
+                    updatedAt:
+                      selectedCategory?.updatedAt ?? "2025-04-26T05:00:41.444Z",
+                  },
+                  user: {
+                    id: "user-123",
+                    username: "John Doe",
+                  },
+                };
+
+                goToPreviewPage(previewData);
+              })}
             >
+              Preview
+            </Button>
+
+            <Button variant="primary" type="submit" size="lg" radius="lg">
               Upload
             </Button>
           </div>

@@ -12,11 +12,11 @@ export interface CategoryResponse extends Pagination {
   data: Category[];
 }
 
-export interface filterForm {
-  category: string;
-  page: number;
-  limit: number;
-  search: string;
+export interface FilterForm {
+  category?: string;
+  page?: number;
+  limit?: number;
+  search?: string;
 }
 
 export interface CategoryForm {

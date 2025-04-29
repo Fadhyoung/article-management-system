@@ -71,7 +71,7 @@ export default function HomeComponent() {
                       const selectedCategory = categories?.data.find(
                         (category) => category.name === selectedValue
                       );
-                      field.onChange(selectedCategory ?? null);
+                      field.onChange(selectedCategory?.name ?? null);
 
                       handleFilter({
                         search: watch("search") || "",
@@ -80,7 +80,7 @@ export default function HomeComponent() {
                     }}
                     isError={!!fieldState.error}
                     errorText={fieldState.error?.message}
-                    className="w-full md:w-fit bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
+                    className="w-full md:!w-40 bg-white text-gray-700 text-sm border-0 shadow-none focus:ring-0 focus:border-0"
                   />
                 )}
               />

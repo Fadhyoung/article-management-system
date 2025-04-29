@@ -9,7 +9,7 @@ export interface CommonDataResponse<T> extends CommonResponse {
 }
 
 export interface Pagination {
-  dataPerPage: number;
+  dataPerPage?: number;
   currentPage: number;
   totalData: number;
   totalPages?: number;

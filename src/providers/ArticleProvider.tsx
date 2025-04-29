@@ -3,7 +3,7 @@
 import getArticleListAction from "@/actions/article";
 import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { Article } from "@/types/Articles";
-import { filterForm } from "@/types/Category";
+import { FilterForm } from "@/types/Category";
 import { Pagination } from "@/types/Common";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -16,10 +16,10 @@ interface ArticleState {
     pagination: Pagination;
     setPagination: (pagination: Pagination) => void;
 
-    filter: filterForm | undefined;
-    setFilter: (filter: filterForm) => void;
+    filter: FilterForm | undefined;
+    setFilter: (filter: FilterForm) => void;
 
-    getArticles: (filter: filterForm | undefined) => void;
+    getArticles: (filter: FilterForm | undefined) => void;
 }
 
 const articleContext = createContext<ArticleState>({
@@ -54,7 +54,7 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
     totalData: 0,
     dataPerPage: 9,
   },)
-  const [filter, setFilter] = useState<filterForm | undefined>({
+  const [filter, setFilter] = useState<FilterForm | undefined>({
     category: '',
     search: '',
     limit: pagination.dataPerPage,
@@ -63,7 +63,7 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
   const [articles, setArticles] = useState<Article[] | undefined>(undefined);
   const [article, setArticle] = useState<Article | undefined>(undefined);
 
-  const getArticles = async (filters: filterForm | undefined) => {
+  const getArticles = async (filters: FilterForm | undefined) => {
     try {
       const response = await getArticleListAction(filters?.page, filters?.limit, filters?.search, filters?.category);
       if (response.isSuccess) {
@@ -72,7 +72,7 @@ export const ArticleProvider: React.FC<{ children: React.ReactNode }> = ({
           currentPage: response.data.currentPage,
           totalData: response.data.totalData,
           dataPerPage:  response.data.dataPerPage,
-          totalPages: Math.ceil(response.data.totalData / response.data.dataPerPage),
+          totalPages: Math.ceil(response.data.totalData / (response.data.dataPerPage || 9)),
         })          
       } else {
         showNotification({

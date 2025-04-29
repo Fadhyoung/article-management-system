@@ -12,7 +12,7 @@ export default function HomeComponent() {
   const { t, article, articles, loading } = useDetailArticle();
 
   if (loading) {
-    return <div>Loading...</div>; // <-- Show a spinner, skeleton, or "Loading..." text
+    return <div>Loading...</div>;
   }
 
   return (
@@ -48,7 +48,7 @@ export default function HomeComponent() {
         </Typography>
       </div>
 
-      {/* Main content */}
+      {/* Other Articles */}
       <main className="w-full flex-grow bg-red py-8">
         <div className="">
           <div className="text-sm text-gray-500 mb-6">

@@ -30,7 +30,7 @@ export const SideBar = () => {
   };
   return (
     <>
-      <aside className="w-64 bg-primary text-white flex flex-col gap-10 p-6">
+      <aside className="w-64 h-full bg-primary text-white flex flex-col gap-10 p-6">
         <Image
           src={"/images/img_icon_white.png"}
           alt="logo"
