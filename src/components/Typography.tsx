@@ -81,6 +81,7 @@ const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
         id={id}
         ref={ref}
         className={clsx(
+          'text-black',
           variant && variantClasses[variant],
           typeClasses[type],
           color && colorClasses[color],

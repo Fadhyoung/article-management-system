@@ -9,6 +9,7 @@ import { Search } from "lucide-react";
 import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import CustomSelect from "@/components/Select";
+import Typography from "@/components/Typography";
 
 export default function ArticlesPage() {
   const {
@@ -43,8 +44,9 @@ export default function ArticlesPage() {
         <div className="rounded-2xl shadow-md border bg-background2 overflow-hidden">
           <div className="p-6 flex justify-between items-center border-b">
             <div className="text-lg font-semibold">
-              {" "}
-              {t("totalArticles")} {pagination.totalData}
+              <Typography type="caption">
+                {t("totalArticles")} {pagination.totalData}
+              </Typography>
             </div>
           </div>
 
@@ -125,11 +127,25 @@ export default function ArticlesPage() {
             <table className="w-full text-left border">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-3 px-4 border-y">{t("tableThumbnails")}</th>
-                  <th className="py-3 px-4 border-y">{t("tableTitle")}</th>
-                  <th className="py-3 px-4 border-y">{t("tableCategory")}</th>
-                  <th className="py-3 px-4 border-y">{t("tableCreatedAt")}</th>
-                  <th className="py-3 px-4 border-y">{t("tableAction")}</th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography type="caption">
+                      {t("tableThumbnails")}
+                    </Typography>
+                  </th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography type="caption">{t("tableTitle")}</Typography>
+                  </th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography type="caption">{t("tableCategory")}</Typography>
+                  </th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography type="caption">
+                      {t("tableCreatedAt")}
+                    </Typography>
+                  </th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography type="caption">{t("tableAction")}</Typography>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -145,12 +161,18 @@ export default function ArticlesPage() {
                         unoptimized={true}
                       />
                     </td>
-                    <td className="py-3 px-4 border-y">{article.title}</td>
                     <td className="py-3 px-4 border-y">
-                      {article.category.name}
+                      <Typography type="caption">{article.title}</Typography>
                     </td>
                     <td className="py-3 px-4 border-y">
-                      {formatDate(article.createdAt)}
+                      <Typography type="caption">
+                        {article.category.name}
+                      </Typography>
+                    </td>
+                    <td className="py-3 px-4 border-y">
+                      <Typography type="caption">
+                        {formatDate(article.createdAt)}
+                      </Typography>
                     </td>
                     <td className="py-3 px-4  border-y">
                       <div className="flex gap-2">

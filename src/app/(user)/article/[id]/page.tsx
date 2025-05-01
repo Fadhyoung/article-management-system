@@ -17,7 +17,6 @@ export default function HomeComponent() {
 
   return (
     <div className="w-5/6 mx-auto flex flex-col gap-1 items-center justify-center text-left">
-
       {/* NAVBAR */}
       <Navbar />
 
@@ -52,7 +51,7 @@ export default function HomeComponent() {
       <main className="w-full flex-grow bg-red py-8">
         <div className="">
           <div className="text-sm text-gray-500 mb-6">
-            <Typography type="cardtitle">{t('otherArticles')}</Typography>
+            <Typography type="cardtitle">{t("otherArticles")}</Typography>
           </div>
 
           {/* Blog posts grid */}
@@ -73,19 +72,19 @@ export default function HomeComponent() {
                   <div className="text-xs text-gray-500 mb-2">
                     {formatDate(article.updatedAt)}
                   </div>
-                  <h3 className="font-bold text-lg mb-2">
+                  <Typography type="cardtitle">
                     <Link
                       href={"#"}
                       className="hover:text-indigo-600 transition-colors"
                     >
                       {article.title}
                     </Link>
-                  </h3>
+                  </Typography>
                   <p className="text-sm text-gray-600 mb-3">
                     {truncateContent(article.content, 10)}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-3 py-2 rounded-full bg-tertiary">
+                    <span className="text-xs px-3 py-2 rounded-full text-black bg-tertiary">
                       {article.category.name}
                     </span>
                   </div>

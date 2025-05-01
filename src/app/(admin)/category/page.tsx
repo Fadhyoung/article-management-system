@@ -37,7 +37,7 @@ export default function CategoryPage() {
 
   const { currentPage, totalPages } = pagination;
 
-  console.log(categories)
+  console.log(categories);
 
   return (
     <>
@@ -45,9 +45,9 @@ export default function CategoryPage() {
       <main className="flex-1 p-8">
         <div className="rounded-2xl shadow-md border bg-background2 overflow-hidden">
           <div className="p-6 flex justify-between items-center border-b">
-            <div className="text-lg font-semibold">
+            <Typography type="caption">
               {t("totalCategories")} {pagination.totalData}
-            </div>
+            </Typography>
           </div>
 
           {/* Search & Filter */}
@@ -87,10 +87,7 @@ export default function CategoryPage() {
               </div>
             </form>
 
-            <Button
-              radius="md"
-              onClick={() => openModal("add")}
-            >
+            <Button radius="md" onClick={() => openModal("add")}>
               {t("addCategory")}
             </Button>
           </div>
@@ -100,20 +97,53 @@ export default function CategoryPage() {
             <table className="w-full text-left border">
               <thead className="text-center bg-gray-100">
                 <tr>
-                  <th className="py-3 px-4 border-y">{t("tableCategory")}</th>
-                  <th className="py-3 px-4 border-y">{t("tableCreatedAt")}</th>
-                  <th className="py-3 px-4 border-y">{t("tableAction")}</th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography
+                      type="caption"
+                      className="w-full flex justify-center"
+                    >
+                      {t("tableCategory")}
+                    </Typography>
+                  </th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography
+                      type="caption"
+                      className="w-full flex justify-center"
+                    >
+                      {t("tableCreatedAt")}
+                    </Typography>
+                  </th>
+                  <th className="py-3 px-4 border-y">
+                    <Typography
+                      type="caption"
+                      className="w-full flex justify-center"
+                    >
+                      {t("tableAction")}
+                    </Typography>
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {categories?.data.map((category: Category, idx: number) => (
                   <tr key={idx} className="text-center hover:bg-gray-50">
-                    <td className="py-3 px-4 border-y">{category.name}</td>
+                    <td className="py-3 px-4 border-y ">
+                      <Typography
+                        type="caption"
+                        className="w-full flex justify-center"
+                      >
+                        {category.name}
+                      </Typography>
+                    </td>
                     <td className="py-3 px-4 border-y">
-                      {formatDate(category.updatedAt)}
+                      <Typography
+                        type="caption"
+                        className="w-full flex justify-center"
+                      >
+                        {formatDate(category.updatedAt)}
+                      </Typography>
                     </td>
                     <td className="py-3 px-4  border-y">
-                      <div className="flex gap-2 justify-center">
+                      <div className="flex justify-center">
                         <Button
                           buttonType="ghost"
                           variant="primary"

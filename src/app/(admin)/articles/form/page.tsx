@@ -57,7 +57,7 @@ function ArticleFormContent() {
             </Button>
           </div>
           <div>
-            <label className="block mb-2 font-medium">{t("thumbnails")}</label>
+            <label className="block mb-2 font-medium text-black">{t("thumbnails")}</label>
             {!preview ? (
               <div className="w-fit border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center">
                 <input
@@ -167,12 +167,12 @@ function ArticleFormContent() {
 
           {/* Content Editor */}
           <div>
-            <label className="block mb-2 font-medium">Content</label>
+            <label className="block mb-2 font-medium text-black">Content</label>
             <textarea
               {...register("content", { required: "Content is required" })}
               rows={10}
               placeholder="Type a content..."
-              className="w-full border p-2 rounded-lg"
+              className="w-full border p-2 rounded-lg bg-white"
               onChange={(e) => {
                 const content = e.target.value;
                 setWordCount(
