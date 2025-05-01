@@ -40,7 +40,10 @@ export default function HomeComponent() {
       >
         <div className="px-4 py-12 flex flex-col gap-10 justify-center items-center bg-primary/85">
           {/* NAVBAR */}
-          <Navbar className="!bg-transparent !border-0 !text-white" imageUrl="/images/img_icon_white.png" />
+          <Navbar
+            className="!bg-transparent !border-0 !text-white"
+            imageUrl="/images/img_icon_white.png"
+          />
 
           <div className="mt-20 w-full md:w-1/2 flex flex-col gap-5 justify-center items-center text-center mb-8">
             <Typography variant="white" type="subtitle">
@@ -124,7 +127,11 @@ export default function HomeComponent() {
       <main className="flex-grow bg-white py-8">
         <div className="w-full md:w-5/6 mx-auto px-4 space-y-5">
           <Typography type="body">
-            Showing: <span className="font-medium"> {pagination.totalData} articles</span>
+            Showing:{" "}
+            <span className="font-medium">
+              {" "}
+              {pagination.totalData} articles
+            </span>
           </Typography>
 
           {/* Blog posts grid */}
@@ -145,19 +152,19 @@ export default function HomeComponent() {
                   <div className="text-xs text-gray-500 mb-2">
                     {formatDate(article.updatedAt)}
                   </div>
-                  <h3 className="font-bold text-lg mb-2">
+                  <Typography type="cardtitle">
                     <Link
                       href={"#"}
                       className="hover:text-indigo-600 transition-colors"
                     >
                       {article.title}
                     </Link>
-                  </h3>
+                  </Typography>
                   <p className="text-sm text-gray-600 mb-3">
                     {truncateContent(article.content, 15)}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    <span className="text-xs px-3 py-2 rounded-full bg-tertiary">
+                    <span className="text-xs px-3 py-2 rounded-full text-black bg-tertiary">
                       {article.category.name}
                     </span>
                   </div>
@@ -174,7 +181,7 @@ export default function HomeComponent() {
                 disabled={currentPage === 1}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {t('previous')}
+                {t("previous")}
               </button>
 
               {Array.from({ length: totalPages ?? 0 }, (_, i) => i + 1).map(
@@ -198,7 +205,7 @@ export default function HomeComponent() {
                 disabled={currentPage === totalPages}
                 className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {t('next')}
+                {t("next")}
               </button>
             </nav>
           </div>

@@ -52,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     const variantClasses = {
-      primary: 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
+      primary: 'border-gray-300 focus:ring-red-500 focus:border-indigo-500',
       secondary: 'border-blue-300 focus:ring-blue-500 focus:border-blue-500',
       tertiary: 'border-green-300 focus:ring-green-500 focus:border-green-500',
     };
@@ -76,7 +76,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           maxLength={maxLength}
           required={required}
           className={clsx(
-            'block w-full border focus:outline-none',
+            'block w-full border text-black !bg-white focus:bg-white focus:outline-none',
             sizeClasses[size],
             radiusClasses[radius],
             variantClasses[variant],
