@@ -20,11 +20,13 @@ export default function CategoryPage() {
     filterControl,
     filterHandle,
     handleSubmit,
+
+    // MODAL STATE
+    category,
     status,
     openModal,
     isOpen,
     handleWriteCategory,
-    setId,
     handleCloseModal,
 
     handlePrevious,
@@ -149,8 +151,7 @@ export default function CategoryPage() {
                           variant="primary"
                           className="underline hover:underline"
                           onClick={() => {
-                            openModal("edit");
-                            setId(category.id);
+                            openModal("edit", category);
                           }}
                         >
                           {t("edit")}
@@ -160,8 +161,7 @@ export default function CategoryPage() {
                           variant="danger"
                           className=" hover:underline"
                           onClick={() => {
-                            openModal("delete");
-                            setId(category.id);
+                            openModal("delete", category);
                           }}
                         >
                           {t("delete")}
@@ -222,7 +222,7 @@ export default function CategoryPage() {
               onSubmit={handleSubmit(handleWriteCategory)}
               className="flex flex-col gap-5"
             >
-              <Typography type="subtitle">
+              <Typography type="subtitle" weight="800">
                 {status?.isAdd
                   ? "Add Category"
                   : status?.isEdit
@@ -232,8 +232,9 @@ export default function CategoryPage() {
 
               {status?.isDelete ? (
                 <Typography type="caption" variant="accent">
-                  {t("modalDesc")}
-                </Typography>
+                {t("modalDesc")}
+                <span className="font-bold">{category?.name}</span> ?
+              </Typography>
               ) : (
                 <div>
                   <Controller

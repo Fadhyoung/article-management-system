@@ -10,11 +10,17 @@ import { Controller } from "react-hook-form";
 import Input from "@/components/Input";
 import CustomSelect from "@/components/Select";
 import Typography from "@/components/Typography";
+import Modal from "@/components/Modal";
 
 export default function ArticlesPage() {
   const {
     t,
     pagination,
+
+    // Modal State
+    article,
+    isOpen,
+    setIsOpen,
 
     handleFilter,
     control,
@@ -27,6 +33,7 @@ export default function ArticlesPage() {
     articles,
     goToCreateArticle,
     goToDetailArticle,
+    handleOpenDeleteModal,
     handleDeleteArticle,
     goToEditArticle,
 
@@ -196,7 +203,7 @@ export default function ArticlesPage() {
                           buttonType="ghost"
                           variant="danger"
                           className=" hover:underline"
-                          onClick={() => handleDeleteArticle(article.id)}
+                          onClick={() => handleOpenDeleteModal(article)}
                         >
                           {"delete"}
                         </Button>
@@ -246,6 +253,42 @@ export default function ArticlesPage() {
           </div>
         </div>
       </main>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        body={
+          <div className="flex flex-col gap-5 justify-end">
+            <Typography type="subtitle" weight="800">Delete Category</Typography>
+
+            <Typography type="caption" variant="accent">
+              {t("modalDesc")}{" "}
+              <span className="font-bold">{article?.title}</span>
+            </Typography>
+
+            <div className="w-fit flex gap-5 self-end">
+              <Button
+                type="button"
+                variant="secondary"
+                buttonType="outline"
+                radius="md"
+                className="border py-2 px-4 rounded-lg hover:bg-gray-100"
+                onClick={() => setIsOpen(false)}
+              >
+                {t("cancel")}
+              </Button>
+              <Button
+                variant="danger"
+                radius="md"
+                type="button"
+                className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                onClick={handleDeleteArticle}
+              >
+                {t("delete")}
+              </Button>
+            </div>
+          </div>
+        }
+      />
     </>
   );
 }

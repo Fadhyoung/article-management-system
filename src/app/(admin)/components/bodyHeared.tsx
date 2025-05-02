@@ -5,12 +5,16 @@ import Typography from "@/components/Typography";
 import { APP_PROFILE } from "@/constants";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 
 export const BodyHeader = () => {
-  const t = useTranslations('Navbar');
   const router = useRouter();
   const [username, setUsername] = useState<string | undefined>(undefined);
+  const path = usePathname();
+  const lastSegment = path.split("/").filter(Boolean).pop();
+  const formattedTitle = lastSegment
+    ? lastSegment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+    : "";
 
   useEffect(() => {
     const storedProfile = localStorage.getItem("profile");
@@ -27,7 +31,7 @@ export const BodyHeader = () => {
   return (
     <>
       <header className="w-full py-4 px-10 flex items-center justify-between border bg-background2">
-        <Typography type="cardtitle">{t('articles')}</Typography>
+        <Typography type="cardtitle">{formattedTitle}</Typography>
         <div className="flex items-center gap-2">
           <Button
             buttonType="ghost"

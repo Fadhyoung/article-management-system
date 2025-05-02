@@ -54,9 +54,9 @@ const visibleOnClasses: Record<
   NonNullable<TypographyProps['visibleOn']>,
   string
 > = {
-  'mobile-only': 'md:hidden flex',
-  'desktop-only': 'hidden md:flex',
-  all: 'flex',
+  'mobile-only': 'md:hidden inline',
+  'desktop-only': 'hidden md:inline',
+  all: 'inline',
 };
 
 const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(

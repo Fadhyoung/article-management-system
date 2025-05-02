@@ -12,7 +12,7 @@ import getArticleListAction from "@/actions/article";
 
 export const useListArticle = () => {
   const t = useTranslations("ListArticles");
-  const { categories, categoryOptions } = useCategoryProvider();
+  const { categories, categoryOptions, setFilter: getCategories } = useCategoryProvider();
   const router = useRouter();
 
   const { pagination, setPagination, articles, setArticles, setFilter } =
@@ -88,6 +88,10 @@ export const useListArticle = () => {
       page: 1,
       search: "",
     });
+    getCategories({
+      page: 1,
+      limit: 20,
+    })
   }, []);
 
   return {

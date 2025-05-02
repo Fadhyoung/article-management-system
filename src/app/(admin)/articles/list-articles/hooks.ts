@@ -12,6 +12,8 @@ import { useNotificationProvider } from "@/providers/NotificationProvider";
 import { useEffect } from "react";
 import { debounce } from "lodash";
 import getArticleListAction from "@/actions/article";
+import { useModalProvider } from "@/providers/ModalProvider";
+import { Article } from "@/types/Articles";
 
 export const useArticles = () => {
   const t = useTranslations("ListArticles");
@@ -19,13 +21,20 @@ export const useArticles = () => {
 
   const { categories, categoryOptions } = useCategoryProvider();
   const { showNotification } = useNotificationProvider();
-  const { pagination, setPagination, articles, setArticles, setFilter } = useArticle();
+  const { pagination, setPagination, article, setArticle, articles, setArticles, setFilter } = useArticle();
+  const { isOpen, setIsOpen } = useModalProvider();
 
   const { control, handleSubmit, watch } = useForm<FilterForm>();
 
-  const handleDeleteArticle = async (id: string) => {
+  const handleOpenDeleteModal = (article: Article) => {
+    setArticle(article);
+    setIsOpen(true);
+  }
+
+  const handleDeleteArticle = async () => {
     try {
-      const response = await deleteArticleAction(id);
+      const response = await deleteArticleAction(article?.id ?? '');
+      setIsOpen(false);
       if (!response.isSuccess) {
         showNotification({
           type: "error",
@@ -119,10 +128,8 @@ export const useArticles = () => {
 
   useEffect(() => {
     setFilter({
-      category: "",
       limit: 9,
       page: 1,
-      search: "",
     });
   }, []);
 
@@ -135,10 +142,16 @@ export const useArticles = () => {
     handleFilter,
     watch,
 
+    // Modal State
+    article,
+    isOpen,
+    setIsOpen,
+
     categories,
     categoryOptions,
     articles,
     goToCreateArticle,
+    handleOpenDeleteModal,
     handleDeleteArticle,
     goToDetailArticle,
     goToEditArticle,
