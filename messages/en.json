@@ -61,7 +61,9 @@
     "edit": "Edit",
     "delete": "Delete",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "cancel": "Cancel",
+    "modalDesc": "This will remove it from master data permanently, are you sure want to delete "
   },
   "ArticleForm": {
     "titleRequired": "Title is required",
@@ -97,7 +99,7 @@
     "nameFormatInvalid": "Invalid name format",
     "name": "Name",
     "namePlaceholder": "Input name",
-    "modalDesc": "Delete category “Technology”? This will remove it from master data permanently",
+    "modalDesc": "This will remove it from master data permanently, are you sure want to delete ",
     "cancel": "Cancel"
   },
   "Navbar": {

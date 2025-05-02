@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useCategoryProvider } from "@/providers/CategoryProvider";
-import { CategoryForm, FilterForm } from "@/types/Category";
+import { Category, CategoryForm, FilterForm } from "@/types/Category";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { APP_ARTICLE_FORM } from "@/constants";
@@ -13,8 +13,8 @@ import postCategoryAction, {
   deleteCategoryAction,
   editCategoryAction,
 } from "@/app/(admin)/category/actions";
-import { debounce } from "lodash";
 import { getCategoryAction } from "@/app/(user)/list-article/actions";
+import { debounce } from "lodash";
 
 interface status {
   isAdd: boolean;
@@ -31,6 +31,8 @@ export const useCategory = () => {
     setPagination,
     filter,
     setFilter,
+    category,
+    setCategory,
     categories,
     setCategories,
     categoryOptions,
@@ -47,17 +49,16 @@ export const useCategory = () => {
     watch,
   } = useForm<FilterForm>();
   const [status, setStatus] = useState<status>();
-  const [id, setId] = useState<string>("");
 
   const handleWriteCategory = async (form: CategoryForm) => {
     try {
       let response;
-      if (id && status?.isEdit) {
-        response = await editCategoryAction(form, id);
+      if (category && status?.isEdit) {
+        response = await editCategoryAction(form, (category?.id ?? ''));
       } else if (status?.isAdd) {
         response = await postCategoryAction(form);
       } else {
-        response = await deleteCategoryAction(id);
+        response = await deleteCategoryAction((category?.id ?? ''));
       }      
       if (response.isSuccess) {        
         showNotification({
@@ -83,8 +84,9 @@ export const useCategory = () => {
     }
   };
 
-  const openModal = (status: string) => {
+  const openModal = (status: string, category?: Category) => {
     setIsOpen(true);
+    setCategory(category);
     if (status == "add") {
       setStatus({ isAdd: true, isEdit: false, isDelete: false });
     } else if (status == "edit") {
@@ -158,7 +160,7 @@ export const useCategory = () => {
   const handleCloseModal = () => {
     setIsOpen(false);
     setStatus(undefined);
-    setId("");
+    setCategory(undefined);
     reset();
   };
 
@@ -172,11 +174,13 @@ export const useCategory = () => {
     categories,
     categoryOptions,
 
+    // Modal State
+    category,
+    setCategory,
     isOpen,
     setIsOpen,
     status,
     openModal,
-    setId,
 
     goToCreateArticle,
     handleWriteCategory,

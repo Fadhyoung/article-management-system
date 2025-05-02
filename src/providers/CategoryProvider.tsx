@@ -2,12 +2,15 @@
 
 import { getCategoryAction } from "@/app/(user)/list-article/actions";
 import { OptionProps } from "@/components/Select";
-import { CategoryResponse, FilterForm } from "@/types/Category";
+import { Category, CategoryResponse, FilterForm } from "@/types/Category";
 import { Pagination } from "@/types/Common";
 import { generateOptions } from "@/utils/generateOptions";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface CategoryState {
+  category: Category | undefined;
+  setCategory: (category: Category | undefined) => void;
+
   categories: CategoryResponse | undefined;
   setCategories: (categories: CategoryResponse) => void;
 
@@ -23,6 +26,9 @@ interface CategoryState {
 }
 
 const categroyContext = createContext<CategoryState>({
+  category: undefined,
+  setCategory: () => {},
+
   categories: undefined,
   setCategories: () => {},
 
@@ -46,6 +52,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
 
+  const [category, setCategory] = useState<Category | undefined>(undefined);
   const [categories, setCategories] = useState<CategoryResponse | undefined>(
     undefined
   );
@@ -88,6 +95,9 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <categroyContext.Provider
       value={{
+        category,
+        setCategory,
+
         categories,
         setCategories,
 
